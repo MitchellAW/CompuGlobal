@@ -25,7 +25,7 @@ image = screencap.get_meme_url()
 gif = screencap.get_gif_url()
 ```
 
-For a documented example, check [here.](https://github.com/MitchellAW/CompuGlobal/tree/master/examples)
+For documented examples, check [here.](https://github.com/MitchellAW/CompuGlobal/tree/master/examples)
 
 
 ## Credits
