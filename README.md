@@ -17,7 +17,14 @@ import compuglobal
 
 async def main():
     simpsons = compuglobal.Frinkiac()
+    
+    # Random
     screencap = await simpsons.get_random_screencap()
+    
+    # Search
+    screencap = await simpsons.search_for_screencap('stupid sexy flanders')
+    
+    # Images/Gifs
     image = screencap.get_meme_url()
     gif = await screencap.get_gif_url()
 
@@ -26,7 +33,7 @@ if __name__ == '__main__':
     loop.run_until_complete(main())
 ```
 
-For a documented example, check [here.](https://github.com/MitchellAW/CompuGlobal/tree/async/examples)
+For documented examples, check [here.](https://github.com/MitchellAW/CompuGlobal/tree/async/examples)
 
 
 ## Credits
