@@ -26,7 +26,7 @@ if __name__ == '__main__':
     loop.run_until_complete(main())
 ```
 
-For a documented example, check [here.](https://github.com/MitchellAW/CompuGlobal/tree/master/examples)
+For a documented example, check [here.](https://github.com/MitchellAW/CompuGlobal/tree/async/examples)
 
 
 ## Credits
