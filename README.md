@@ -4,6 +4,30 @@ Unofficial API wrapper for the following undocumented APIs:
 [Frinkiac](https://frinkiac.com), [Morbotron](https://morbotron.com), [Master Of All Science](https://masterofallscience.com), 
 [Capital Beat Us](https://capitalbeat.us) and [Good God Lemon](https://goodgodlemon.com)
 
+Allows for both random and searchable screencaps, images and gifs embedded with default or custom captions for the following shows:
+
+*The Simpsons, Futurama, Rick and Morty, West Wing and 30 Rock.*
+
+## Basic Usage
+```py
+import asyncio
+
+import compuglobal
+
+
+async def main():
+    simpsons = compuglobal.Frinkiac()
+    screencap = await simpsons.get_random_screencap()
+    image = screencap.get_meme_url()
+    gif = await screencap.get_gif_url()
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+```
+
+For a documented example, check [here.](https://github.com/MitchellAW/CompuGlobal/tree/master/examples)
+
 
 ## Credits
 **Creators of [Frinkiac](https://frinkiac.com/), [Morbotron](https://morbotron.com/), 
