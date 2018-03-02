@@ -2,9 +2,8 @@ from base64 import b64encode
 
 import requests
 
-from errors import APIPageStatusError
-from errors import NoSearchResultsFound
-from screencap import Screencap
+from .errors import *
+from .screencap import *
 
 
 # API Used for getting all TV Show screencaps
@@ -34,21 +33,21 @@ class CompuGlobalAPI:
     # Gets a TV Show screencap using episode and timestamp
     def get_screencap(self, episode, timestamp):
         caption_url = self.caption_url.format(episode, timestamp)
-        screencap = requests.get(caption_url)
-        if screencap.status_code == 200:
-            return Screencap(self, screencap.json())
+        screencap_page = requests.get(caption_url)
+        if screencap_page.status_code == 200:
+            return Screencap(self, screencap_page.json())
 
         else:
-            raise APIPageStatusError(screencap.status_code, self.URL)
+            raise APIPageStatusError(screencap_page.status_code, self.URL)
 
     # Gets a random TV Show screencap (episode and timestamp)
     def get_random_screencap(self):
-        screencap = requests.get(self.random_url)
-        if screencap.status_code == 200:
-            return Screencap(self, screencap.json())
+        screencap_page = requests.get(self.random_url)
+        if screencap_page.status_code == 200:
+            return Screencap(self, screencap_page.json())
 
         else:
-            raise APIPageStatusError(screencap.status_code, self.URL)
+            raise APIPageStatusError(screencap_page.status_code, self.URL)
 
     # Gets the first search result for a TV Show screencap using search_text
     def search_for_screencap(self, search_text):
@@ -129,3 +128,39 @@ class CompuGlobalAPI:
 
         else:
             raise APIPageStatusError(gif_generator.status_code, self.URL)
+
+
+# West Wing Meme/GIF generator API
+class CapitalBeatUs(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://capitalbeat.us/', 'West Wing')
+
+
+# Simpsons Meme/GIF generator API
+class Frinkiac(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://frinkiac.com/', 'The Simpsons')
+
+
+# Steamed Hams Meme/GIF generator API
+class FrinkiHams(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://frinkihams.com/', 'Steamed Hams')
+
+
+# 30 Rock Meme/GIF generator API
+class GoodGodLemon(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://goodgodlemon.com/', '30 Rock')
+
+
+# Rick and Morty Meme/GIF generator API
+class MasterOfAllScience(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://masterofallscience.com/', 'Rick and Morty')
+
+
+# Futurama Meme/GIF generator API
+class Morbotron(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://morbotron.com/', 'Futurama')

@@ -1,9 +1,9 @@
-from apis.frinkiac import Frinkiac
+import compuglobal
 
 # The API used as the example here is Frinkiac (The Simpsons)
 # Everything below can be used for any of the APIs (Morbotron, Master of All
 # Science etc.)
-frinkiac = Frinkiac()
+frinkiac = compuglobal.Frinkiac()
 
 # Getting a screencap from The Simpsons using search terms
 searched_screencap = frinkiac.search_for_screencap('Stupid Sexy Flanders')
