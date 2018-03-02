@@ -13,7 +13,14 @@ Allows for both random and searchable screencaps, images and gifs embedded with 
 import compuglobal
 
 simpsons = compuglobal.Frinkiac()
+
+# Random
 screencap = simpsons.get_random_screencap()
+
+# Search
+screencap = simpsons.search_for_screencap('stupid sexy flanders')
+
+# Images/Gifs
 image = screencap.get_meme_url()
 gif = screencap.get_gif_url()
 ```
