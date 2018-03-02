@@ -35,3 +35,5 @@ For documented examples, check [here.](https://github.com/MitchellAW/CompuGlobal
 [Paul Kehrer](https://twitter.com/reaperhulk)  
 [Sean Schulte](https://twitter.com/sirsean)  
 [Allie Young](https://twitter.com/seriousallie)  
+
+*Named CompuGlobal as shorthand for [CompuGlobalHyperMegaCap](https://langui.sh/2017/07/30/master-of-all-science-rick-and-morty/), as the family of websites are named.*
