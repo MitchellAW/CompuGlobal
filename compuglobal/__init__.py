@@ -2,9 +2,8 @@ from base64 import b64encode
 
 import aiohttp
 
-from errors import APIPageStatusError
-from errors import NoSearchResultsFound
-from screencap import Screencap
+from .errors import *
+from .screencap import Screencap
 
 
 # API Used for getting all TV Show screencaps
@@ -35,23 +34,23 @@ class CompuGlobalAPI:
     async def get_screencap(self, episode, timestamp):
         caption_url = self.caption_url.format(episode, timestamp)
         async with aiohttp.ClientSession() as session:
-            async with session.get(caption_url) as screencap:
-                if screencap.status == 200:
-                    return Screencap(self, await screencap.json())
+            async with session.get(caption_url) as screencap_page:
+                if screencap_page.status == 200:
+                    return Screencap(self, await screencap_page.json())
 
                 else:
-                    raise APIPageStatusError(screencap.status, self.URL)
+                    raise APIPageStatusError(screencap_page.status, self.URL)
 
     # Gets a random TV Show screencap (episode and timestamp)
     async def get_random_screencap(self):
         async with aiohttp.ClientSession() as session:
-            async with session.get(self.random_url) as screencap:
+            async with session.get(self.random_url) as screencap_page:
 
-                if screencap.status == 200:
-                    return Screencap(self, await screencap.json())
+                if screencap_page.status == 200:
+                    return Screencap(self, await screencap_page.json())
 
                 else:
-                    raise APIPageStatusError(screencap.status, self.URL)
+                    raise APIPageStatusError(screencap_page.status, self.URL)
 
     # Gets the first search result for a TV Show screencap using search_text
     async def search_for_screencap(self, search_text):
@@ -135,3 +134,39 @@ class CompuGlobalAPI:
 
                 else:
                     raise APIPageStatusError(gif_generator.status, self.URL)
+
+
+# West Wing Meme/GIF generator API
+class CapitalBeatUs(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://capitalbeat.us/', 'West Wing')
+
+
+# Simpsons Meme/GIF generator API
+class Frinkiac(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://frinkiac.com/', 'The Simpsons')
+
+
+# Steamed Hams Meme/GIF generator API
+class FrinkiHams(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://frinkihams.com/', 'Steamed Hams')
+
+
+# 30 Rock Meme/GIF generator API
+class GoodGodLemon(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://goodgodlemon.com/', '30 Rock')
+
+
+# Rick and Morty Meme/GIF generator API
+class MasterOfAllScience(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://masterofallscience.com/', 'Rick and Morty')
+
+
+# Futurama Meme/GIF generator API
+class Morbotron(CompuGlobalAPI):
+    def __init__(self):
+        super().__init__('https://morbotron.com/', 'Futurama')
