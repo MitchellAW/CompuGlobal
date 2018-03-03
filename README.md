@@ -38,7 +38,7 @@ For documented examples, check [here.](https://github.com/MitchellAW/CompuGlobal
 
 ## Credits
 **Creators of [Frinkiac](https://frinkiac.com/), [Morbotron](https://morbotron.com/), 
-[Master of All Science](https://masterofallscience.com/), [GoodGod Lemon](https://goodgodlemon.com/) and 
+[Master of All Science](https://masterofallscience.com/), [Good God Lemon](https://goodgodlemon.com/) and 
 [Capital Beat Us](https://capitalbeat.us/):**  
 [Paul Kehrer](https://twitter.com/reaperhulk)  
 [Sean Schulte](https://twitter.com/sirsean)  
