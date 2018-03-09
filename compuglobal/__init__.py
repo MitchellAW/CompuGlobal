@@ -55,6 +55,7 @@ class CompuGlobalAPI:
                     raise APIPageStatusError(screen.status, self.URL)
 
     # Gets the first search result for a TV Show screencap using search_text
+    # Raises NoSearchResultsFound exception if no search results are found
     async def search_for_screencap(self, search_text):
         search_url = self.search_url + search_text.replace(' ', '+')
 
