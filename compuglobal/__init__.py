@@ -33,21 +33,21 @@ class CompuGlobalAPI:
     # Gets a TV Show screencap using episode and timestamp
     def get_screencap(self, episode, timestamp):
         caption_url = self.caption_url.format(episode, timestamp)
-        screencap_page = requests.get(caption_url)
-        if screencap_page.status_code == 200:
-            return Screencap(self, screencap_page.json())
+        screen = requests.get(caption_url)
+        if screen.status_code == 200:
+            return Screencap(self, screen.json())
 
         else:
-            raise APIPageStatusError(screencap_page.status_code, self.URL)
+            raise APIPageStatusError(screen.status_code, self.URL)
 
     # Gets a random TV Show screencap (episode and timestamp)
     def get_random_screencap(self):
-        screencap_page = requests.get(self.random_url)
-        if screencap_page.status_code == 200:
-            return Screencap(self, screencap_page.json())
+        screen = requests.get(self.random_url)
+        if screen.status_code == 200:
+            return Screencap(self, screen.json())
 
         else:
-            raise APIPageStatusError(screencap_page.status_code, self.URL)
+            raise APIPageStatusError(screen.status_code, self.URL)
 
     # Gets the first search result for a TV Show screencap using search_text
     def search_for_screencap(self, search_text):
@@ -122,12 +122,12 @@ class CompuGlobalAPI:
 
     # Generate the gif and get the direct url for embedding
     def generate_gif(self, gif_url):
-        gif_generator = requests.get(gif_url)
-        if gif_generator.status_code == 200:
-            return gif_generator.url
+        gif_loader = requests.get(gif_url)
+        if gif_loader.status_code == 200:
+            return gif_loader.url
 
         else:
-            raise APIPageStatusError(gif_generator.status_code, self.URL)
+            raise APIPageStatusError(gif_loader.status_code, self.URL)
 
 
 # West Wing Meme/GIF generator API
