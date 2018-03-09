@@ -33,8 +33,8 @@ class CompuGlobalAPI:
     # Gets a TV Show screencap using episode and timestamp
     async def get_screencap(self, episode, timestamp):
         caption_url = self.caption_url.format(episode, timestamp)
-        async with aiohttp.ClientSession() as session:
-            async with session.get(caption_url) as screencap_page:
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(caption_url) as screencap_page:
                 if screencap_page.status == 200:
                     return Screencap(self, await screencap_page.json())
 
@@ -43,8 +43,8 @@ class CompuGlobalAPI:
 
     # Gets a random TV Show screencap (episode and timestamp)
     async def get_random_screencap(self):
-        async with aiohttp.ClientSession() as session:
-            async with session.get(self.random_url) as screencap_page:
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(self.random_url) as screencap_page:
 
                 if screencap_page.status == 200:
                     return Screencap(self, await screencap_page.json())
@@ -56,8 +56,8 @@ class CompuGlobalAPI:
     async def search_for_screencap(self, search_text):
         search_url = self.search_url + search_text.replace(' ', '+')
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(search_url) as search:
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(search_url) as search:
                 if search.status == 200:
                     search_results = await search.json()
 
@@ -75,8 +75,8 @@ class CompuGlobalAPI:
     # Gets all valid frames before and after timestamp for the episode
     async def get_frames(self, episode, timestamp, before, after):
         frames_url = self.frames_url.format(episode, timestamp, before, after)
-        async with aiohttp.ClientSession() as session:
-            async with session.get(frames_url) as frames:
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(frames_url) as frames:
                 if frames.status == 200:
                     return await frames.json()
 
@@ -127,8 +127,8 @@ class CompuGlobalAPI:
 
     # Generate the gif and get the direct url for embedding
     async def generate_gif(self, gif_url):
-        async with aiohttp.ClientSession() as session:
-            async with session.get(gif_url) as gif_generator:
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(gif_url) as gif_generator:
                 if gif_generator.status == 200:
                     return gif_generator.url
 
