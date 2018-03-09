@@ -1,3 +1,4 @@
+import asyncio
 from base64 import b64encode
 
 import aiohttp
@@ -8,9 +9,11 @@ from .screencap import Screencap
 
 # API Used for getting all TV Show screencaps
 class CompuGlobalAPI:
-    def __init__(self, url, title):
+    def __init__(self, url, title, timeout):
         self.URL = url
         self.title = title
+        # Time to wait on timeouts for each request
+        self.timeout = timeout
 
         # Gets random screencap with caption info
         self.random_url = self.URL + 'api/random'
@@ -34,30 +37,29 @@ class CompuGlobalAPI:
     async def get_screencap(self, episode, timestamp):
         caption_url = self.caption_url.format(episode, timestamp)
         async with aiohttp.ClientSession() as cs:
-            async with cs.get(caption_url) as screencap_page:
-                if screencap_page.status == 200:
-                    return Screencap(self, await screencap_page.json())
+            async with cs.get(caption_url, timeout=self.timeout) as screen:
+                if screen.status == 200:
+                    return Screencap(self, await screen.json())
 
                 else:
-                    raise APIPageStatusError(screencap_page.status, self.URL)
+                    raise APIPageStatusError(screen.status, self.URL)
 
     # Gets a random TV Show screencap (episode and timestamp)
     async def get_random_screencap(self):
         async with aiohttp.ClientSession() as cs:
-            async with cs.get(self.random_url) as screencap_page:
-
-                if screencap_page.status == 200:
-                    return Screencap(self, await screencap_page.json())
+            async with cs.get(self.random_url, timeout=self.timeout) as screen:
+                if screen.status == 200:
+                    return Screencap(self, await screen.json())
 
                 else:
-                    raise APIPageStatusError(screencap_page.status, self.URL)
+                    raise APIPageStatusError(screen.status, self.URL)
 
     # Gets the first search result for a TV Show screencap using search_text
     async def search_for_screencap(self, search_text):
         search_url = self.search_url + search_text.replace(' ', '+')
 
         async with aiohttp.ClientSession() as cs:
-            async with cs.get(search_url) as search:
+            async with cs.get(search_url, timeout=self.timeout) as search:
                 if search.status == 200:
                     search_results = await search.json()
 
@@ -76,7 +78,7 @@ class CompuGlobalAPI:
     async def get_frames(self, episode, timestamp, before, after):
         frames_url = self.frames_url.format(episode, timestamp, before, after)
         async with aiohttp.ClientSession() as cs:
-            async with cs.get(frames_url) as frames:
+            async with cs.get(frames_url, timeout=self.timeout) as frames:
                 if frames.status == 200:
                     return await frames.json()
 
@@ -125,48 +127,54 @@ class CompuGlobalAPI:
 
         return caption
 
-    # Generate the gif and get the direct url for embedding
+    # Generate the gif and get the direct url for embedding, returns original
+    #  gif_url if it times out
     async def generate_gif(self, gif_url):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(gif_url) as gif_generator:
-                if gif_generator.status == 200:
-                    return gif_generator.url
+        try:
+            async with aiohttp.ClientSession() as cs:
+                async with cs.get(gif_url, timeout=self.timeout) as gif_loader:
+                    if gif_loader.status == 200:
+                        return gif_loader.url
 
-                else:
-                    raise APIPageStatusError(gif_generator.status, self.URL)
+                    else:
+                        raise APIPageStatusError(gif_loader.status, self.URL)
+
+        except asyncio.TimeoutError:
+            return gif_url
 
 
 # West Wing Meme/GIF generator API
 class CapitalBeatUs(CompuGlobalAPI):
-    def __init__(self):
-        super().__init__('https://capitalbeat.us/', 'West Wing')
+    def __init__(self, timeout=15):
+        super().__init__('https://capitalbeat.us/', 'West Wing', timeout)
 
 
 # Simpsons Meme/GIF generator API
 class Frinkiac(CompuGlobalAPI):
-    def __init__(self):
-        super().__init__('https://frinkiac.com/', 'The Simpsons')
+    def __init__(self, timeout=15):
+        super().__init__('https://frinkiac.com/', 'The Simpsons', timeout)
 
 
 # Steamed Hams Meme/GIF generator API
 class FrinkiHams(CompuGlobalAPI):
-    def __init__(self):
-        super().__init__('https://frinkihams.com/', 'Steamed Hams')
+    def __init__(self, timeout=15):
+        super().__init__('https://frinkihams.com/', 'Steamed Hams', timeout)
 
 
 # 30 Rock Meme/GIF generator API
 class GoodGodLemon(CompuGlobalAPI):
-    def __init__(self):
-        super().__init__('https://goodgodlemon.com/', '30 Rock')
+    def __init__(self, timeout=15):
+        super().__init__('https://goodgodlemon.com/', '30 Rock', timeout)
 
 
 # Rick and Morty Meme/GIF generator API
 class MasterOfAllScience(CompuGlobalAPI):
-    def __init__(self):
-        super().__init__('https://masterofallscience.com/', 'Rick and Morty')
+    def __init__(self, timeout=15):
+        super().__init__('https://masterofallscience.com/', 'Rick and Morty',
+                         timeout)
 
 
 # Futurama Meme/GIF generator API
 class Morbotron(CompuGlobalAPI):
-    def __init__(self):
-        super().__init__('https://morbotron.com/', 'Futurama')
+    def __init__(self, timeout=15):
+        super().__init__('https://morbotron.com/', 'Futurama', timeout)
