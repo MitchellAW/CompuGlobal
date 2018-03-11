@@ -7,6 +7,12 @@ from .errors import *
 from .screencap import Screencap
 
 
+__title__ = 'compuglobal'
+__author__ = 'MitchellAW'
+__license__ = 'MIT'
+__version__ = '1.1.0'
+
+
 # API Used for getting all TV Show screencaps
 class CompuGlobalAPI:
     def __init__(self, url, title, timeout):
