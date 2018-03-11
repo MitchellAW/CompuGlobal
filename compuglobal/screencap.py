@@ -83,3 +83,7 @@ class Screencap:
         start = frames[0]['Timestamp']
         end = frames[-1]['Timestamp']
         return self.mp4_url.format(self.key, start, end, b64_caption)
+
+    def __str__(self):
+        return (self.api.title + ' - ' + self.key + ': ' + self.title +
+                ' (' + self.get_real_timestamp() + ')')
