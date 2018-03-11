@@ -19,6 +19,12 @@ To install the library, you can just run the following command:
 
     python3 -m pip install -U compuglobal
 
+For the async version of the library, you can run the following command:
+
+::
+
+    python3 -m pip install -U git+https://github.com/MitchellAW/CompuGlobal@async
+
 
 Basic Usage
 -----------
