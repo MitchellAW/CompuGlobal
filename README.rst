@@ -1,8 +1,10 @@
 .. image:: https://orig00.deviantart.net/43c8/f/2012/137/f/8/internet_king_popup_banner_by_blueamnesiac-d503b3x.png
         :align: right
-        :alt: Internet King Popup Banner by BLUEamnesiac    
+        :alt: Internet King Popup Banner by BLUEamnesiac
+
 CompuGlobal
 ===========
+
 
 Unofficial API wrapper for the following undocumented APIs:
 
@@ -15,7 +17,7 @@ embedded with default or custom captions for the following shows:
 *The Simpsons, Futurama, Rick and Morty, West Wing and 30 Rock.*
 
 Installation
------------
+------------
 To install this async version of the library, you can run the following command:
 
 ::
