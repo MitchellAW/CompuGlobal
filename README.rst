@@ -13,6 +13,8 @@ embedded with default or custom captions for the following shows:
 
 Installation
 -----------
+To install the library, you can just run the following command:
+
 ::
 
     python3 -m pip install -U git+https://github.com/MitchellAW/CompuGlobal@async
