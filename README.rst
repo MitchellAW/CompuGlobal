@@ -1,3 +1,6 @@
+.. image:: https://orig00.deviantart.net/43c8/f/2012/137/f/8/internet_king_popup_banner_by_blueamnesiac-d503b3x.png
+        :align: right
+        :alt: Internet King Popup Banner by BLUEamnesiac    
 CompuGlobal
 ===========
 
@@ -39,7 +42,7 @@ Basic Usage
     screencap = simpsons.get_random_screencap()
 
     # Search
-    screencap = simpsons.search_for_screencap('stupid sexy flanders')
+    screencap = simpsons.search_for_screencap('nothing at all')
 
     # Images/Gifs
     image = screencap.get_meme_url()
@@ -48,8 +51,12 @@ Basic Usage
 
 For documented examples, check `here.`_
 
+Preview
+-----------
+.. image:: https://frinkiac.com/gif/S11E10/315560/322560.gif?b64lines=IFdFTEwsIElUIEFMTE9XUyBGT1IKIE1BWElNVU0gTU9CSUxJVFkuCiBGRUVMUyBMSUtFIEknTSBXRUFSSU5HCiBOT1RISU5HIEFUIEFMTC4=
+
 Credits
--------
+-----------
 Creators of `Frinkiac`_, `Morbotron`_, `Master of All Science`_, `Good God Lemon`_ and `Capital Beat Us`_:  
 
 `Paul Kehrer`_ 
