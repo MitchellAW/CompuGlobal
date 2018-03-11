@@ -1,6 +1,7 @@
 .. image:: https://orig00.deviantart.net/43c8/f/2012/137/f/8/internet_king_popup_banner_by_blueamnesiac-d503b3x.png
         :align: right
-        :alt: Internet King Popup Banner by BLUEamnesiac    
+        :alt: Internet King Popup Banner by BLUEamnesiac
+
 CompuGlobal
 ===========
 
@@ -15,7 +16,7 @@ embedded with default or custom captions for the following shows:
 *The Simpsons, Futurama, Rick and Morty, West Wing and 30 Rock.*
 
 Installation
------------
+------------
 To install the library, you can just run the following command:
 
 ::
@@ -30,7 +31,7 @@ For the async version of the library, you can run the following command:
 
 
 Basic Usage
------------
+------------
 
 .. code:: py
 
@@ -52,11 +53,11 @@ Basic Usage
 For documented examples, check `here.`_
 
 Preview
------------
+------------
 .. image:: https://frinkiac.com/gif/S11E10/315560/322560.gif?b64lines=IFdFTEwsIElUIEFMTE9XUyBGT1IKIE1BWElNVU0gTU9CSUxJVFkuCiBGRUVMUyBMSUtFIEknTSBXRUFSSU5HCiBOT1RISU5HIEFUIEFMTC4=
 
 Credits
------------
+------------
 
 Creators and contributors of `Frinkiac`_, `Morbotron`_, `Master of All Science`_, `Good God Lemon`_ and `Capital Beat   Us`_:  
 
