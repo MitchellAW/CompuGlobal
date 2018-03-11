@@ -68,3 +68,18 @@ class Screencap:
         start = frames[0]['Timestamp']
         end = frames[-1]['Timestamp']
         return self.gif_url.format(self.key, start, end, b64_caption)
+
+    # Gets the mp4 url for the screencap captioned with subtitles, defaults gif
+    # length to < ~7000ms, before + after must not exceed 10,000ms (10 sec.)
+    def get_mp4_url(self, caption=None, before=3000, after=4000):
+        if caption is None:
+            caption = self.caption
+
+        b64_caption = self.api.encode_caption(caption)
+
+        # Get start and end frame numbers for gif
+        frames = self.api.get_frames(self.key, self.timestamp,
+                                     int(before), int(after))
+        start = frames[0]['Timestamp']
+        end = frames[-1]['Timestamp']
+        return self.mp4_url.format(self.key, start, end, b64_caption)
