@@ -11,6 +11,15 @@ embedded with default or custom captions for the following shows:
 
 *The Simpsons, Futurama, Rick and Morty, West Wing and 30 Rock.*
 
+Installation
+-----------
+To install the library, you can just run the following command:
+
+::
+
+    python3 -m pip install -U compuglobal
+
+
 Basic Usage
 -----------
 
