@@ -9,7 +9,7 @@ from .screencap import *
 __title__ = 'compuglobal'
 __author__ = 'MitchellAW'
 __license__ = 'MIT'
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 
 # API Used for getting all TV Show screencaps
