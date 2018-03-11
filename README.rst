@@ -35,11 +35,13 @@ For documented examples, check `here.`_
 
 Credits
 -------
-**Creators of** `Frinkiac`_, `Morbotron`_, `Master of All Science`_, `Good God Lemon`_ and `Capital Beat Us`_:  
+Creators of `Frinkiac`_, `Morbotron`_, `Master of All Science`_, `Good God Lemon`_ and `Capital Beat Us`_:  
 
-`Paul Kehrer`_
-`Sean Schulte`_
-`Allie Young`_
+`Paul Kehrer`_ 
+
+`Sean Schulte`_  
+
+`Allie Young`_  
 
 *Named CompuGlobal as shorthand for* `CompuGlobalHyperMegaCap`_, *as the family of websites are named.*
 
