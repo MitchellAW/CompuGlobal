@@ -11,6 +11,13 @@ embedded with default or custom captions for the following shows:
 
 *The Simpsons, Futurama, Rick and Morty, West Wing and 30 Rock.*
 
+Installation
+-----------
+::
+
+    python3 -m pip install -U git+https://github.com/MitchellAW/CompuGlobal@async
+    
+
 Basic Usage
 -----------
 
@@ -59,7 +66,6 @@ Creators of `Frinkiac`_, `Morbotron`_, `Master of All Science`_, `Good God Lemon
 .. _Capital Beat Us: https://capitalbeat.us/
 .. _Good God Lemon: https://goodgodlemon.com/
 .. _here.: https://github.com/MitchellAW/CompuGlobal/tree/async/examples
-.. _Master of All Science: https://masterofallscience.com/
 .. _Paul Kehrer: https://twitter.com/reaperhulk
 .. _Sean Schulte: https://twitter.com/sirsean
 .. _Allie Young: https://twitter.com/seriousallie
