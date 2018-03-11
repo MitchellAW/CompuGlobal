@@ -57,11 +57,15 @@ Preview
 
 Credits
 -----------
-Creators of `Frinkiac`_, `Morbotron`_, `Master of All Science`_, `Good God Lemon`_ and `Capital Beat Us`_:  
+
+Creators and contributors of `Frinkiac`_, `Morbotron`_, `Master of All Science`_, `Good God Lemon`_ and `Capital Beat   Us`_:  
 
 - `Paul Kehrer`_ 
 - `Sean Schulte`_  
-- `Allie Young`_  
+- `Allie Young`_ 
+- `Max`_, `Jon Bernhardt`_, `Nick Beatty`_, `Vimp`_, `juz`_, Iconfactory and `Ged Maheux`_
+
+`BLUEamnesiac`_ for the Internet King Popup Banner
 
 *Named CompuGlobal as shorthand for* `CompuGlobalHyperMegaCap`_, *as the family of websites are named.*
 
@@ -75,4 +79,11 @@ Creators of `Frinkiac`_, `Morbotron`_, `Master of All Science`_, `Good God Lemon
 .. _Paul Kehrer: https://twitter.com/reaperhulk
 .. _Sean Schulte: https://twitter.com/sirsean
 .. _Allie Young: https://twitter.com/seriousallie
+.. _Max: http://codepen.io/MyXoToD/
+.. _Jon Bernhardt: http://www.dafont.com/akbar.font
+.. _Nick Beatty: https://twitter.com/bumlaser
+.. _Ged Maheux: https://twitter.com/gedeon
+.. _Vimp: http://kornykattos.deviantart.com/
+.. _juz: http://screenpeepers.com/profile/juz
+.. _BLUEamnesiac: https://blueamnesiac.deviantart.com/
 .. _CompuGlobalHyperMegaCap: https://langui.sh/2017/07/30/master-of-all-science-rick-and-morty/
