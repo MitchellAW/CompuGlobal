@@ -1,5 +1,9 @@
 import compuglobal
 
+# ----------------------------------------------------------------------------
+# This an example of the basic image/gif functionality available
+# ----------------------------------------------------------------------------
+
 # The API used as the example here is Frinkiac (The Simpsons)
 # Everything below can be used for any of the APIs (Morbotron, Master of All
 # Science etc.)
