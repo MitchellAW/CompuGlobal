@@ -8,8 +8,8 @@ setup(
     name='compuglobal',
     packages=find_packages(exclude=['docs', 'doc', 'testing', 'examples']),
     version='0.1.6',
-    description='Unofficial python wrapper for the CGHMC API (Frinkiac, ' +
-                'Morbotron, Master Of All Science and more!)',
+    description='Python wrapper for the CGHMC API (Frinkiac, Morbotron,' +
+                ' Master Of All Science and more!)',
     long_description=long_description,
     author='MitchellAW',
     author_email='mitchwoollatt@gmail.com',
