@@ -6,7 +6,7 @@ CompuGlobal
 ===========
 
 
-Unofficial API wrapper for the following undocumented APIs:
+Python wrapper for the following undocumented APIs:
 
 `Frinkiac`_, `Morbotron`_, `Master Of All Science`_, `Capital Beat Us`_
 and `Good God Lemon`_
