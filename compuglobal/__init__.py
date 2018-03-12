@@ -87,24 +87,28 @@ class CompuGlobalAPI:
 
     # Loop through all words of the subtitles, add them to the caption and then
     # return the caption encoded in base64 for use in the url
-    def encode_caption(self, caption):
+    def encode_caption(self, caption, max_lines=4, max_chars=24, shorten=True):
         char_count = 0
         line_count = 0
         formatted_caption = ''
 
+        # Loop through and format to suit max_lines and max_chars per line
         for word in caption.split():
             char_count += len(word) + 1
 
-            if char_count < 24 and line_count < 4:
+            if char_count < max_chars and line_count < max_lines:
                 formatted_caption += ' ' + word
 
-            elif line_count < 4:
+            elif line_count < max_lines:
                 char_count = len(word) + 1
                 line_count += 1
-                if line_count < 4:
+                if line_count < max_lines:
                     formatted_caption += '\n' + ' ' + word
 
-        caption = self.shorten_caption(formatted_caption)
+        # Shorten caption at end of sentences if set to True
+        caption = formatted_caption
+        if shorten:
+            caption = self.shorten_caption(formatted_caption)
         encoded = b64encode(str.encode(caption, 'utf-8'), altchars=b'__')
 
         return encoded.decode('utf-8')
@@ -115,6 +119,9 @@ class CompuGlobalAPI:
         for i in range(len(caption) - 1, 0, -1):
             if caption[i] == '.' or caption[i] == '!' or caption[i] == '?':
                 return caption[:i + 1]
+
+            elif caption[i] == '♪' or caption[i] == '-':
+                return caption[:i]
 
         return caption
 
