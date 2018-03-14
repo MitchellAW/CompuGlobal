@@ -1,4 +1,5 @@
 import asyncio
+import random
 
 import compuglobal
 
@@ -11,7 +12,17 @@ async def main():
     simpsons = compuglobal.Frinkiac()
 
     # Get a screencap from The Simpsons using search terms: Nothing at all
+    # NOTE: search_for_screencap() uses the first search result
     screencap = await simpsons.search_for_screencap('Nothing at all')
+
+    # In order to specify the search result you'd like to use, use search() and
+    # get_screencap() as shown below.
+    # This example uses random.choice to select the search result used for the
+    # screencap
+    search_results = await simpsons.search('Nothing at all')
+    random_result = random.choice(search_results)
+    random_screencap = await simpsons.get_screencap(random_result['Episode'],
+                                                    random_result['Timestamp'])
 
     # Get all frames that are 5,000ms before and 5,000ms after the screencap to
     # mimic behaviour used by Frinkiac
@@ -45,7 +56,7 @@ async def main():
 
     # Encode the caption for custom gif
     # NOTE: Caption must be base64 encoded, you can b64 encode the caption
-    # yoursel for use encode_caption(caption), however, encode_caption() may
+    # yourself or use encode_caption(caption), however, encode_caption() may
     # shorten the caption if it exceeds ~4 lines of dialogue.
     b64_caption = simpsons.encode_caption('Nothing at all.')
 
