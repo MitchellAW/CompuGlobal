@@ -55,9 +55,10 @@ class CompuGlobalAPI:
         else:
             raise APIPageStatusError(screen.status_code, self.URL)
 
-    # Gets the first search result for a TV Show screencap using search_text
+    # Searches for screencaps matching the search_text and returns a list of
+    # the results containing episode & timestamp
     # Raises NoSearchResultsFound exception if no search results are found
-    def search_for_screencap(self, search_text):
+    def search(self, search_text):
         search_url = self.search_url + search_text.replace(' ', '+')
 
         search = requests.get(search_url)
@@ -65,15 +66,21 @@ class CompuGlobalAPI:
             search_results = search.json()
 
             if len(search_results) > 0:
-                result = search_results[0]
-                return self.get_screencap(result['Episode'],
-                                          result['Timestamp'])
+                return search_results
 
             else:
                 raise NoSearchResultsFound()
 
         else:
             raise APIPageStatusError(search.status_code, self.URL)
+
+    # Gets the first search result for a TV Show screencap using search_text
+    # Raises NoSearchResultsFound exception if no search results are found
+    def search_for_screencap(self, search_text):
+        search_results = self.search(search_text)
+        if len(search_results) > 0:
+            result = search_results[0]
+            return self.get_screencap(result['Episode'], result['Timestamp'])
 
     # Gets all valid frames before and after timestamp for the episode
     def get_frames(self, episode, timestamp, before, after):
