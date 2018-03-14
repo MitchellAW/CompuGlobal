@@ -60,9 +60,10 @@ class CompuGlobalAPI:
                 else:
                     raise APIPageStatusError(screen.status, self.URL)
 
-    # Gets the first search result for a TV Show screencap using search_text
+    # Searches for screencaps matching the search_text and returns a list of
+    # the results containing episode & timestamp
     # Raises NoSearchResultsFound exception if no search results are found
-    async def search_for_screencap(self, search_text):
+    async def search(self, search_text):
         search_url = self.search_url + search_text.replace(' ', '+')
 
         async with aiohttp.ClientSession() as cs:
@@ -71,15 +72,22 @@ class CompuGlobalAPI:
                     search_results = await search.json()
 
                     if len(search_results) > 0:
-                        result = search_results[0]
-                        return await self.get_screencap(result['Episode'],
-                                                        result['Timestamp'])
+                        return search_results
 
                     else:
                         raise NoSearchResultsFound()
 
                 else:
                     raise APIPageStatusError(search.status, self.URL)
+
+    # Gets the first search result for a TV Show screencap using search_text
+    # Raises NoSearchResultsFound exception if no search results are found
+    async def search_for_screencap(self, search_text):
+        search_results = await self.search(search_text)
+        if len(search_results) > 0:
+            result = search_results[0]
+            return await self.get_screencap(result['Episode'],
+                                            result['Timestamp'])
 
     # Gets all valid frames before and after timestamp for the episode
     async def get_frames(self, episode, timestamp, before, after):
