@@ -53,7 +53,7 @@ Basic Usage
         screencap = await simpsons.get_random_screencap()
 
         # Search
-        screencap = await simpsons.search_for_screencap('stupid sexy flanders')
+        screencap = await simpsons.search_for_screencap('nothing at all')
 
         # Images/Gifs
         image = screencap.get_meme_url()
