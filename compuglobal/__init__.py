@@ -127,7 +127,7 @@ class CompuGlobalAPI:
             if caption[i] == '.' or caption[i] == '!' or caption[i] == '?':
                 return caption[:i + 1]
 
-            elif caption[i] == '♪' or caption[i] == '-':
+            elif caption[i] == '♪':
                 return caption[:i]
 
         return caption
