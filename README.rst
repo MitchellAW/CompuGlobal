@@ -5,6 +5,11 @@
 CompuGlobal
 ===========
 
+.. image:: https://img.shields.io/pypi/v/compuglobal.svg
+   :target: https://pypi.python.org/pypi/compuglobal
+.. image:: https://img.shields.io/pypi/pyversions/compuglobal.svg
+   :target: https://pypi.python.org/pypi/compuglobal
+
 Python wrapper for the following undocumented APIs:
 
 `Frinkiac`_, `Morbotron`_, `Master Of All Science`_, `Capital Beat Us`_
