@@ -9,6 +9,7 @@ class Screencap:
 
         # Inititalise Episode Information, setting title, director, writer
         # and wiki url to None if they are empty
+        self.id = self.json['Episode']['Id']
         self.key = self.json['Episode']['Key']
         self.episode = self.json['Episode']['EpisodeNumber']
         self.season = self.json['Episode']['Season']
