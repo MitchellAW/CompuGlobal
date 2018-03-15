@@ -1,3 +1,7 @@
+.. image:: https://orig00.deviantart.net/43c8/f/2012/137/f/8/internet_king_popup_banner_by_blueamnesiac-d503b3x.png
+        :align: left
+        :alt: Internet King Popup Banner by BLUEamnesiac
+
 CompuGlobal
 ===========
 
@@ -5,6 +9,8 @@ CompuGlobal
    :target: https://pypi.python.org/pypi/compuglobal
 .. image:: https://img.shields.io/pypi/pyversions/compuglobal.svg
    :target: https://pypi.python.org/pypi/compuglobal
+.. image:: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
+   :target: http://makeapullrequest.com
 
 Python wrapper for the following undocumented APIs:
 
@@ -20,8 +26,8 @@ Contents:
 ---------
 
 .. toctree::
-
     api
+    full
     screencap
 
 Installation
@@ -75,6 +81,8 @@ Creators and contributors of `Frinkiac`_, `Morbotron`_, `Master of All Science`_
 - `Allie Young`_
 - `Max`_, `Jon Bernhardt`_, `Nick Beatty`_, `Vimp`_, `juz`_, Iconfactory and `Ged Maheux`_
 
+`BLUEamnesiac`_ for the Internet King Popup Banner
+
 *Named CompuGlobal as shorthand for* `CompuGlobalHyperMegaCap`_, *as the family of websites are named.*
 
 .. _Frinkiac: https://frinkiac.com/
@@ -92,4 +100,5 @@ Creators and contributors of `Frinkiac`_, `Morbotron`_, `Master of All Science`_
 .. _Ged Maheux: https://twitter.com/gedeon
 .. _Vimp: http://kornykattos.deviantart.com/
 .. _juz: http://screenpeepers.com/profile/juz
+.. _BLUEamnesiac: https://blueamnesiac.deviantart.com/
 .. _CompuGlobalHyperMegaCap: https://langui.sh/2017/07/30/master-of-all-science-rick-and-morty/

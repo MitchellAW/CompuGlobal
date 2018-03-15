@@ -27,25 +27,24 @@ class CompuGlobalAPI:
     Attributes
     ----------
         random_url: str
-            Endpoint used for getting a random screencap
+            Endpoint used for getting a random screencap.
         caption_url: str
             Endpoint for getting caption info using episode and timestamp
-            (e = episode & t = timestamp)
+            ``e = episode & t = timestamp``.
         search_url: str
             Endpoint for getting screencaps using a search query
-            (q = search query)
+            ``q = search query``.
         frames_url: str
             Endpoint for getting all valid frames before & after an episode
             and timestamp
-            (episode/timestamp/before/after)
+            ``episode/timestamp/before/after``.
         nearby_url: str
             Endpoint for getting all valid frames nearby an episode and
             timestamp
-            (e = episode & t = timestamp)
+            ``e = episode & t = timestamp``.
         episode_url: str
             Endpoint for getting episode info and subtitles from start to
-            end for episode
-            (episode/start/end)
+            end for episode ``episode/start/end``.
         """
 
     def __init__(self, url, title):
@@ -61,8 +60,9 @@ class CompuGlobalAPI:
         self.episode_url = self.URL + 'api/episode/{}/{}/{}'
 
     def get_screencap(self, episode, timestamp):
-        """Performs a GET request to the `api/caption?e={}&t={}` endpoint and
-        gets a TV Show screencap using episode (e={}) and timestamp (t={})
+        """Performs a GET request to the ``api/caption?e={}&t={}`` endpoint and
+        gets a TV Show screencap using episode ``e={}`` and timestamp
+        ``t={}``
 
         Parameters
         ----------
@@ -73,7 +73,7 @@ class CompuGlobalAPI:
 
         Returns
         -------
-        Screencap
+        compuglobal.Screencap
             A `Screencap` objecct for the episode and timestamp.
 
         Raises
@@ -90,12 +90,12 @@ class CompuGlobalAPI:
             raise APIPageStatusError(screen.status_code, self.URL)
 
     def get_random_screencap(self):
-        """Performs a GET request to the "api/random" endpoint and gets a
+        """Performs a GET request to the ``api/random`` endpoint and gets a
         random TV Show screencap.
 
         Returns
         -------
-        Screencap
+        compuglobal.Screencap
             A random screencap object.
 
         Raises
@@ -111,9 +111,9 @@ class CompuGlobalAPI:
             raise APIPageStatusError(screen.status_code, self.URL)
 
     def search(self, search_text):
-        """Performs a GET request to the "api/search?q=" endpoint and gets a
-        list of search results using the search text as the search query (q=)
-        for the request.
+        """Performs a GET request to the ``api/search?q=`` endpoint and gets a
+        list of search results using the search text as the search query
+        ``q={}`` for the request.
 
         Parameters
         ----------
@@ -150,7 +150,8 @@ class CompuGlobalAPI:
             raise APIPageStatusError(search.status_code, self.URL)
 
     def search_for_screencap(self, search_text):
-        """Uses search() to get a list of search results using search_text
+        """Performs a GET request to the ``api/search?q=`` endpoint using
+        :func:`search` to get a list of search results using search_text
         and gets a screencap using the episode and timestamp of the first
         search result.
 
@@ -161,7 +162,7 @@ class CompuGlobalAPI:
 
         Returns
         -------
-        Screencap
+        compuglobal.Screencap
             A screencap object of the first search result found using
             search_text.
 
@@ -179,8 +180,9 @@ class CompuGlobalAPI:
             return self.get_screencap(result['Episode'], result['Timestamp'])
 
     def get_frames(self, episode, timestamp, before, after):
-        """Gets all valid frames before and after the timestamp of the
-        episode.
+        """Performs a GET request to the
+        ``api/frames/episode/timestamp/before/after`` endpoint and gets a
+        list of all valid frames before and after the timestamp of the episode.
 
         Parameters
         ----------
@@ -221,11 +223,11 @@ class CompuGlobalAPI:
         ----------
         caption: str
             The caption to format and encode.
-        max_lines: int
+        max_lines: int, optional
             The maximum number of lines of captions allowed.
-        max_chars: int
+        max_chars: int, optional
             The maximum number of characters allowed per line.
-        shorten: bool
+        shorten: bool, optional
             Whether or not to shorten the caption at its latest
             sentence ending.
 

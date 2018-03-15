@@ -16,7 +16,13 @@ API Endpoints
 -------------
 
 .. autoclass:: CompuGlobalAPI
-    :members:
+
+    .. automethod:: compuglobal.CompuGlobalAPI.get_screencap
+    .. automethod:: compuglobal.CompuGlobalAPI.get_random_screencap
+    .. automethod:: compuglobal.CompuGlobalAPI.search
+    .. automethod:: compuglobal.CompuGlobalAPI.search_for_screencap
+    .. automethod:: compuglobal.CompuGlobalAPI.get_frames
+    .. automethod:: compuglobal.CompuGlobalAPI.generate_gif
 
 Errors
 ------
@@ -28,20 +34,39 @@ Errors
 
 Supported APIs
 --------------
+
+Frinkiac
+~~~~~~~~
 .. autoclass:: Frinkiac
     :members:
+    :noindex:
 
+Morbotron
+~~~~~~~~~
 .. autoclass:: Morbotron
     :members:
+    :noindex:
 
+Master Of All Science
+~~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: MasterOfAllScience
     :members:
+    :noindex:
 
+Good God Lemon
+~~~~~~~~~~~~~~
 .. autoclass:: GoodGodLemon
     :members:
+    :noindex:
 
+Capital Beat Us
+~~~~~~~~~~~~~~~
 .. autoclass:: CapitalBeatUs
     :members:
+    :noindex:
 
+FrinkiHams
+~~~~~~~~~~
 .. autoclass:: FrinkiHams
     :members:
+    :noindex:
