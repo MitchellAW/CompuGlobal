@@ -22,6 +22,8 @@ embedded with default or custom captions for the following shows:
 
 *The Simpsons, Futurama, Rick and Morty, West Wing and 30 Rock.*
 
+Make sure to acquaint yourself with the API using the `documentation`_.
+
 Installation
 ------------
 To install the library, you can just run the following command:
@@ -77,6 +79,7 @@ Creators and contributors of `Frinkiac`_, `Morbotron`_, `Master of All Science`_
 
 *Named CompuGlobal as shorthand for* `CompuGlobalHyperMegaCap`_, *as the family of websites are named.*
 
+.. _documentation: http://compuglobal.readthedocs.io/
 .. _Frinkiac: https://frinkiac.com/
 .. _Morbotron: https://morbotron.com/
 .. _Master Of All Science: https://masterofallscience.com/
