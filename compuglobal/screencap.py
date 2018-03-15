@@ -1,8 +1,44 @@
-
-
-# A screencap of a TV Show (episode and timestamp) generated using
-# CompuGlobalAPI
 class Screencap:
+    """Represents a screencap of a TVShow/Movie/Skit generated using an instance
+    of CompuGlobalAPI.
+
+    :param api: The CompuGlobalAPI object that was used to generate this
+    screencap.
+    :type api: CompuGlobalAPI
+    :param json: The json response from the API for this screencap.
+    :type json: dict
+
+    Attributes:
+        id:
+            The ID of the screencap.
+        key:
+            The episode key (S01E01) of the screencap.
+        episode:
+            The episode number of the screencap.
+        season:
+            The season number of the screencap.
+        title:
+            The title of the episode.
+        director:
+            The director(s) of the episode.
+        writer:
+            The writer(s) of the episode.
+        air_date:
+            The original air date of the episode.
+        wiki_url:
+            Url to the wiki of the episode.
+        timestamp:
+            The timestamp of the screencap.
+        caption:
+            The caption/subtitles during the screencap.
+        image_url:
+            The url format for the image.
+        meme_url:
+            The meme url format for the image embedded with a caption.
+        gif_url:
+            The gif url format for the screencap embedded with a caption.
+        mp4_url:
+            The mp4 url format for the screencap embedded with a caption."""
     def __init__(self, api, json: dict):
         self.api = api
         self.json = json
@@ -38,6 +74,10 @@ class Screencap:
 
     # Gets a readable timestamp for the screencap in format (mm:ss)
     def get_real_timestamp(self):
+        """Gets a readable timestamp for the screencap in format "mm:ss"
+
+        :returns: A readable timestamp for the screencap (mm:ss)
+        :rtype: str"""
         seconds = int(self.timestamp / 1000)
         minutes = int(seconds / 60)
         seconds -= int(minutes * 60)
@@ -47,8 +87,16 @@ class Screencap:
     def get_image_url(self):
         return self.image_url.format(self.key, self.timestamp)
 
-    # Gets the meme url for the screencap captioned with subtitles
     def get_meme_url(self, caption=None):
+        """Encodes the caption with base64 and then returns the meme url for
+        the screencap with an embedded caption.
+
+        :param caption: The caption to embed in the image, if it is None,
+        it will use the screencaps original caption.
+        :type caption: str
+
+        :returns: The meme url for the screencap with an embedded caption.
+        :rtype: str"""
         if caption is None:
             caption = self.caption
 
@@ -58,12 +106,29 @@ class Screencap:
     # Gets the gif url for the screencap captioned with subtitles, defaults gif
     # length to < ~7000ms, before + after must not exceed 10,000ms (10 sec.)
     def get_gif_url(self, caption=None, before=3000, after=4000):
+        """Gets the timestamps of the frames before and after the timestamp
+        of the screencap using the frames endpoint for the screencap's API
+        and returns the url for the gif with an embedded caption.
+
+        :param caption: The caption to embed in the gif, if it is None,
+        it will use the screencaps original caption.
+        :type caption: str
+        :param before: The number of milliseconds before the screencap's
+        timestamp to begin the gif, defaults to 3 seconds (3000ms).
+        :type before: int
+        :param after: The number of milliseconds after the screencap's
+        timestamp to end the gif, defaults to 4 seconds (4000ms).
+        :type after: int
+
+        :return: The gif url for the screencap with an embedded caption.
+        :rtype: str
+        """
         if caption is None:
             caption = self.caption
 
         b64_caption = self.api.encode_caption(caption)
 
-        # Get start and end frame numbers for gif
+        # Get start and end frames for gif
         frames = self.api.get_frames(self.key, self.timestamp,
                                      int(before), int(after))
         start = frames[0]['Timestamp']
@@ -73,12 +138,29 @@ class Screencap:
     # Gets the mp4 url for the screencap captioned with subtitles, defaults gif
     # length to < ~7000ms, before + after must not exceed 10,000ms (10 sec.)
     def get_mp4_url(self, caption=None, before=3000, after=4000):
+        """Gets the timestamps of the frames before and after the timestamp
+        of the screencap using the frames endpoint for the screencap's API
+        and returns the url for the mp4 with an embedded caption.
+
+        :param caption: The caption to embed in the gifmp4, if it is None,
+        it will use the screencaps original caption.
+        :type caption: str
+        :param before: The number of milliseconds before the screencap's
+        timestamp to begin the mp4, defaults to 3 seconds (3000ms).
+        :type before: int
+        :param after: The number of milliseconds after the screencap's
+        timestamp to end the mp4, defaults to 4 seconds (4000ms).
+        :type after: int
+
+        :return: The mp4 url for the screencap with an embedded caption.
+        :rtype: str
+        """
         if caption is None:
             caption = self.caption
 
         b64_caption = self.api.encode_caption(caption)
 
-        # Get start and end frame numbers for gif
+        # Get start and end frames for mp4
         frames = self.api.get_frames(self.key, self.timestamp,
                                      int(before), int(after))
         start = frames[0]['Timestamp']
