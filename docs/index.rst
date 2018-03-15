@@ -16,6 +16,14 @@ embedded with default or custom captions for the following shows:
 
 *The Simpsons, Futurama, Rick and Morty, West Wing and 30 Rock.*
 
+Contents:
+---------
+
+.. toctree::
+
+    api
+    screencap
+
 Installation
 ------------
 To install the library, you can just run the following command:
