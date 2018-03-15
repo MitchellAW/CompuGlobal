@@ -9,6 +9,8 @@ CompuGlobal
    :target: https://pypi.python.org/pypi/compuglobal
 .. image:: https://img.shields.io/pypi/pyversions/compuglobal.svg
    :target: https://pypi.python.org/pypi/compuglobal
+.. image:: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
+   :target: http://makeapullrequest.com
 
 Python wrapper for the following undocumented APIs:
 
