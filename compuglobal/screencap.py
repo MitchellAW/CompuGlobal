@@ -2,43 +2,46 @@ class Screencap:
     """Represents a screencap of a TVShow/Movie/Skit generated using an instance
     of CompuGlobalAPI.
 
-    :param api: The CompuGlobalAPI object that was used to generate this
-    screencap.
-    :type api: CompuGlobalAPI
-    :param json: The json response from the API for this screencap.
-    :type json: dict
+    Parameters
+    ----------
+    api: CompuGlobalAPI
+        The CompuGlobalAPI object that was used to generate the screencap.
+    json: dict
+        The json response from the API for the screencap.
 
-    Attributes:
-        id:
+    Attributes
+    ----------
+        id: int
             The ID of the screencap.
-        key:
+        key: str
             The episode key (S01E01) of the screencap.
-        episode:
+        episode: int
             The episode number of the screencap.
-        season:
+        season: int
             The season number of the screencap.
-        title:
+        title: str
             The title of the episode.
-        director:
+        director: str
             The director(s) of the episode.
-        writer:
+        writer: str
             The writer(s) of the episode.
-        air_date:
+        air_date: str
             The original air date of the episode.
-        wiki_url:
+        wiki_url: str
             Url to the wiki of the episode.
-        timestamp:
+        timestamp: int
             The timestamp of the screencap.
-        caption:
+        caption: str
             The caption/subtitles during the screencap.
-        image_url:
+        image_url: str
             The url format for the image.
-        meme_url:
+        meme_url: str
             The meme url format for the image embedded with a caption.
-        gif_url:
+        gif_url: str
             The gif url format for the screencap embedded with a caption.
-        mp4_url:
-            The mp4 url format for the screencap embedded with a caption."""
+        mp4_url: str
+            The mp4 url format for the screencap embedded with a caption.
+        """
     def __init__(self, api, json: dict):
         self.api = api
         self.json = json
@@ -76,8 +79,10 @@ class Screencap:
     def get_real_timestamp(self):
         """Gets a readable timestamp for the screencap in format "mm:ss"
 
-        :returns: A readable timestamp for the screencap (mm:ss)
-        :rtype: str"""
+        Returns
+        -------
+        str
+            A readable timestamp for the screencap in format `mm:ss`."""
         seconds = int(self.timestamp / 1000)
         minutes = int(seconds / 60)
         seconds -= int(minutes * 60)
@@ -91,12 +96,16 @@ class Screencap:
         """Encodes the caption with base64 and then returns the meme url for
         the screencap with an embedded caption.
 
-        :param caption: The caption to embed in the image, if it is None,
-        it will use the screencaps original caption.
-        :type caption: str
+        Parameters
+        ----------
+        caption: str
+            The caption to embed in the image, if it is None, it will use the
+            screencaps original caption.
 
-        :returns: The meme url for the screencap with an embedded caption.
-        :rtype: str"""
+        Returns
+        -------
+        str
+            The meme url for the screencap with an embedded caption."""
         if caption is None:
             caption = self.caption
 
@@ -110,19 +119,22 @@ class Screencap:
         of the screencap using the frames endpoint for the screencap's API
         and returns the url for the gif with an embedded caption.
 
-        :param caption: The caption to embed in the gif, if it is None,
-        it will use the screencaps original caption.
-        :type caption: str
-        :param before: The number of milliseconds before the screencap's
-        timestamp to begin the gif, defaults to 3 seconds (3000ms).
-        :type before: int
-        :param after: The number of milliseconds after the screencap's
-        timestamp to end the gif, defaults to 4 seconds (4000ms).
-        :type after: int
+        Parameters
+        ----------
+        caption: str
+            The caption to embed in the gif, if it is None, it will use the
+            screencaps original caption.
+        before: int
+            The number of milliseconds before the screencap's timestamp to
+            begin the gif, defaults to 3 seconds (3000ms).
+        after: int
+            The number of milliseconds after the screencap's timestamp to
+            begin the gif, defaults to 4 seconds (4000ms).
 
-        :return: The gif url for the screencap with an embedded caption.
-        :rtype: str
-        """
+        Returns
+        -------
+        str
+            The gif url for the screencap with an embedded caption."""
         if caption is None:
             caption = self.caption
 
@@ -142,19 +154,22 @@ class Screencap:
         of the screencap using the frames endpoint for the screencap's API
         and returns the url for the mp4 with an embedded caption.
 
-        :param caption: The caption to embed in the gifmp4, if it is None,
-        it will use the screencaps original caption.
-        :type caption: str
-        :param before: The number of milliseconds before the screencap's
-        timestamp to begin the mp4, defaults to 3 seconds (3000ms).
-        :type before: int
-        :param after: The number of milliseconds after the screencap's
-        timestamp to end the mp4, defaults to 4 seconds (4000ms).
-        :type after: int
+        Parameters
+        ----------
+        caption: str
+            The caption to embed in the mp4, if it is None, it will use the
+            screencaps original caption.
+        before: int
+            The number of milliseconds before the screencap's timestamp to
+            begin the mp4, defaults to 3 seconds (3000ms).
+        after: int
+            The number of milliseconds after the screencap's timestamp to
+            begin the mp4, defaults to 4 seconds (4000ms).
 
-        :return: The mp4 url for the screencap with an embedded caption.
-        :rtype: str
-        """
+        Returns
+        -------
+        str
+            The mp4 url for the screencap with an embedded caption."""
         if caption is None:
             caption = self.caption
 
