@@ -18,6 +18,7 @@ __version__ = '1.1.0'
 
 class CompuGlobalAPI:
     """Represents an API Wrapper used for accessing the cghmc API endpoints.
+
     Parameters
     ----------
     url: str
