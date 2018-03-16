@@ -17,6 +17,10 @@ Python wrapper for the following undocumented APIs:
 `Frinkiac`_, `Morbotron`_, `Master Of All Science`_, `Capital Beat Us`_
 and `Good God Lemon`_
 
+.. note::
+    I'll be keeping the wrapper up to date as more APIs are released.
+
+
 Allows for both random and searchable screencaps, images and gifs
 embedded with default or custom captions for the following shows:
 

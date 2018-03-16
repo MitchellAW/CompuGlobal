@@ -12,12 +12,15 @@ CompuGlobal
 .. image:: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
    :target: http://makeapullrequest.com
 
-Python wrapper for the following undocumented APIs:
+Python wrapper for all endpoints of the following undocumented APIs:
 
 `Frinkiac`_, `Morbotron`_, `Master Of All Science`_, `Capital Beat Us`_
 and `Good God Lemon`_
 
-Allows for both random and searchable screencaps, images and gifs
+**Note**: I'll be keeping the wrapper up to date as more APIs are released.
+
+
+CompuGlobal allows for both random and searchable screencaps, images and gifs
 embedded with default or custom captions for the following shows:
 
 *The Simpsons, Futurama, Rick and Morty, West Wing and 30 Rock.*
