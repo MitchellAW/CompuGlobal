@@ -16,13 +16,24 @@ API Endpoints
 -------------
 
 .. autoclass:: CompuGlobalAPI
+    :noindex:
 
     .. automethod:: compuglobal.CompuGlobalAPI.get_screencap
+        :noindex:
     .. automethod:: compuglobal.CompuGlobalAPI.get_random_screencap
+        :noindex:
     .. automethod:: compuglobal.CompuGlobalAPI.search
+        :noindex:
     .. automethod:: compuglobal.CompuGlobalAPI.search_for_screencap
+        :noindex:
     .. automethod:: compuglobal.CompuGlobalAPI.get_frames
+        :noindex:
+    .. automethod:: compuglobal.CompuGlobalAPI.get_nearby_frames
+        :noindex:
+    .. automethod:: compuglobal.CompuGlobalAPI.view_episode
+        :noindex:
     .. automethod:: compuglobal.CompuGlobalAPI.generate_gif
+        :noindex:
 
 Errors
 ------

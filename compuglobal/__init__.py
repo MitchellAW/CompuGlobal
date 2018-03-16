@@ -79,7 +79,12 @@ class CompuGlobalAPI:
         Raises
         ------
         APIPageStatusError
-            Raises an exception if the status code of the request is not 200."""
+            Raises an exception if the status code of the request is not 200.
+
+        Note
+        ----
+        Used for getting the episode info and caption shown below each
+        screencap."""
 
         caption_url = self.caption_url.format(episode, timestamp)
         screen = requests.get(caption_url)
@@ -101,7 +106,12 @@ class CompuGlobalAPI:
         Raises
         ------
         APIPageStatusError
-            Raises an exception if the status code of the request is not 200."""
+            Raises an exception if the status code of the request is not 200.
+
+        Note
+        ----
+        Used for getting a random screencap when clicking the "RANDOM"
+        button."""
 
         screen = requests.get(self.random_url)
         if screen.status_code == 200:
@@ -132,7 +142,11 @@ class CompuGlobalAPI:
             Raises an exception if the status code of the request is not 200.
         NoSearchResultsFound
             Raises an exception if there are no
-            search results found using search_text."""
+            search results found using search_text.
+
+        Note
+        ----
+        Used for displaying all the search results and their screencaps."""
 
         search_url = self.search_url + search_text.replace(' ', '+')
 
@@ -181,8 +195,9 @@ class CompuGlobalAPI:
 
     def get_frames(self, episode, timestamp, before, after):
         """Performs a GET request to the
-        ``api/frames/episode/timestamp/before/after`` endpoint and gets a
-        list of all valid frames before and after the timestamp of the episode.
+        ``api/frames/{episode}/{timestamp}/{before}/{after}`` endpoint and
+        gets a list of all valid frames before and after the timestamp of the
+        episode.
 
         Parameters
         ----------
@@ -205,7 +220,11 @@ class CompuGlobalAPI:
         Raises
         ------
         APIPageStatusError
-            Raises an exception if the status code of the request is not 200."""
+            Raises an exception if the status code of the request is not 200.
+
+        Note
+        ----
+        Used for displaying the valid frames available for the gifmaker."""
 
         frames_url = self.frames_url.format(episode, timestamp, before, after)
         frames = requests.get(frames_url)
@@ -214,6 +233,76 @@ class CompuGlobalAPI:
 
         else:
             raise APIPageStatusError(frames.status_code, self.URL)
+
+    def get_nearby_frames(self, episode, timestamp):
+        """Performs a GET request to the
+        ``api/nearby?e={}&t={}`` endpoint and
+        gets a list of all valid frames 5000ms before and 5000ms after the
+        timestamp of the episode.
+
+        Parameters
+        ----------
+        episode: str
+            The episode key of the screencap.
+        timestamp: int
+            The timestamp of the screencap.
+
+        Returns
+        -------
+        list
+            A list of valid frames before and after the timestamp of
+            the episode, containing the id, episode and timestamp for
+            each frame.
+
+        Raises
+        ------
+        APIPageStatusError
+            Raises an exception if the status code of the request is not 200.
+
+        Note
+        ----
+        Used for displaying the seven frames in the "More from this scene:"
+        frame selection screen with arrows."""
+
+        nearby_url = self.nearby_url.format(episode, timestamp)
+        nearby_frames = requests.get(nearby_url)
+        if nearby_frames.status_code == 200:
+            return nearby_frames.json()
+
+        else:
+            raise APIPageStatusError(nearby_frames.status_code, self.URL)
+
+    def view_episode(self, episode, start, end):
+        """Performs a GET request to the ``api/episode/{episode}/{start}/{end}``
+        endpoint and returns the json response containing episode information.
+
+        Parameters
+        ----------
+        episode: str
+            The episode key of the screencap.
+        start: int
+            The starting timestamp for the episode information.
+        end: int
+            The ending timestamp for the episode information.
+
+        Returns
+        -------
+        dict
+            The json response containing the episode information and
+            subtitles for the timestamps.
+
+        Note
+        ----
+        Used for displaying the rest of an episode when using the "View Episode"
+        button next to each screencap."""
+
+        episode_url = self.episode_url.format(episode, start, end)
+        episode = requests.get(episode_url)
+        if episode.status_code == 200:
+            return episode.json()
+
+        else:
+            raise APIPageStatusError(episode.status_code, self.URL)
 
     def encode_caption(self, caption, max_lines=4, max_chars=24, shorten=True):
         """Loops through the caption and formats it using max_lines and
