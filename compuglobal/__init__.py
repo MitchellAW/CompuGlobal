@@ -235,10 +235,9 @@ class CompuGlobalAPI:
             raise APIPageStatusError(frames.status_code, self.URL)
 
     def get_nearby_frames(self, episode, timestamp):
-        """Performs a GET request to the
-        ``api/nearby?e={}&t={}`` endpoint and
-        gets a list of all valid frames 5000ms before and 5000ms after the
-        timestamp of the episode.
+        """Performs a GET request to the ``api/nearby?e={}&t={}`` endpoint
+        and gets a list of seven nearby using the episode key ``e={}`` and
+        timestamp ``t={}`` the episode.
 
         Parameters
         ----------
