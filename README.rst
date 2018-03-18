@@ -35,12 +35,6 @@ To install the library, you can just run the following command:
 
     python3 -m pip install -U compuglobal
 
-For the async version of the library, you can run the following command:
-
-::
-
-    python3 -m pip install -U git+https://github.com/MitchellAW/CompuGlobal@async
-
 
 Basic Usage
 ------------
@@ -61,6 +55,35 @@ Basic Usage
     image = screencap.get_meme_url()
     gif = screencap.get_gif_url()
 
+
+For documented examples, check `here.`_
+
+Async Usage
+-----------
+
+.. code:: py
+
+    import asyncio
+
+    import compuglobal
+
+
+    async def main():
+        simpsons = compuglobal.Frinkiac()
+
+        # Random
+        screencap = await simpsons.get_random_screencap()
+
+        # Search
+        screencap = await simpsons.search_for_screencap('nothing at all')
+
+        # Images/Gifs
+        image = screencap.get_meme_url()
+        gif = await screencap.get_gif_url()
+
+    if __name__ == '__main__':
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main())
 
 For documented examples, check `here.`_
 
