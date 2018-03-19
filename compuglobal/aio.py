@@ -4,7 +4,7 @@ from base64 import b64encode
 import aiohttp
 
 from .errors import *
-from .screencap import Screencap
+from .aio_screencap import Screencap
 
 
 """Contains the async API Wrappers used for accessing all the cghmc API 
