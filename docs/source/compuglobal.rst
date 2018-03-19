@@ -4,6 +4,22 @@ compuglobal package
 Submodules
 ----------
 
+compuglobal.aio module
+----------------------
+
+.. automodule:: compuglobal.aio
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+compuglobal.aio\_screencap module
+---------------------------------
+
+.. automodule:: compuglobal.aio_screencap
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 compuglobal.errors module
 -------------------------
 
