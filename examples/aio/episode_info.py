@@ -1,6 +1,6 @@
 import asyncio
 
-import compuglobal.aio as compuglobal
+import compuglobal
 
 
 # ----------------------------------------------------------------------------
@@ -8,7 +8,7 @@ import compuglobal.aio as compuglobal
 # ----------------------------------------------------------------------------
 async def main():
     # Futurama/Morbotron API
-    futurama = compuglobal.Morbotron()
+    futurama = compuglobal.aio.Morbotron()
 
     # Get a screencap from The Simpsons using search terms: Nothing at all
     screencap = await futurama.search_for_screencap('Shutup and take my money')

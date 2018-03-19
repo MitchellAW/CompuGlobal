@@ -1,6 +1,6 @@
 import asyncio
 
-import compuglobal.aio as compuglobal
+import compuglobal
 
 
 # ----------------------------------------------------------------------------
@@ -10,7 +10,7 @@ async def main():
     # The API used as the example here is Frinkiac (The Simpsons)
     # Everything below can be used for any of the APIs (Morbotron, Master of All
     # Science etc.)
-    frinkiac = compuglobal.Frinkiac()
+    frinkiac = compuglobal.aio.Frinkiac()
 
     # Getting a screencap from The Simpsons using search terms
     searched_screencap = await frinkiac.search_for_screencap('Stupid Sexy ' +

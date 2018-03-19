@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-import compuglobal.aio as compuglobal
+import compuglobal
 
 
 # ----------------------------------------------------------------------------
@@ -9,7 +9,7 @@ import compuglobal.aio as compuglobal
 # ----------------------------------------------------------------------------
 async def main():
     # The Simpsons
-    simpsons = compuglobal.Frinkiac()
+    simpsons = compuglobal.aio.Frinkiac()
 
     # Get a screencap from The Simpsons using search terms: Nothing at all
     # NOTE: search_for_screencap() uses the first search result
