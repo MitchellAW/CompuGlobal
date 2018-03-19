@@ -1,4 +1,4 @@
-import compuglobal
+import compuglobal.aio as compuglobal
 
 # ----------------------------------------------------------------------------
 # This an example of the different APIs that are available for use:

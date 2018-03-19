@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-import compuglobal
+import compuglobal.aio as compuglobal
 
 
 # ----------------------------------------------------------------------------

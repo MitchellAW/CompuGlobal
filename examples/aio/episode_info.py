@@ -1,6 +1,6 @@
 import asyncio
 
-import compuglobal
+import compuglobal.aio as compuglobal
 
 
 # ----------------------------------------------------------------------------
