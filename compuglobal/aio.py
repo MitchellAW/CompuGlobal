@@ -4,7 +4,7 @@ from base64 import b64encode
 import aiohttp
 
 from .errors import *
-from .aio_screencap import Screencap
+from .aio_screencap import AIOScreencap
 
 
 """Contains the async API Wrappers used for accessing all the cghmc API 
@@ -89,7 +89,7 @@ class CompuGlobalAPI:
         async with aiohttp.ClientSession() as cs:
             async with cs.get(caption_url, timeout=self.timeout) as screen:
                 if screen.status == 200:
-                    return Screencap(self, await screen.json())
+                    return AIOScreencap(self, await screen.json())
 
                 else:
                     raise APIPageStatusError(screen.status, self.URL)
@@ -115,7 +115,7 @@ class CompuGlobalAPI:
         async with aiohttp.ClientSession() as cs:
             async with cs.get(self.random_url, timeout=self.timeout) as screen:
                 if screen.status == 200:
-                    return Screencap(self, await screen.json())
+                    return AIOScreencap(self, await screen.json())
 
                 else:
                     raise APIPageStatusError(screen.status, self.URL)
