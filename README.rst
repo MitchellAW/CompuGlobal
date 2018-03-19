@@ -69,7 +69,7 @@ Async Usage
 
 
     async def main():
-        simpsons = compuglobal.Frinkiac()
+        simpsons = compuglobal.aio.Frinkiac()
 
         # Random
         screencap = await simpsons.get_random_screencap()
