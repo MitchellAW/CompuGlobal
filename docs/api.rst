@@ -12,6 +12,12 @@ embedded with default or custom captions for the following shows:
 
     This library relies upon undocumented external APIs.
 
+Contents
+--------
+.. toctree::
+    full
+    screencap
+
 API Endpoints
 -------------
 

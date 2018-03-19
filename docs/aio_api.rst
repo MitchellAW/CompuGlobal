@@ -1,7 +1,7 @@
 .. currentmodule:: compuglobal.aio
 
-API Reference
-=============
+Async API Reference
+===================
 
 CompuGlobal allows for both random and searchable screencaps, images and gifs
 embedded with default or custom captions for the following shows:
@@ -11,6 +11,12 @@ embedded with default or custom captions for the following shows:
 .. note::
 
     This library relies upon undocumented external APIs.
+
+Contents
+--------
+.. toctree::
+    aio_full
+    aio_screencap
 
 API Endpoints
 -------------

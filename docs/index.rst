@@ -31,8 +31,8 @@ Contents:
 
 .. toctree::
     api
-    full
-    screencap
+    aio_api
+
 
 Installation
 ------------

@@ -3,11 +3,11 @@
 Screencap
 =============
 
-.. autoclass:: Screencap
+.. autoclass:: AIOScreencap
     :noindex:
 
-    .. autocomethod:: compuglobal.aio.Screencap.get_real_timestamp
-    .. autocomethod:: compuglobal.aio.Screencap.get_image_url
-    .. autocomethod:: compuglobal.aio.Screencap.get_meme_url
-    .. autocomethod:: compuglobal.aio.Screencap.get_gif_url
-    .. autocomethod:: compuglobal.aio.Screencap.get_mp4_url
+    .. autocomethod:: compuglobal.aio.AIOScreencap.get_real_timestamp
+    .. autocomethod:: compuglobal.aio.AIOScreencap.get_image_url
+    .. autocomethod:: compuglobal.aio.AIOScreencap.get_meme_url
+    .. autocomethod:: compuglobal.aio.AIOScreencap.get_gif_url
+    .. autocomethod:: compuglobal.aio.AIOScreencap.get_mp4_url
