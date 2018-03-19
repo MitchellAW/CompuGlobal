@@ -1,4 +1,4 @@
-.. currentmodule:: compuglobal
+.. currentmodule:: compuglobal.aio
 
 CompuGlobalAPI
 ==============

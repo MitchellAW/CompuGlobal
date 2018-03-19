@@ -1,4 +1,4 @@
-.. currentmodule:: compuglobal
+.. currentmodule:: compuglobal.aio
 
 API Reference
 =============
@@ -18,17 +18,17 @@ API Endpoints
 .. autoclass:: CompuGlobalAPI
     :noindex:
 
-    .. autocomethod:: compuglobal.CompuGlobalAPI.get_screencap
+    .. autocomethod:: compuglobal.aio.CompuGlobalAPI.get_screencap
         :noindex:
-    .. autocomethod:: compuglobal.CompuGlobalAPI.get_random_screencap
+    .. autocomethod:: compuglobal.aio.CompuGlobalAPI.get_random_screencap
         :noindex:
-    .. autocomethod:: compuglobal.CompuGlobalAPI.search
+    .. autocomethod:: compuglobal.aio.CompuGlobalAPI.search
         :noindex:
-    .. autocomethod:: compuglobal.CompuGlobalAPI.search_for_screencap
+    .. autocomethod:: compuglobal.aio.CompuGlobalAPI.search_for_screencap
         :noindex:
-    .. autocomethod:: compuglobal.CompuGlobalAPI.get_frames
+    .. autocomethod:: compuglobal.aio.CompuGlobalAPI.get_frames
         :noindex:
-    .. autocomethod:: compuglobal.CompuGlobalAPI.generate_gif
+    .. autocomethod:: compuglobal.aio.CompuGlobalAPI.generate_gif
         :noindex:
 
 Errors
