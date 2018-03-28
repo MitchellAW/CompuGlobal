@@ -1,6 +1,5 @@
 .idea/
 __pycache__/
-testing/
 venv/
 docs/_build
 *.buildinfo

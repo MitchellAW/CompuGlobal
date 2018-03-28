@@ -1,0 +1,245 @@
+{
+  "test_1": {
+    "Episode": {
+      "Id": 571,
+      "Key": "S11E10",
+      "Season": 11,
+      "EpisodeNumber": 10,
+      "Title": "Little Big Mom",
+      "Director": "Mark Kirkland",
+      "Writer": "Carolyn Omine",
+      "OriginalAirDate": "9-Jan-00",
+      "WikiLink": "https://en.wikipedia.org/wiki/Little_Big_Mom"
+    },
+    "Frame": {
+      "Id": 1503125,
+      "Episode": "S11E10",
+      "Timestamp": 339960
+    },
+    "Subtitles": [
+      {
+        "Id": 118373,
+        "RepresentativeTimestamp": 337560,
+        "Episode": "S11E10",
+        "StartTimestamp": 337148,
+        "EndTimestamp": 338267,
+        "Content": "( yells)",
+        "Language": "en"
+      },
+      {
+        "Id": 118374,
+        "RepresentativeTimestamp": 338960,
+        "Episode": "S11E10",
+        "StartTimestamp": 338267,
+        "EndTimestamp": 340122,
+        "Content": "STUPID, SEXY FLANDERS!",
+        "Language": "en"
+      },
+      {
+        "Id": 118375,
+        "RepresentativeTimestamp": 340760,
+        "Episode": "S11E10",
+        "StartTimestamp": 340122,
+        "EndTimestamp": 341880,
+        "Content": "OW, MY LEGS!",
+        "Language": "en"
+      },
+      {
+        "Id": 118376,
+        "RepresentativeTimestamp": 342760,
+        "Episode": "S11E10",
+        "StartTimestamp": 341880,
+        "EndTimestamp": 343926,
+        "Content": "THIS IS THE WORST PAIN EVER...",
+        "Language": "en"
+      }
+    ],
+    "Nearby": [
+      {
+        "Id": 1503121,
+        "Episode": "S11E10",
+        "Timestamp": 339360
+      },
+      {
+        "Id": 1503120,
+        "Episode": "S11E10",
+        "Timestamp": 339560
+      },
+      {
+        "Id": 1503122,
+        "Episode": "S11E10",
+        "Timestamp": 339760
+      },
+      {
+        "Id": 1503125,
+        "Episode": "S11E10",
+        "Timestamp": 339960
+      },
+      {
+        "Id": 1503129,
+        "Episode": "S11E10",
+        "Timestamp": 340160
+      },
+      {
+        "Id": 1503127,
+        "Episode": "S11E10",
+        "Timestamp": 340360
+      },
+      {
+        "Id": 1503123,
+        "Episode": "S11E10",
+        "Timestamp": 340560
+      }
+    ]
+  },
+  "test_2": {
+    "Episode": {
+      "Id": 711,
+      "Key": "S17E20",
+      "Season": 17,
+      "EpisodeNumber": 20,
+      "Title": "Regarding Margie",
+      "Director": "Michael Polcino",
+      "Writer": "Marc Wilmore",
+      "OriginalAirDate": "7-May-06",
+      "WikiLink": "https://en.wikipedia.org/wiki/Regarding_Margie"
+    },
+    "Frame": {
+      "Id": 2300172,
+      "Episode": "S17E20",
+      "Timestamp": 1082039
+    },
+    "Subtitles": [
+      {
+        "Id": 193197,
+        "RepresentativeTimestamp": 1081622,
+        "Episode": "S17E20",
+        "StartTimestamp": 1081333,
+        "EndTimestamp": 1082467,
+        "Content": "Marge?",
+        "Language": "en"
+      },
+      {
+        "Id": 193198,
+        "RepresentativeTimestamp": 1083291,
+        "Episode": "S17E20",
+        "StartTimestamp": 1082467,
+        "EndTimestamp": 1084667,
+        "Content": "Homer, I don't want to alarm you,",
+        "Language": "en"
+      }
+    ],
+    "Nearby": [
+      {
+        "Id": 2300169,
+        "Episode": "S17E20",
+        "Timestamp": 1081205
+      },
+      {
+        "Id": 2300170,
+        "Episode": "S17E20",
+        "Timestamp": 1081414
+      },
+      {
+        "Id": 2300171,
+        "Episode": "S17E20",
+        "Timestamp": 1081622
+      },
+      {
+        "Id": 2300172,
+        "Episode": "S17E20",
+        "Timestamp": 1082039
+      },
+      {
+        "Id": 2300173,
+        "Episode": "S17E20",
+        "Timestamp": 1082248
+      },
+      {
+        "Id": 2300174,
+        "Episode": "S17E20",
+        "Timestamp": 1082665
+      },
+      {
+        "Id": 2300175,
+        "Episode": "S17E20",
+        "Timestamp": 1082873
+      }
+    ]
+  },
+  "test_3": {
+    "Episode": {
+      "Id": 469,
+      "Key": "S07E06",
+      "Season": 7,
+      "EpisodeNumber": 6,
+      "Title": "Treehouse of Horror VI",
+      "Director": "Bob Anderson",
+      "Writer": "John Swartzwelder, Steve Tompkins \u0026 David S. Cohen",
+      "OriginalAirDate": "29-Oct-95",
+      "WikiLink": "https://en.wikipedia.org/wiki/Treehouse_of_Horror_VI"
+    },
+    "Frame": {
+      "Id": 858364,
+      "Episode": "S07E06",
+      "Timestamp": 530579
+    },
+    "Subtitles": [
+      {
+        "Id": 66251,
+        "RepresentativeTimestamp": 530412,
+        "Episode": "S07E06",
+        "StartTimestamp": 529166,
+        "EndTimestamp": 531834,
+        "Content": "Moris:you die.",
+        "Language": "en"
+      },
+      {
+        "Id": 66252,
+        "RepresentativeTimestamp": 532247,
+        "Episode": "S07E06",
+        "StartTimestamp": 531834,
+        "EndTimestamp": 532900,
+        "Content": "( screams)",
+        "Language": "en"
+      }
+    ],
+    "Nearby": [
+      {
+        "Id": 858360,
+        "Episode": "S07E06",
+        "Timestamp": 530078
+      },
+      {
+        "Id": 858361,
+        "Episode": "S07E06",
+        "Timestamp": 530245
+      },
+      {
+        "Id": 858362,
+        "Episode": "S07E06",
+        "Timestamp": 530412
+      },
+      {
+        "Id": 858364,
+        "Episode": "S07E06",
+        "Timestamp": 530579
+      },
+      {
+        "Id": 858365,
+        "Episode": "S07E06",
+        "Timestamp": 530746
+      },
+      {
+        "Id": 858369,
+        "Episode": "S07E06",
+        "Timestamp": 530913
+      },
+      {
+        "Id": 858367,
+        "Episode": "S07E06",
+        "Timestamp": 531079
+      }
+    ]
+  }
+}

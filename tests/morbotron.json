@@ -1,0 +1,263 @@
+{
+  "test_1": {
+    "Episode": {
+      "Id": 335,
+      "Key": "S07E03",
+      "Season": 7,
+      "EpisodeNumber": 3,
+      "Title": "Attack of the Killer App",
+      "Director": "Stephen Sandoval",
+      "Writer": "Patric M. Verrone",
+      "OriginalAirDate": "1-Jul-10",
+      "WikiLink": "https://en.wikipedia.org/wiki/Attack_of_the_Killer_App"
+    },
+    "Frame": {
+      "Id": 2220152,
+      "Episode": "S07E03",
+      "Timestamp": 343676
+    },
+    "Subtitles": [
+      {
+        "Id": 171398,
+        "RepresentativeTimestamp": 341799,
+        "Episode": "S07E03",
+        "StartTimestamp": 341425,
+        "EndTimestamp": 342466,
+        "Content": "and the reception isn't very...",
+        "Language": "en"
+      },
+      {
+        "Id": 171399,
+        "RepresentativeTimestamp": 343051,
+        "Episode": "S07E03",
+        "StartTimestamp": 342551,
+        "EndTimestamp": 344010,
+        "Content": "Shut up and take my money!",
+        "Language": "en"
+      },
+      {
+        "Id": 171400,
+        "RepresentativeTimestamp": 345345,
+        "Episode": "S07E03",
+        "StartTimestamp": 344094,
+        "EndTimestamp": 346429,
+        "Content": "The new eyePhone is wonderful.",
+        "Language": "en"
+      }
+    ],
+    "Nearby": [
+      {
+        "Id": 2220149,
+        "Episode": "S07E03",
+        "Timestamp": 343051
+      },
+      {
+        "Id": 2220150,
+        "Episode": "S07E03",
+        "Timestamp": 343259
+      },
+      {
+        "Id": 2220154,
+        "Episode": "S07E03",
+        "Timestamp": 343468
+      },
+      {
+        "Id": 2220152,
+        "Episode": "S07E03",
+        "Timestamp": 343676
+      },
+      {
+        "Id": 2220156,
+        "Episode": "S07E03",
+        "Timestamp": 343885
+      },
+      {
+        "Id": 2220162,
+        "Episode": "S07E03",
+        "Timestamp": 344093
+      },
+      {
+        "Id": 2220163,
+        "Episode": "S07E03",
+        "Timestamp": 344302
+      }
+    ]
+  },
+  "test_2": {
+    "Episode": {
+      "Id": 321,
+      "Key": "S05E09",
+      "Season": 5,
+      "EpisodeNumber": 9,
+      "Title": "The Sting",
+      "Director": "Brian Sheesley",
+      "Writer": "Patric M. Verrone",
+      "OriginalAirDate": "1-Jun-03",
+      "WikiLink": "https://en.wikipedia.org/wiki/The_Sting_(Futurama)"
+    },
+    "Frame": {
+      "Id": 2099015,
+      "Episode": "S05E09",
+      "Timestamp": 1283064
+    },
+    "Subtitles": [
+      {
+        "Id": 160879,
+        "RepresentativeTimestamp": 1281145,
+        "Episode": "S05E09",
+        "StartTimestamp": 1280279,
+        "EndTimestamp": 1282240,
+        "Content": "Sweet three-toed sloth",
+        "Language": "en"
+      },
+      {
+        "Id": 160880,
+        "RepresentativeTimestamp": 1282897,
+        "Episode": "S05E09",
+        "StartTimestamp": 1282281,
+        "EndTimestamp": 1283699,
+        "Content": "of ice planet Hoth!",
+        "Language": "en"
+      },
+      {
+        "Id": 160881,
+        "RepresentativeTimestamp": 1284065,
+        "Episode": "S05E09",
+        "StartTimestamp": 1283741,
+        "EndTimestamp": 1284575,
+        "Content": "She's awake!",
+        "Language": "en"
+      },
+      {
+        "Id": 160882,
+        "RepresentativeTimestamp": 1285316,
+        "Episode": "S05E09",
+        "StartTimestamp": 1284617,
+        "EndTimestamp": 1286244,
+        "Content": "( all cheering )",
+        "Language": "en"
+      }
+    ],
+    "Nearby": [
+      {
+        "Id": 2099014,
+        "Episode": "S05E09",
+        "Timestamp": 1282563
+      },
+      {
+        "Id": 2099010,
+        "Episode": "S05E09",
+        "Timestamp": 1282730
+      },
+      {
+        "Id": 2099011,
+        "Episode": "S05E09",
+        "Timestamp": 1282897
+      },
+      {
+        "Id": 2099015,
+        "Episode": "S05E09",
+        "Timestamp": 1283064
+      },
+      {
+        "Id": 2099018,
+        "Episode": "S05E09",
+        "Timestamp": 1283231
+      },
+      {
+        "Id": 2099021,
+        "Episode": "S05E09",
+        "Timestamp": 1283398
+      },
+      {
+        "Id": 2099019,
+        "Episode": "S05E09",
+        "Timestamp": 1283564
+      }
+    ]
+  },
+  "test_3": {
+    "Episode": {
+      "Id": 308,
+      "Key": "S04E08",
+      "Season": 4,
+      "EpisodeNumber": 8,
+      "Title": "Anthology of Interest II",
+      "Director": "Bret Haaland",
+      "Writer": "Lewis Morton (Part 1), David X. Cohen (Part 2), Jason Gorbett \u0026 Scott Kirby (Part 3)",
+      "OriginalAirDate": "6-Jan-02",
+      "WikiLink": "https://en.wikipedia.org/wiki/Anthology_of_Interest_II"
+    },
+    "Frame": {
+      "Id": 1996064,
+      "Episode": "S04E08",
+      "Timestamp": 696528
+    },
+    "Subtitles": [
+      {
+        "Id": 154734,
+        "RepresentativeTimestamp": 692774,
+        "Episode": "S04E08",
+        "StartTimestamp": 691065,
+        "EndTimestamp": 694819,
+        "Content": "Tremble in fear at our three different kinds of ships.",
+        "Language": "en"
+      },
+      {
+        "Id": 154735,
+        "RepresentativeTimestamp": 696311,
+        "Episode": "S04E08",
+        "StartTimestamp": 694861,
+        "EndTimestamp": 697780,
+        "Content": "All right. It's Saturday night.",
+        "Language": "en"
+      },
+      {
+        "Id": 154736,
+        "RepresentativeTimestamp": 700282,
+        "Episode": "S04E08",
+        "StartTimestamp": 697822,
+        "EndTimestamp": 702952,
+        "Content": "I have no date, a two-liter bottle of Shasta and my all-Rush mix tape.",
+        "Language": "en"
+      }
+    ],
+    "Nearby": [
+      {
+        "Id": 1996058,
+        "Episode": "S04E08",
+        "Timestamp": 695894
+      },
+      {
+        "Id": 1996065,
+        "Episode": "S04E08",
+        "Timestamp": 696111
+      },
+      {
+        "Id": 1996063,
+        "Episode": "S04E08",
+        "Timestamp": 696311
+      },
+      {
+        "Id": 1996064,
+        "Episode": "S04E08",
+        "Timestamp": 696528
+      },
+      {
+        "Id": 1996067,
+        "Episode": "S04E08",
+        "Timestamp": 696728
+      },
+      {
+        "Id": 1996068,
+        "Episode": "S04E08",
+        "Timestamp": 696945
+      },
+      {
+        "Id": 1996070,
+        "Episode": "S04E08",
+        "Timestamp": 697145
+      }
+    ]
+  }
+}
