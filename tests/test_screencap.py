@@ -39,7 +39,7 @@ class ScreencapTestCase(unittest.TestCase):
                          'https://frinkiac.com/mp4/{}/{}/{}.mp4?b64lines={}')
 
     def test_simpsons_image_url(self):
-        """Tests image url"""
+        """Tests frinkiac image url"""
         with open('frinkiac.json') as frinkiac:
             test_data = json.load(frinkiac)
 
@@ -59,7 +59,7 @@ class ScreencapTestCase(unittest.TestCase):
                          'https://frinkiac.com/img/S07E06/530579.jpg')
 
     def test_simpsons_meme_url(self):
-        """Tests image url"""
+        """Tests frinkiac meme url"""
         with open('frinkiac.json') as frinkiac:
             test_data = json.load(frinkiac)
 
@@ -82,7 +82,7 @@ class ScreencapTestCase(unittest.TestCase):
                          '?b64lines=IE1vcmlzOnlvdSBkaWUu')
 
     def test_simpsons_get_gif_url(self):
-        """Tests gif urls"""
+        """Tests frinkiac gif urls"""
         with open('frinkiac.json') as frinkiac:
             test_data = json.load(frinkiac)
 
@@ -99,7 +99,7 @@ class ScreencapTestCase(unittest.TestCase):
                          '?b64lines=ICggeWVsbHMpIFNUVVBJRCwgU0VYWQogRkxBTkRFUlMhIE9XLCBNWSBMRUdTIQogVEhJUyBJUyBUSEUgV09SU1QgUEFJTgogRVZFUi4uLg==')
 
     def test_simpsons_get_mp4_url(self):
-        """Tests gif urls"""
+        """Tests frinkiac mp4 urls"""
         with open('frinkiac.json') as frinkiac:
             test_data = json.load(frinkiac)
 
@@ -115,7 +115,7 @@ class ScreencapTestCase(unittest.TestCase):
                          'https://frinkiac.com/mp4/S11E10/337560/340360.mp4?b64lines=ICggeWVsbHMpIFNUVVBJRCwgU0VYWQogRkxBTkRFUlMhIE9XLCBNWSBMRUdTIQogVEhJUyBJUyBUSEUgV09SU1QgUEFJTgogRVZFUi4uLg==')
 
     def test_futurama_meme_url(self):
-        """Tests image url"""
+        """Tests morbotron meme url"""
         with open('morbotron.json') as morbo:
             test_data = json.load(morbo)
 
@@ -135,7 +135,7 @@ class ScreencapTestCase(unittest.TestCase):
                          'https://morbotron.com/meme/S04E08/696528.jpg?b64lines=IFRyZW1ibGUgaW4gZmVhciBhdCBvdXIKIHRocmVlIGRpZmZlcmVudCBraW5kcwogb2Ygc2hpcHMuIEFsbCByaWdodC4KIEl0J3MgU2F0dXJkYXkgbmlnaHQu')
 
     def test_futurama_get_gif_url(self):
-        """Tests gif urls"""
+        """Tests morbotron gif urls"""
         with open('morbotron.json') as morbo:
             test_data = json.load(morbo)
 
@@ -149,7 +149,7 @@ class ScreencapTestCase(unittest.TestCase):
         self.assertEqual(screen.get_gif_url(), 'https://morbotron.com/gif/S07E03/340757/347639.gif?b64lines=IGFuZCB0aGUgcmVjZXB0aW9uCiBpc24ndCB2ZXJ5Li4uIFNodXQgdXAKIGFuZCB0YWtlIG15IG1vbmV5IQ==')
 
     def test_futurama_get_mp4_url(self):
-        """Tests gif urls"""
+        """Tests morbotron mp4 urls"""
         with open('morbotron.json') as morbo:
             test_data = json.load(morbo)
 
@@ -163,7 +163,7 @@ class ScreencapTestCase(unittest.TestCase):
                          'https://morbotron.com/mp4/S07E03/341382/344093.mp4?b64lines=IGFuZCB0aGUgcmVjZXB0aW9uCiBpc24ndCB2ZXJ5Li4uIFNodXQgdXAKIGFuZCB0YWtlIG15IG1vbmV5IQ==')
 
     def test_ram_meme_url(self):
-        """Tests image url"""
+        """Tests master of all science meme url"""
         with open('masterofall.json') as master:
             test_data = json.load(master)
 
@@ -183,7 +183,7 @@ class ScreencapTestCase(unittest.TestCase):
                          'https://masterofallscience.com/meme/S03E01/384050.jpg?b64lines=IFsgU3F1ZWFscyBdIFdoYXQ_')
 
     def test_ram_get_gif_url(self):
-        """Tests gif urls"""
+        """Tests master of all science gif urls"""
         with open('masterofall.json') as master:
             test_data = json.load(master)
 
@@ -197,7 +197,7 @@ class ScreencapTestCase(unittest.TestCase):
                          'https://masterofallscience.com/gif/S01E02/616157/617826.gif?b64lines=IFdoZXJlIGFyZSBteQogdGVzdGljbGVzLCBTdW1tZXI_CiBUaGV5IHdlcmUgcmVtb3ZlZC4KIFdoZXJlIGhhdmUgdGhleSBnb25lPw==')
 
     def test_ram_get_mp4_url(self):
-        """Tests gif urls"""
+        """Tests master of all science mp4 urls"""
         with open('masterofall.json') as master:
             test_data = json.load(master)
 
