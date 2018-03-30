@@ -258,36 +258,68 @@
   },
   "episode_test_2": {
     "Episode": {
-      "Id": 466,
-      "Key": "S07E03",
-      "Season": 7,
-      "EpisodeNumber": 3,
-      "Title": "Home Sweet Homediddly-Dum-Doodily",
-      "Director": "Susie Dietter",
-      "Writer": "Jon Vitti",
-      "OriginalAirDate": "1-Oct-95",
-      "WikiLink": "https://en.wikipedia.org/wiki/Home_Sweet_Homediddly-Dum-Doodily"
+      "Id": 571,
+      "Key": "S11E10",
+      "Season": 11,
+      "EpisodeNumber": 10,
+      "Title": "Little Big Mom",
+      "Director": "Mark Kirkland",
+      "Writer": "Carolyn Omine",
+      "OriginalAirDate": "9-Jan-00",
+      "WikiLink": "https://en.wikipedia.org/wiki/Little_Big_Mom"
     },
     "Subtitles": [
       {
-        "Id": 64728,
-        "RepresentativeTimestamp": 344893,
-        "Episode": "S07E03",
-        "StartTimestamp": 344066,
-        "EndTimestamp": 346066,
-        "Content": "( man speaking loudly): Turn tape over.",
+        "Id": 118375,
+        "RepresentativeTimestamp": 340760,
+        "Episode": "S11E10",
+        "StartTimestamp": 340122,
+        "EndTimestamp": 341880,
+        "Content": "OW, MY LEGS!",
         "Language": "en"
       },
       {
-        "Id": 64729,
-        "RepresentativeTimestamp": 347062,
-        "Episode": "S07E03",
-        "StartTimestamp": 346066,
-        "EndTimestamp": 348066,
-        "Content": "( tape rewinding)",
+        "Id": 118376,
+        "RepresentativeTimestamp": 342760,
+        "Episode": "S11E10",
+        "StartTimestamp": 341880,
+        "EndTimestamp": 343926,
+        "Content": "THIS IS THE WORST PAIN EVER...",
+        "Language": "en"
+      },
+      {
+        "Id": 118377,
+        "RepresentativeTimestamp": 344760,
+        "Episode": "S11E10",
+        "StartTimestamp": 343926,
+        "EndTimestamp": 346004,
+        "Content": "( continuous yells)",
+        "Language": "en"
+      },
+      {
+        "Id": 118378,
+        "RepresentativeTimestamp": 347560,
+        "Episode": "S11E10",
+        "StartTimestamp": 346004,
+        "EndTimestamp": 349296,
+        "Content": "( forlorn sobbing)",
         "Language": "en"
       }
     ]
+  },
+  "episode_test_3": {
+    "Episode": {
+      "Id": 0,
+      "Key": "",
+      "Season": 0,
+      "EpisodeNumber": 0,
+      "Title": "",
+      "Director": "",
+      "Writer": "",
+      "OriginalAirDate": "",
+      "WikiLink": ""
+    },
+    "Subtitles": []
   },
   "frames_test_1": [
     {
@@ -576,6 +608,168 @@
       "Timestamp": 237944
     }
   ],
+  "frames_test_2": [
+    {
+      "Id": 864134,
+      "Episode": "S07E07",
+      "Timestamp": 222671
+    },
+    {
+      "Id": 864136,
+      "Episode": "S07E07",
+      "Timestamp": 222838
+    },
+    {
+      "Id": 864135,
+      "Episode": "S07E07",
+      "Timestamp": 223005
+    },
+    {
+      "Id": 864137,
+      "Episode": "S07E07",
+      "Timestamp": 223172
+    },
+    {
+      "Id": 864139,
+      "Episode": "S07E07",
+      "Timestamp": 223505
+    },
+    {
+      "Id": 864142,
+      "Episode": "S07E07",
+      "Timestamp": 223672
+    },
+    {
+      "Id": 864140,
+      "Episode": "S07E07",
+      "Timestamp": 223839
+    },
+    {
+      "Id": 864141,
+      "Episode": "S07E07",
+      "Timestamp": 224006
+    },
+    {
+      "Id": 864143,
+      "Episode": "S07E07",
+      "Timestamp": 224173
+    },
+    {
+      "Id": 864144,
+      "Episode": "S07E07",
+      "Timestamp": 224340
+    },
+    {
+      "Id": 864153,
+      "Episode": "S07E07",
+      "Timestamp": 224673
+    },
+    {
+      "Id": 864145,
+      "Episode": "S07E07",
+      "Timestamp": 224840
+    },
+    {
+      "Id": 864146,
+      "Episode": "S07E07",
+      "Timestamp": 225174
+    },
+    {
+      "Id": 864151,
+      "Episode": "S07E07",
+      "Timestamp": 225341
+    },
+    {
+      "Id": 864147,
+      "Episode": "S07E07",
+      "Timestamp": 225507
+    },
+    {
+      "Id": 864148,
+      "Episode": "S07E07",
+      "Timestamp": 225674
+    },
+    {
+      "Id": 864149,
+      "Episode": "S07E07",
+      "Timestamp": 225841
+    },
+    {
+      "Id": 864150,
+      "Episode": "S07E07",
+      "Timestamp": 226008
+    },
+    {
+      "Id": 864158,
+      "Episode": "S07E07",
+      "Timestamp": 226175
+    },
+    {
+      "Id": 864152,
+      "Episode": "S07E07",
+      "Timestamp": 226342
+    },
+    {
+      "Id": 864156,
+      "Episode": "S07E07",
+      "Timestamp": 226508
+    },
+    {
+      "Id": 864154,
+      "Episode": "S07E07",
+      "Timestamp": 226675
+    },
+    {
+      "Id": 864159,
+      "Episode": "S07E07",
+      "Timestamp": 226842
+    },
+    {
+      "Id": 864162,
+      "Episode": "S07E07",
+      "Timestamp": 227009
+    },
+    {
+      "Id": 864163,
+      "Episode": "S07E07",
+      "Timestamp": 227176
+    },
+    {
+      "Id": 864155,
+      "Episode": "S07E07",
+      "Timestamp": 227343
+    },
+    {
+      "Id": 864157,
+      "Episode": "S07E07",
+      "Timestamp": 227509
+    },
+    {
+      "Id": 864160,
+      "Episode": "S07E07",
+      "Timestamp": 227676
+    },
+    {
+      "Id": 864165,
+      "Episode": "S07E07",
+      "Timestamp": 227843
+    },
+    {
+      "Id": 864167,
+      "Episode": "S07E07",
+      "Timestamp": 228010
+    },
+    {
+      "Id": 864161,
+      "Episode": "S07E07",
+      "Timestamp": 228177
+    },
+    {
+      "Id": 864164,
+      "Episode": "S07E07",
+      "Timestamp": 228344
+    }
+  ],
   "nearby_frames_test_1": [
     {
       "Id": 884971,
@@ -611,6 +805,43 @@
       "Id": 884975,
       "Episode": "S07E10",
       "Timestamp": 499414
+    }
+  ],
+  "nearby_frames_test_2": [
+    {
+      "Id": 345569,
+      "Episode": "S03E17",
+      "Timestamp": 1314224
+    },
+    {
+      "Id": 345571,
+      "Episode": "S03E17",
+      "Timestamp": 1314391
+    },
+    {
+      "Id": 345572,
+      "Episode": "S03E17",
+      "Timestamp": 1314725
+    },
+    {
+      "Id": 345577,
+      "Episode": "S03E17",
+      "Timestamp": 1314891
+    },
+    {
+      "Id": 345578,
+      "Episode": "S03E17",
+      "Timestamp": 1315058
+    },
+    {
+      "Id": 345579,
+      "Episode": "S03E17",
+      "Timestamp": 1315225
+    },
+    {
+      "Id": 345580,
+      "Episode": "S03E17",
+      "Timestamp": 1315392
     }
   ],
   "search_test_1": [
@@ -794,5 +1025,271 @@
       "Episode": "S17E16",
       "Timestamp": 335460
     }
-  ]
+  ],
+  "search_test_2": [
+    {
+      "Id": 1031559,
+      "Episode": "S08E06",
+      "Timestamp": 620419
+    },
+    {
+      "Id": 1031563,
+      "Episode": "S08E06",
+      "Timestamp": 621670
+    },
+    {
+      "Id": 1031566,
+      "Episode": "S08E06",
+      "Timestamp": 621870
+    },
+    {
+      "Id": 1031568,
+      "Episode": "S08E06",
+      "Timestamp": 621453
+    },
+    {
+      "Id": 1031567,
+      "Episode": "S08E06",
+      "Timestamp": 622087
+    },
+    {
+      "Id": 1031569,
+      "Episode": "S08E06",
+      "Timestamp": 622287
+    },
+    {
+      "Id": 1031561,
+      "Episode": "S08E06",
+      "Timestamp": 620002
+    },
+    {
+      "Id": 1031564,
+      "Episode": "S08E06",
+      "Timestamp": 620836
+    },
+    {
+      "Id": 1031565,
+      "Episode": "S08E06",
+      "Timestamp": 621036
+    },
+    {
+      "Id": 1031562,
+      "Episode": "S08E06",
+      "Timestamp": 620202
+    },
+    {
+      "Id": 1031560,
+      "Episode": "S08E06",
+      "Timestamp": 620619
+    },
+    {
+      "Id": 1221851,
+      "Episode": "S09E12",
+      "Timestamp": 540856
+    },
+    {
+      "Id": 147575,
+      "Episode": "S02E09",
+      "Timestamp": 320550
+    },
+    {
+      "Id": 386451,
+      "Episode": "S03E24",
+      "Timestamp": 715067
+    },
+    {
+      "Id": 1221854,
+      "Episode": "S09E12",
+      "Timestamp": 541073
+    },
+    {
+      "Id": 386447,
+      "Episode": "S03E24",
+      "Timestamp": 714233
+    },
+    {
+      "Id": 401499,
+      "Episode": "S04E02",
+      "Timestamp": 1243124
+    },
+    {
+      "Id": 1245293,
+      "Episode": "S09E16",
+      "Timestamp": 115414
+    },
+    {
+      "Id": 1321584,
+      "Episode": "S10E03",
+      "Timestamp": 473972
+    },
+    {
+      "Id": 543664,
+      "Episode": "S05E03",
+      "Timestamp": 899748
+    },
+    {
+      "Id": 1245288,
+      "Episode": "S09E16",
+      "Timestamp": 114780
+    },
+    {
+      "Id": 186966,
+      "Episode": "S02E15",
+      "Timestamp": 285985
+    },
+    {
+      "Id": 848980,
+      "Episode": "S07E05",
+      "Timestamp": 110559
+    },
+    {
+      "Id": 386443,
+      "Episode": "S03E24",
+      "Timestamp": 713198
+    },
+    {
+      "Id": 559187,
+      "Episode": "S05E06",
+      "Timestamp": 202518
+    },
+    {
+      "Id": 1764831,
+      "Episode": "S13E11",
+      "Timestamp": 413079
+    },
+    {
+      "Id": 762797,
+      "Episode": "S06E16",
+      "Timestamp": 1012160
+    },
+    {
+      "Id": 1815200,
+      "Episode": "S13E19",
+      "Timestamp": 1096053
+    },
+    {
+      "Id": 1950313,
+      "Episode": "S14E22",
+      "Timestamp": 409743
+    },
+    {
+      "Id": 619755,
+      "Episode": "S05E15",
+      "Timestamp": 1250498
+    },
+    {
+      "Id": 258058,
+      "Episode": "S03E03",
+      "Timestamp": 1069533
+    },
+    {
+      "Id": 330293,
+      "Episode": "S03E15",
+      "Timestamp": 647509
+    },
+    {
+      "Id": 1815203,
+      "Episode": "S13E19",
+      "Timestamp": 1097305
+    },
+    {
+      "Id": 2068600,
+      "Episode": "S15E22",
+      "Timestamp": 686477
+    },
+    {
+      "Id": 386446,
+      "Episode": "S03E24",
+      "Timestamp": 713398
+    },
+    {
+      "Id": 619753,
+      "Episode": "S05E15",
+      "Timestamp": 1250315
+    }
+  ],
+  "search_test_3": {
+    "Episode": {
+      "Id": 494,
+      "Key": "S08E06",
+      "Season": 8,
+      "EpisodeNumber": 6,
+      "Title": "A Milhouse Divided",
+      "Director": "Steven Dean Moore",
+      "Writer": "Steve Tompkins",
+      "OriginalAirDate": "1-Dec-96",
+      "WikiLink": "https://en.wikipedia.org/wiki/A_Milhouse_Divided"
+    },
+    "Frame": {
+      "Id": 1031559,
+      "Episode": "S08E06",
+      "Timestamp": 620419
+    },
+    "Subtitles": [
+      {
+        "Id": 79112,
+        "RepresentativeTimestamp": 618951,
+        "Episode": "S08E06",
+        "StartTimestamp": 618300,
+        "EndTimestamp": 619934,
+        "Content": "YOU GET YOUR OWN BED.",
+        "Language": "en"
+      },
+      {
+        "Id": 79113,
+        "RepresentativeTimestamp": 620836,
+        "Episode": "S08E06",
+        "StartTimestamp": 619934,
+        "EndTimestamp": 622400,
+        "Content": "I SLEEP IN A RACING CAR. DO YOU?",
+        "Language": "en"
+      },
+      {
+        "Id": 79114,
+        "RepresentativeTimestamp": 623338,
+        "Episode": "S08E06",
+        "StartTimestamp": 622400,
+        "EndTimestamp": 624300,
+        "Content": "I SLEEP IN A BIG BED WITH MY WIFE.",
+        "Language": "en"
+      }
+    ],
+    "Nearby": [
+      {
+        "Id": 1031556,
+        "Episode": "S08E06",
+        "Timestamp": 619785
+      },
+      {
+        "Id": 1031561,
+        "Episode": "S08E06",
+        "Timestamp": 620002
+      },
+      {
+        "Id": 1031562,
+        "Episode": "S08E06",
+        "Timestamp": 620202
+      },
+      {
+        "Id": 1031559,
+        "Episode": "S08E06",
+        "Timestamp": 620419
+      },
+      {
+        "Id": 1031560,
+        "Episode": "S08E06",
+        "Timestamp": 620619
+      },
+      {
+        "Id": 1031564,
+        "Episode": "S08E06",
+        "Timestamp": 620836
+      },
+      {
+        "Id": 1031565,
+        "Episode": "S08E06",
+        "Timestamp": 621036
+      }
+    ]
+  }
 }
