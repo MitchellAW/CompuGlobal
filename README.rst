@@ -1,5 +1,4 @@
 .. image:: https://orig00.deviantart.net/43c8/f/2012/137/f/8/internet_king_popup_banner_by_blueamnesiac-d503b3x.png
-        :align: right
         :alt: Internet King Popup Banner by BLUEamnesiac
 
 CompuGlobal
@@ -86,6 +85,33 @@ Async Usage
         loop.run_until_complete(main())
 
 For documented examples, check `here.`_
+
+What's New
+------------
+**0.2.1 - Breaking Changes**
+
+- Added Frame object: `search()`, `get_frames()` and `get_nearby_frames()`
+  now all return a list of Frame objects instead of the json response.
+
+  **Before:**
+
+  .. code:: py
+
+    search_results = simpsons.search('stupid sexy flanders')
+    top_result = search_results[0]
+    screencap = simpsons.get_screencap(top_result['Episode'],
+                                       top_result['Timestamp'])
+
+  **After:**
+
+  .. code:: py
+
+    search_results = simpsons.search('stupid sexy flanders')
+    top_result = search_results[0]
+    screencap = simpsons.get_screencap(top_result.key,
+                                       top_result.timestamp)
+
+
 
 Preview
 ------------
