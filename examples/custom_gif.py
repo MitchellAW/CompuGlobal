@@ -19,8 +19,8 @@ screencap = simpsons.search_for_screencap('Nothing at all')
 # screencap
 search_results = simpsons.search('Nothing at all')
 random_result = random.choice(search_results)
-random_screencap = simpsons.get_screencap(random_result['Episode'],
-                                          random_result['Timestamp'])
+random_screencap = simpsons.get_screencap(random_result.key,
+                                          random_result.timestamp)
 
 # Get all frames that are 5,000ms before and 5,000ms after the screencap to
 # mimic behaviour used by Frinkiac
@@ -33,7 +33,7 @@ frames = simpsons.get_frames(screencap.key, screencap.timestamp, 5000, 5000)
 frame_images = []
 for frame in frames:
     # Get the image url for the frame
-    image_url = screencap.image_url.format(frame['Episode'], frame['Timestamp'])
+    image_url = frame.image_url
     # Append the image_url
     frame_images.append(image_url)
 
@@ -45,8 +45,8 @@ end_frame = frames[-1]
 # Get timestamps of start and end frames for custom gif
 # NOTE: start_timestamp must be less than end_timestamp or an invalid frames
 # error will occur.
-start = start_frame['Timestamp']
-end = end_frame['Timestamp']
+start = start_frame.timestamp
+end = end_frame.timestamp
 
 # Encode the caption for custom gif
 # NOTE: Caption must be base64 encoded, you can b64 encode the caption yourself
