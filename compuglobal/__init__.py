@@ -3,12 +3,13 @@ import requests
 from .aio import *
 from .aio_screencap import *
 from .errors import *
-from .screencap import *
+from .frame import Frame
+from .screencap import Screencap
 
 __title__ = 'compuglobal'
 __author__ = 'MitchellAW'
 __license__ = 'MIT'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 
 """Contains the API Wrappers used for accessing all the cghmc API endpoints."""
@@ -155,7 +156,11 @@ class CompuGlobalAPI:
             search_results = search.json()
 
             if len(search_results) > 0:
-                return search_results
+                all_frames = []
+                for result in search_results:
+                    all_frames.append(Frame(self, result))
+
+                return all_frames
 
             else:
                 raise NoSearchResultsFound()
@@ -191,7 +196,7 @@ class CompuGlobalAPI:
         search_results = self.search(search_text)
         if len(search_results) > 0:
             result = search_results[0]
-            return self.get_screencap(result['Episode'], result['Timestamp'])
+            return self.get_screencap(result.key, result.timestamp)
 
     def get_frames(self, episode, timestamp, before, after):
         """Performs a GET request to the
@@ -229,7 +234,11 @@ class CompuGlobalAPI:
         frames_url = self.frames_url.format(episode, timestamp, before, after)
         frames = requests.get(frames_url)
         if frames.status_code == 200:
-            return frames.json()
+            all_frames = []
+            for frame_result in frames.json():
+                all_frames.append(Frame(self, frame_result))
+
+            return all_frames
 
         else:
             raise APIPageStatusError(frames.status_code, self.URL)
@@ -266,7 +275,10 @@ class CompuGlobalAPI:
         nearby_url = self.nearby_url.format(episode, timestamp)
         nearby_frames = requests.get(nearby_url)
         if nearby_frames.status_code == 200:
-            return nearby_frames.json()
+            all_frames = []
+            for frame_result in nearby_frames.json():
+                all_frames.append(Frame(self, frame_result))
+            return all_frames
 
         else:
             raise APIPageStatusError(nearby_frames.status_code, self.URL)

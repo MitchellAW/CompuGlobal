@@ -5,6 +5,7 @@ import aiohttp
 
 from .errors import *
 from .aio_screencap import AIOScreencap
+from .frame import Frame
 
 
 """Contains the async API Wrappers used for accessing all the cghmc API 
@@ -155,7 +156,11 @@ class CompuGlobalAPI:
                     search_results = await search.json()
 
                     if len(search_results) > 0:
-                        return search_results
+                        all_frames = []
+                        for result in search_results:
+                            all_frames.append(Frame(self, result))
+
+                        return all_frames
 
                     else:
                         raise NoSearchResultsFound()
@@ -191,8 +196,7 @@ class CompuGlobalAPI:
         search_results = await self.search(search_text)
         if len(search_results) > 0:
             result = search_results[0]
-            return await self.get_screencap(result['Episode'],
-                                            result['Timestamp'])
+            return await self.get_screencap(result.key, result.timestamp)
 
     async def get_frames(self, episode, timestamp, before, after):
         """Performs a GET request to the
@@ -231,7 +235,11 @@ class CompuGlobalAPI:
         async with aiohttp.ClientSession() as cs:
             async with cs.get(frames_url, timeout=self.timeout) as frames:
                 if frames.status == 200:
-                    return await frames.json()
+                    all_frames = []
+                    for frame_result in await frames.json():
+                        all_frames.append(Frame(self, frame_result))
+
+                    return all_frames
 
                 else:
                     raise APIPageStatusError(frames.status, self.URL)
