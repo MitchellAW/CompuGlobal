@@ -59,7 +59,7 @@ class CompuGlobalAPI:
         self.nearby_url = self.URL + 'api/nearby?e={}&t={}'
         self.episode_url = self.URL + 'api/episode/{}/{}/{}'
 
-    async def get_screencap(self, episode, timestamp):
+    async def get_screencap(self, episode=None, timestamp=None, frame=None):
         """Performs a GET request to the ``api/caption?e={}&t={}`` endpoint and
         gets a TV Show screencap using episode ``e={}`` and timestamp
         ``t={}``
@@ -70,6 +70,8 @@ class CompuGlobalAPI:
             The episode key of the screencap.
         timestamp: int
             The timestamp of the screencap.
+        frame: compuglobal.Frame
+            The frame of the screencap.
 
         Returns
         -------
@@ -80,13 +82,27 @@ class CompuGlobalAPI:
         ------
         APIPageStatusError
             Raises an exception if the status code of the request is not 200.
+        TypeError
+            Raises an exception if the constructor does not receive episode and
+            timestamp, or compuglobal.Frame
 
         Note
         ----
         Used for getting the episode info and caption shown below each
         screencap."""
 
-        caption_url = self.caption_url.format(episode, timestamp)
+        if isinstance(episode, str) and isinstance(timestamp, int):
+            caption_url = self.caption_url.format(episode, timestamp)
+
+        elif isinstance(frame, Frame):
+            caption_url = self.caption_url.format(frame.key,
+                                                  frame.timestamp)
+
+        else:
+            raise TypeError('Expected str and int or compuglobal.Frame, '
+                            'but received {}, {} and {} instead'.
+                            format(episode, timestamp, frame))
+
         async with aiohttp.ClientSession() as cs:
             async with cs.get(caption_url, timeout=self.timeout) as screen:
                 if screen.status == 200:

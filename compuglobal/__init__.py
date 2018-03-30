@@ -60,17 +60,19 @@ class CompuGlobalAPI:
         self.nearby_url = self.URL + 'api/nearby?e={}&t={}'
         self.episode_url = self.URL + 'api/episode/{}/{}/{}'
 
-    def get_screencap(self, episode, timestamp):
+    def get_screencap(self, episode=None, timestamp=None, frame=None):
         """Performs a GET request to the ``api/caption?e={}&t={}`` endpoint and
         gets a TV Show screencap using episode ``e={}`` and timestamp
-        ``t={}``
+        ``t={} or a frame``
 
         Parameters
         ----------
-        episode: str
+        episode: str, optional
             The episode key of the screencap.
-        timestamp: int
+        timestamp: int, optional
             The timestamp of the screencap.
+        frame: compuglobal.Frame
+            The frame of the screencap.
 
         Returns
         -------
@@ -87,7 +89,17 @@ class CompuGlobalAPI:
         Used for getting the episode info and caption shown below each
         screencap."""
 
-        caption_url = self.caption_url.format(episode, timestamp)
+        if isinstance(episode, str) and isinstance(timestamp, int):
+            caption_url = self.caption_url.format(episode, timestamp)
+
+        elif isinstance(frame, Frame):
+            caption_url = self.caption_url.format(frame.key,
+                                                  frame.timestamp)
+        else:
+            raise TypeError('Expected str and int or compuglobal.Frame, '
+                            'but received {}, {} and {} instead'.
+                            format(episode, timestamp, frame))
+
         screen = requests.get(caption_url)
         if screen.status_code == 200:
             return Screencap(self, screen.json())
