@@ -32,6 +32,19 @@ class Frame:
                                                           self.timestamp)
 
     def get_meme_url(self, caption):
+        """Encodes the caption with base64 and then returns the meme url for
+        the frame with an embedded caption.
+
+        Parameters
+        ----------
+        caption: str
+            The caption to embed in the image.
+
+        Returns
+        -------
+        str
+            The meme url for the frame with an embedded caption."""
+
         b64_caption = self.api.encode_caption(caption)
         return self.api.URL + 'meme/{}/{}.jpg?b64lines={}'.format(
             self.key, self.timestamp, b64_caption)

@@ -17,6 +17,7 @@ Contents
 .. toctree::
     full
     screencap
+    frame
 
 API Endpoints
 -------------

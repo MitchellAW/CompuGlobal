@@ -17,6 +17,7 @@ Contents
 .. toctree::
     aio_full
     aio_screencap
+    frame
 
 API Endpoints
 -------------

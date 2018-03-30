@@ -28,6 +28,14 @@ compuglobal.errors module
     :undoc-members:
     :show-inheritance:
 
+compuglobal.frame module
+------------------------
+
+.. automodule:: compuglobal.frame
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 compuglobal.screencap module
 ----------------------------
 
