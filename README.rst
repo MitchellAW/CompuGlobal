@@ -93,25 +93,6 @@ What's New
 - Added Frame object: `search()`, `get_frames()` and `get_nearby_frames()`
   now all return a list of Frame objects instead of the json response.
 
-  **Before:**
-
-  .. code:: py
-
-    search_results = simpsons.search('stupid sexy flanders')
-    top_result = search_results[0]
-    screencap = simpsons.get_screencap(top_result['Episode'],
-                                       top_result['Timestamp'])
-
-  **After:**
-
-  .. code:: py
-
-    search_results = simpsons.search('stupid sexy flanders')
-    top_result = search_results[0]
-    screencap = simpsons.get_screencap(top_result.key,
-                                       top_result.timestamp)
-
-
 
 Preview
 ------------
