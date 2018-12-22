@@ -7,7 +7,7 @@ with open('README.rst') as f:
 setup(
     name='compuglobal',
     packages=find_packages(exclude=['docs', 'tests', 'examples']),
-    version='0.2.2',
+    version='0.2.3',
     description='Python wrapper for the CGHMC API (Frinkiac, Morbotron,' +
                 ' Master Of All Science and more!)',
     long_description=long_description,
@@ -23,5 +23,5 @@ setup(
                  'License :: OSI Approved :: MIT License',
                  'Programming Language :: Python :: 3.5',
                  'Programming Language :: Python :: 3.6'],
-    install_requires=['requests==2.18.4', 'aiohttp>=2.0.0,<2.3.0']
+    install_requires=['requests>=2.20.0', 'aiohttp>=3.3.0,<3.5.0']
 )
