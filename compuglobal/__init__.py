@@ -9,7 +9,7 @@ from .screencap import Screencap
 __title__ = 'compuglobal'
 __author__ = 'MitchellAW'
 __license__ = 'MIT'
-__version__ = '0.2.4'
+__version__ = '0.2.5'
 
 
 """Contains the API Wrappers used for accessing all the cghmc API endpoints."""
