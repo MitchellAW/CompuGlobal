@@ -1,4 +1,4 @@
-compuglobal
+CompuGlobal
 ===========
 
 .. toctree::

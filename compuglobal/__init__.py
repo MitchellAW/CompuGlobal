@@ -9,7 +9,7 @@ from .screencap import Screencap
 __title__ = 'compuglobal'
 __author__ = 'MitchellAW'
 __license__ = 'MIT'
-__version__ = '0.2.5'
+__version__ = '0.2.7'
 
 
 """Contains the API Wrappers used for accessing all the cghmc API endpoints."""
@@ -327,27 +327,26 @@ class CompuGlobalAPI:
         else:
             raise APIPageStatusError(episode.status_code, self.URL)
 
-    def encode_caption(self, caption, max_lines=4, max_chars=24, shorten=True):
+    def format_caption(self, caption, max_lines=4, max_chars=24, shorten=True):
         """Loops through the caption and formats it using max_lines and
-        max_chars and finally encodes it in base64 for use in the url.
+        max_chars and returns the formatted outcome.
 
         Parameters
         ----------
         caption: str
-            The caption to format and encode.
+            The caption to format.
         max_lines: int, optional
             The maximum number of lines of captions allowed.
         max_chars: int, optional
             The maximum number of characters allowed per line.
         shorten: bool, optional
-            Whether or not to shorten the caption at its latest
+            Whether to shorten the caption at its latest
             sentence ending.
 
         Returns
         -------
         str
-            The formatted caption, encoded in base64."""
-
+            The formatted caption."""
         char_count = 0
         line_count = 0
         formatted_caption = ''
@@ -366,12 +365,29 @@ class CompuGlobalAPI:
                     formatted_caption += '\n' + ' ' + word
 
         # Shorten caption at end of sentences if set to True
-        caption = formatted_caption
         if shorten:
-            caption = self.shorten_caption(formatted_caption)
-        encoded = b64encode(str.encode(caption, 'utf-8'), altchars=b'__')
+            formatted_caption = self.shorten_caption(formatted_caption)
 
-        return encoded.decode('utf-8')
+        return formatted_caption
+
+    @staticmethod
+    def encode_caption(caption):
+        """Loops through the caption and encodes it in base64 for use in the url.
+
+        Parameters
+        ----------
+        caption: str
+            The caption to encode in base64.
+
+        Returns
+        -------
+        str
+            The caption encoded in base64."""
+
+        encoded = str.encode(caption, 'utf-8')
+        b64encoded = b64encode(encoded, altchars=b'__')
+
+        return b64encoded.decode('utf-8')
 
     @staticmethod
     def shorten_caption(caption):

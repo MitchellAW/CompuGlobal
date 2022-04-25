@@ -31,7 +31,7 @@ class Frame:
         self.image_url = api.URL + 'img/{}/{}.jpg'.format(self.key,
                                                           self.timestamp)
 
-    def get_meme_url(self, caption):
+    def get_meme_url(self, caption=None):
         """Encodes the caption with base64 and then returns the meme url for
         the frame with an embedded caption.
 
@@ -45,7 +45,11 @@ class Frame:
         str
             The meme url for the frame with an embedded caption."""
 
+        if caption is None:
+            caption = self.api.format_caption(caption, max_lines=4, max_chars=24, shorten=True)
+
         b64_caption = self.api.encode_caption(caption)
+
         return self.api.URL + 'meme/{}/{}.jpg?b64lines={}'.format(
             self.key, self.timestamp, b64_caption)
 

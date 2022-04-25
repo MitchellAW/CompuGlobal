@@ -29,7 +29,7 @@ class AIOScreencap(Screencap):
         Defaults gif duration to  ~7 seconds (7000ms)."""
 
         if caption is None:
-            caption = self.caption
+            caption = self.api.format_caption(self.caption, max_lines=4, max_chars=24, shorten=True)
 
         b64_caption = self.api.encode_caption(caption)
 
@@ -67,7 +67,7 @@ class AIOScreencap(Screencap):
         Defaults mp4 duration to  ~7 seconds (7000ms)."""
 
         if caption is None:
-            caption = self.caption
+            caption = self.api.format_caption(self.caption, max_lines=4, max_chars=24, shorten=True)
 
         b64_caption = self.api.encode_caption(caption)
 

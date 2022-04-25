@@ -88,6 +88,19 @@ For documented examples, check `here.`_
 
 What's New
 ------------
+**0.2.7 - Breaking changes**
+
+These changes are intended to provide more flexibility in the formatting
+of captions:
+
+- Added `format_caption()` method to CompuGlobalAPI objects. This
+  replaces the formatting logic previously within the `encode_caption()`
+  method. The `encode_caption()` method now only takes a caption parameter.
+- Captions will no longer be formatted and shortened before
+  generation of memes, gifs, and mp4 urls if a caption is given.
+  Behaviour remains the same if no caption is given or if `format_caption()`
+  is used on the caption beforehand.
+
 **0.2.1 - Breaking Changes**
 
 - Added Frame object: `search()`, `get_frames()` and `get_nearby_frames()`
