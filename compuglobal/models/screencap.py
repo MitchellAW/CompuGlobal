@@ -3,6 +3,14 @@ from typing import List
 from pydantic import Field
 
 from .base import BaseCompuGlobalModel
+from .comic import (
+    ComicLayout,
+    ComicOverlay,
+    ComicPanel,
+    ComicStrip,
+    build_overlay,
+    build_overlays,
+)
 from .episode import Episode
 from .frame import Frame
 from .subtitle import Subtitle
@@ -101,6 +109,35 @@ class Screencap(BaseCompuGlobalModel):
         #     caption = self.caption
 
         return self.frame.get_meme_url(caption)
+
+    def get_comic_panel_url(self, subtitles: List[Subtitle] = []):
+        if len(subtitles) == 0:
+            subtitles = self.subtitles
+
+        overlays = build_overlay(subtitles)
+        panel = ComicPanel(e=self.frame.key, ts=self.frame.timestamp, o=overlays)
+
+        b64 = panel.get_encoded()
+
+        return f"{self._api.comic_url}?b64={b64}"
+
+    def get_comic_strip_url(self, subtitles: List[Subtitle] = []):
+        if len(subtitles) == 0:
+            subtitles = self.subtitles
+
+        if len(subtitles) > 4:
+            subtitles = subtitles[:4]
+
+        panels = []
+        for subtitle in subtitles:
+            overlay = ComicOverlay(t=subtitle.content)
+            panel = ComicPanel(e=subtitle.key, ts=subtitle.representative_timestamp, o=[overlay])
+            panels.append(panel)
+
+        comic_strip = ComicStrip(panels=panels, layout=ComicLayout.WIDE)
+        b64 = comic_strip.get_encoded()
+
+        return f"{self._api.comic_url}?b64={b64}&layout={ComicLayout.WIDE}"
 
     def get_gif_url(self, caption=None, before=3000, after=4000):
         """Gets the timestamps of the frames before and after the timestamp

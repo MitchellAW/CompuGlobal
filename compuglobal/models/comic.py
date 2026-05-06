@@ -1,9 +1,12 @@
+import json
+from base64 import b64encode
 from enum import StrEnum
 from typing import List
 
 from pydantic import BaseModel, Field
 
 from .font import FontAlignment, FontFamily
+from .subtitle import Subtitle
 
 
 class ComicLayout(StrEnum):
@@ -27,12 +30,37 @@ class ComicOverlay(BaseModel):
     d: int = Field(alias="d", default=0)
 
 
+@staticmethod
+def build_overlays(subtitles: List[Subtitle]):
+    return [ComicOverlay(t=subtitle.content) for subtitle in subtitles]
+
+
+@staticmethod
+def build_overlay(subtitles: List[Subtitle]):
+    content = " ".join(subtitle.content for subtitle in subtitles)
+    return [ComicOverlay(t=content)]
+
+
 class ComicPanel(BaseModel):
     key: str = Field(alias="e")
     timestamp: int = Field(alias="ts", ge=0)
-    overlays: List[ComicOverlay] = Field(alias="o")
+    overlays: List[ComicOverlay] = Field(alias="o", default=[])
+
+    def get_encoded(self):
+        dump = [self.model_dump(by_alias=True)]
+        json_str = json.dumps(dump, separators=(",", ":"))
+        encoded = str.encode(json_str, "utf-8")
+        b64 = b64encode(encoded, altchars=b"__")
+        return b64.decode("utf-8")
 
 
 class ComicStrip(BaseModel):
     panels: List[ComicPanel]
     layout: ComicLayout
+
+    def get_encoded(self):
+        dump = [panel.model_dump(by_alias=True) for panel in self.panels]
+        json_str = json.dumps(dump, separators=(",", ":"))
+        encoded = str.encode(json_str, "utf-8")
+        b64 = b64encode(encoded, altchars=b"__")
+        return b64.decode("utf-8")
