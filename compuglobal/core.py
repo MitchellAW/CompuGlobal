@@ -37,13 +37,13 @@ class BaseCompuGlobalAPI:
     def __init__(self, url, title, default_font: FontFamily = FontFamily.IMPACT):
         self.url = url
         self.title = title
-        self.context = {"api": self}
+        self.context = {"_api": self}
 
         # Initalise all API endpoints
-        self.random_url = self.url + "api/random"
+        self.random_url = self.url + "/api/random"
         self.caption_url = f"{self.url}/api/caption"  # api/caption?e=S01E01&t=9551&nearby=1
         self.search_url = f"{self.url}/api/search"
-        self.episode_url = self.url + "api/episode"  # api/episode/S01E01/0/99999999
+        self.episode_url = self.url + "/api/episode"  # api/episode/S01E01/0/99999999
         self.navigator_url = f"{self.url}/api/navigator"
         self.transcript_url = f"{self.url}/api/transcript"  # api/transcript/?e=S01E01&t=9551
         self.render_gif_url = f"{self.url}/api/render/gif/stream"  # Stream-params
