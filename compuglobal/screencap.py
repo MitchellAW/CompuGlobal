@@ -42,40 +42,41 @@ class Screencap:
             The gif url format for the screencap embedded with a caption.
         mp4_url: str
             The mp4 url format for the screencap embedded with a caption.
-        """
+    """
+
     def __init__(self, api, json: dict):
         self.api = api
         self.json = json
 
         # Initialise Frame of Screencap
-        self.frame = Frame(self.api, self.json['Frame'])
+        self.frame = Frame(self.api, self.json["Frame"])
 
         # Inititalise Episode Information, setting title, director, writer
         # and wiki url to None if they are empty
         self.key = self.frame.key
         self.timestamp = self.frame.timestamp
-        self.id = self.json['Episode']['Id']
-        self.episode = self.json['Episode']['EpisodeNumber']
-        self.season = self.json['Episode']['Season']
-        self.title = self.get_value(self.json['Episode']['Title'])
-        self.director = self.get_value(self.json['Episode']['Director'])
-        self.writer = self.get_value(self.json['Episode']['Writer'])
-        self.air_date = self.json['Episode']['OriginalAirDate']
-        self.wiki_url = self.get_value(self.json['Episode']['WikiLink'])
+        self.id = self.json["Episode"]["Id"]
+        self.episode = self.json["Episode"]["EpisodeNumber"]
+        self.season = self.json["Episode"]["Season"]
+        self.title = self.get_value(self.json["Episode"]["Title"])
+        self.director = self.get_value(self.json["Episode"]["Director"])
+        self.writer = self.get_value(self.json["Episode"]["Writer"])
+        self.air_date = self.json["Episode"]["OriginalAirDate"]
+        self.wiki_url = self.get_value(self.json["Episode"]["WikiLink"])
 
         # Initalise caption and urls
         self.caption = self.api.json_to_caption(self.json)
-        self.gif_url = self.api.URL + 'gif/{}/{}/{}.gif?b64lines={}'
-        self.mp4_url = self.api.URL + 'mp4/{}/{}/{}.mp4?b64lines={}'
+        self.gif_url = self.api.URL + "gif/{}/{}/{}.gif?b64lines={}"
+        self.mp4_url = self.api.URL + "mp4/{}/{}/{}.mp4?b64lines={}"
 
-    # Returns none if empty string
+    # Returns "" if empty string
     @staticmethod
     def get_value(value):
-        if value == '':
-            return None
+        if value == "":
+            return ""
 
         else:
-            return value.replace('\n', '')
+            return value.replace("\n", "")
 
     def get_real_timestamp(self):
         """Gets a readable timestamp for the frame in format "mm:ss"
@@ -147,8 +148,7 @@ class Screencap:
         b64_caption = self.api.encode_caption(caption)
 
         # Get start and end frames for gif
-        frames = self.api.get_frames(self.frame.key, self.frame.timestamp,
-                                     int(before), int(after))
+        frames = self.api.get_frames(self.frame.key, self.frame.timestamp, int(before), int(after))
         start = frames[0].timestamp
         end = frames[-1].timestamp
         return self.gif_url.format(self.frame.key, start, end, b64_caption)
@@ -186,12 +186,10 @@ class Screencap:
         b64_caption = self.api.encode_caption(caption)
 
         # Get start and end frames for mp4
-        frames = self.api.get_frames(self.frame.key, self.frame.timestamp,
-                                     int(before), int(after))
+        frames = self.api.get_frames(self.frame.key, self.frame.timestamp, int(before), int(after))
         start = frames[0].timestamp
         end = frames[-1].timestamp
         return self.mp4_url.format(self.frame.key, start, end, b64_caption)
 
     def __str__(self):
-        return (str(self.frame) + ': ' + self.title + ' (' +
-                self.frame.get_real_timestamp() + ')')
+        return str(self.frame) + ": " + self.title + " (" + self.frame.get_real_timestamp() + ")"

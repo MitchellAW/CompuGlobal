@@ -34,8 +34,7 @@ class AIOScreencap(Screencap):
         b64_caption = self.api.encode_caption(caption)
 
         # Get start and end frame numbers for gif
-        frames = await self.api.get_frames(self.key, self.timestamp,
-                                           int(before), int(after))
+        frames = await self.api.get_frames(self.key, self.timestamp, int(before), int(after))
         start = frames[0].timestamp
         end = frames[-1].timestamp
         return self.gif_url.format(self.key, start, end, b64_caption)
@@ -72,12 +71,10 @@ class AIOScreencap(Screencap):
         b64_caption = self.api.encode_caption(caption)
 
         # Get start and end frame numbers for gif
-        frames = await self.api.get_frames(self.key, self.timestamp,
-                                           int(before), int(after))
+        frames = await self.api.get_frames(self.key, self.timestamp, int(before), int(after))
         start = frames[0].timestamp
         end = frames[-1].timestamp
         return self.mp4_url.format(self.key, start, end, b64_caption)
 
     def __str__(self):
-        return (str(self.frame) + ': ' + self.title + ' (' +
-                self.get_real_timestamp() + ')')
+        return str(self.frame) + ": " + self.title + " (" + self.get_real_timestamp() + ")"
