@@ -45,4 +45,5 @@ class BaseCompuGlobalAPI:
         self.transcript_url = f"{self.URL}/api/transcript"  # api/transcript/?e=S01E01&t=9551
         self.render_gif_url = f"{self.URL}/api/render/gif/stream"  # Stream-params
         self.render_mp4_url = f"{self.URL}/api/render/mp4"  # Stream-params
+        self.comic_url = f"{self.URL}/comic/img"  # comic/img?b64=
         self.frames_url = self.URL + "/{}/{}/{}"
