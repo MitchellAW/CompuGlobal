@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 import aiohttp
 
@@ -78,10 +78,10 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         screencap."""
 
         if isinstance(episode, str) and isinstance(timestamp, int):
-            caption_url = self.caption_url.format(episode, timestamp)
+            params = {"e": episode, "t": timestamp, "nearby": 1}
 
         elif isinstance(frame, Frame):
-            caption_url = self.caption_url.format(frame.key, frame.timestamp)
+            params = {"e": frame.key, "t": frame.timestamp, "nearby": 1}
 
         else:
             raise TypeError(
@@ -89,8 +89,8 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
                 f"{type(episode)}, {type(timestamp)} and {type(frame)} instead"
             )
 
-        caption = await self.get(caption_url)
-        return AIOScreencap.model_validate_json(caption, context=self.context)
+        caption = await self.get(self.caption_url, params=params)
+        return AIOScreencap.model_validate(caption, context=self.context)
 
     async def get_random_screencap(self):
         """Performs a GET request to the ``api/random`` endpoint and gets a
@@ -111,9 +111,9 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         Used for getting a random screencap when clicking the "RANDOM"
         button."""
         random = await self.get(self.random_url)
-        return AIOScreencap.model_validate_json(random, context=self.context)
+        return AIOScreencap.model_validate(random, context=self.context)
 
-    async def search(self, search_text):
+    async def search(self, search_text) -> List[Frame]:
         """Performs a GET request to the ``api/search?q=`` endpoint and gets a
         list of search results using the search text as the search query
         ``q={}`` for the request.
@@ -141,14 +141,14 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         ----
         Used for displaying all the search results and their screencaps."""
 
-        params = {"q": search_text.replace(" ", "+")}
+        params = {"q": search_text}
 
         search_results = await self.get(self.search_url, params=params)
 
         if len(search_results) > 0:
             all_frames = []
             for result in search_results:
-                all_frames.append(Frame.model_validate_json(result, context=self.context))
+                all_frames.append(Frame.model_validate(result, context=self.context))
 
             return all_frames
 
@@ -222,7 +222,7 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
 
         all_frames = []
         for frame_result in frames:
-            all_frames.append(Frame.model_validate_json(frame_result))
+            all_frames.append(Frame.model_validate(frame_result))
 
         return all_frames
 

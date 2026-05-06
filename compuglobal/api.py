@@ -59,7 +59,7 @@ class CompuGlobalAPI(BaseCompuGlobalAPI):
             )
 
         screen = self.get(caption_url)
-        return Screencap.model_validate_json(screen)
+        return Screencap.model_validate(screen)
 
     def get_random_screencap(self):
         """Performs a GET request to the ``api/random`` endpoint and gets a
@@ -81,7 +81,7 @@ class CompuGlobalAPI(BaseCompuGlobalAPI):
         button."""
 
         screen = self.get(self.random_url)
-        return Screencap.model_validate_json(screen)
+        return Screencap.model_validate(screen)
 
     def search(self, search_text):
         """Performs a GET request to the ``api/search?q=`` endpoint and gets a
@@ -117,7 +117,7 @@ class CompuGlobalAPI(BaseCompuGlobalAPI):
         if len(search_results) > 0:
             all_frames = []
             for result in search_results:
-                all_frames.append(Frame.model_validate_json(result, context=self.context))
+                all_frames.append(Frame.model_validate(result, context=self.context))
 
             return all_frames
 
@@ -190,7 +190,7 @@ class CompuGlobalAPI(BaseCompuGlobalAPI):
         frames = self.get(frames_url)
         all_frames = []
         for frame_result in frames.json():
-            all_frames.append(Frame.model_validate_json(frame_result, context=self.context))
+            all_frames.append(Frame.model_validate(frame_result, context=self.context))
 
         return all_frames
 
