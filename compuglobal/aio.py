@@ -2,6 +2,8 @@ from typing import Optional
 
 import aiohttp
 
+from compuglobal.models.font import FontFamily
+
 from .core import BaseCompuGlobalAPI
 from .errors import APIPageStatusError, NoSearchResultsFound
 from .models.aio_screencap import AIOScreencap
@@ -12,8 +14,15 @@ endpoints."""
 
 
 class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
-    def __init__(self, url, title, session: Optional[aiohttp.ClientSession] = None, timeout=15):
-        super().__init__(url, title)
+    def __init__(
+        self,
+        url,
+        title,
+        default_font: FontFamily = FontFamily.IMPACT,
+        session: Optional[aiohttp.ClientSession] = None,
+        timeout=15,
+    ):
+        super().__init__(url, title, default_font=default_font)
         self.timeout = aiohttp.ClientTimeout(total=timeout)
 
         self._is_auto_session = session is None
@@ -243,16 +252,24 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
 class CapitalBeatUs(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing CapitalBeatUs API endpoints (West Wing)."""
 
-    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
-        super().__init__("https://capitalbeat.us", "West Wing")
+    def __init__(
+        self,
+        default_font: FontFamily = FontFamily.IMPACT,
+        session: Optional[aiohttp.ClientSession] = None,
+    ):
+        super().__init__("https://capitalbeat.us", "West Wing", default_font=default_font, session=session)
 
 
 # Simpsons Meme/GIF generator API
 class Frinkiac(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing Frinkiac API endpoints (The Simpsons)."""
 
-    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
-        super().__init__("https://frinkiac.com", "The Simpsons")
+    def __init__(
+        self,
+        default_font: FontFamily = FontFamily.IMPACT,
+        session: Optional[aiohttp.ClientSession] = None,
+    ):
+        super().__init__("https://frinkiac.com", "The Simpsons", default_font=default_font, session=session)
 
 
 # Steamed Hams Meme/GIF generator API
@@ -260,16 +277,24 @@ class FrinkiHams(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing FriniHams API endpoints
     (The Simpsons - Steamed Hams Skit)."""
 
-    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
-        super().__init__("https://frinkihams.com", "Steamed Hams")
+    def __init__(
+        self,
+        default_font: FontFamily = FontFamily.AKBAR,
+        session: Optional[aiohttp.ClientSession] = None,
+    ):
+        super().__init__("https://frinkihams.com", "Steamed Hams", default_font=default_font, session=session)
 
 
 # 30 Rock Meme/GIF generator API
 class GoodGodLemon(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing GoodGodLemon API endpoints (30 Rock)."""
 
-    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
-        super().__init__("https://goodgodlemon.com", "30 Rock")
+    def __init__(
+        self,
+        default_font: FontFamily = FontFamily.IMPACT,
+        session: Optional[aiohttp.ClientSession] = None,
+    ):
+        super().__init__("https://goodgodlemon.com", "30 Rock", default_font=default_font, session=session)
 
 
 # Rick and Morty Meme/GIF generator API
@@ -277,13 +302,23 @@ class MasterOfAllScience(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing MasterOfAllScience API endpoints
     (Rick and Morty)."""
 
-    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
-        super().__init__("https://masterofallscience.com", "Rick and Morty")
+    def __init__(
+        self,
+        default_font: FontFamily = FontFamily.IMPACT,
+        session: Optional[aiohttp.ClientSession] = None,
+    ):
+        super().__init__(
+            "https://masterofallscience.com", "Rick and Morty", default_font=default_font, session=session
+        )
 
 
 # Futurama Meme/GIF generator API
 class Morbotron(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing Morbotron API endpoints (Futurama)."""
 
-    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
-        super().__init__("https://morbotron.com", "Futurama")
+    def __init__(
+        self,
+        default_font: FontFamily = FontFamily.FR_BOLD,
+        session: Optional[aiohttp.ClientSession] = None,
+    ):
+        super().__init__("https://morbotron.com", "Futurama", default_font=default_font, session=session)

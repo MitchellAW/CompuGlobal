@@ -1,3 +1,6 @@
+from compuglobal.models.font import FontFamily
+
+
 class BaseCompuGlobalAPI:
     """Represents an API Wrapper used for accessing the cghmc API endpoints.
 
@@ -31,7 +34,7 @@ class BaseCompuGlobalAPI:
             end for episode ``episode/start/end``.
     """
 
-    def __init__(self, url, title):
+    def __init__(self, url, title, default_font: FontFamily = FontFamily.IMPACT):
         self.URL = url
         self.title = title
         self.context = {"api": self}
@@ -47,3 +50,6 @@ class BaseCompuGlobalAPI:
         self.render_mp4_url = f"{self.URL}/api/render/mp4"  # Stream-params
         self.comic_url = f"{self.URL}/comic/img"  # comic/img?b64=
         self.frames_url = self.URL + "/{}/{}/{}"
+
+        # Default font to use for text overlays on comics/gifs
+        self.default_font = default_font

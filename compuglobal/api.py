@@ -2,6 +2,7 @@ import requests
 
 from .core import BaseCompuGlobalAPI
 from .errors import APIPageStatusError, NoSearchResultsFound
+from .models.font import FontFamily
 from .models.frame import Frame
 from .models.screencap import Screencap
 
@@ -246,16 +247,16 @@ class CompuGlobalAPI(BaseCompuGlobalAPI):
 class CapitalBeatUs(CompuGlobalAPI):
     """An API Wrapper for accessing CapitalBeatUs API endpoints (West Wing)."""
 
-    def __init__(self):
-        super().__init__("https://capitalbeat.us", "West Wing")
+    def __init__(self, default_font: FontFamily = FontFamily.IMPACT):
+        super().__init__("https://capitalbeat.us", "West Wing", default_font=default_font)
 
 
 # Simpsons Meme/GIF generator API
 class Frinkiac(CompuGlobalAPI):
     """An API Wrapper for accessing Frinkiac API endpoints (The Simpsons)."""
 
-    def __init__(self):
-        super().__init__("https://frinkiac.com", "The Simpsons")
+    def __init__(self, default_font: FontFamily = FontFamily.AKBAR):
+        super().__init__("https://frinkiac.com", "The Simpsons", default_font=FontFamily.AKBAR)
 
 
 # Steamed Hams Meme/GIF generator API
@@ -263,16 +264,16 @@ class FrinkiHams(CompuGlobalAPI):
     """An API Wrapper for accessing FriniHams API endpoints
     (The Simpsons - Steamed Hams Skit)."""
 
-    def __init__(self):
-        super().__init__("https://frinkihams.com", "Steamed Hams")
+    def __init__(self, default_font: FontFamily = FontFamily.AKBAR):
+        super().__init__("https://frinkihams.com", "Steamed Hams", default_font=default_font)
 
 
 # 30 Rock Meme/GIF generator API
 class GoodGodLemon(CompuGlobalAPI):
     """An API Wrapper for accessing GoodGodLemon API endpoints (30 Rock)."""
 
-    def __init__(self):
-        super().__init__("https://goodgodlemon.com", "30 Rock")
+    def __init__(self, default_font: FontFamily = FontFamily.IMPACT):
+        super().__init__("https://goodgodlemon.com", "30 Rock", default_font=default_font)
 
 
 # Rick and Morty Meme/GIF generator API
@@ -280,8 +281,8 @@ class MasterOfAllScience(CompuGlobalAPI):
     """An API Wrapper for accessing MasterOfAllScience API endpoints
     (Rick and Morty)."""
 
-    def __init__(self):
-        super().__init__("https://masterofallscience.com", "Rick and Morty")
+    def __init__(self, default_font: FontFamily = FontFamily.IMPACT):
+        super().__init__("https://masterofallscience.com", "Rick and Morty", default_font=default_font)
 
 
 # Futurama Meme/GIF generator API
@@ -289,5 +290,8 @@ class Morbotron(CompuGlobalAPI):
     """An API Wrapper for accessing Morbotron API endpoints
     (Futurama)."""
 
-    def __init__(self):
-        super().__init__("https://morbotron.com", "Futurama")
+    def __init__(
+        self,
+        default_font: FontFamily = FontFamily.FR_BOLD,
+    ):
+        super().__init__("https://morbotron.com", "Futurama", default_font=default_font)
