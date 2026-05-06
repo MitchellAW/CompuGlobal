@@ -1,8 +1,8 @@
-import asyncio
-from base64 import b64encode
+from typing import Optional
 
 import aiohttp
 
+from .core import BaseCompuGlobalAPI
 from .errors import APIPageStatusError, NoSearchResultsFound
 from .models.aio_screencap import AIOScreencap
 from .models.frame import Frame
@@ -11,53 +11,30 @@ from .models.frame import Frame
 endpoints."""
 
 
-class CompuGlobalAPI:
-    """Represents an API Wrapper used for accessing the cghmc API endpoints.
+class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
+    def __init__(self, url, title, session: Optional[aiohttp.ClientSession] = None, timeout=15):
+        super().__init__(url, title)
+        self.timeout = aiohttp.ClientTimeout(total=timeout)
 
-    Parameters
-    ----------
-    url: str
-        The url of the API.
-    title: str
-        The title of the tv show/movie/skit that the url leads to.
-    timeout: float
-        The timeout for websocket read.
+        self._is_auto_session = session is None
 
-    Attributes
-    ----------
-        random_url: str
-            Endpoint used for getting a random screencap.
-        caption_url: str
-            Endpoint for getting caption info using episode and timestamp
-            ``e = episode & t = timestamp``.
-        search_url: str
-            Endpoint for getting screencaps using a search query
-            ``q = search query``.
-        frames_url: str
-            Endpoint for getting all valid frames before & after an episode
-            and timestamp
-            ``episode/timestamp/before/after``.
-        nearby_url: str
-            Endpoint for getting all valid frames nearby an episode and
-            timestamp
-            ``e = episode & t = timestamp``.
-        episode_url: str
-            Endpoint for getting episode info and subtitles from start to
-            end for episode ``episode/start/end``.
-    """
+        if session is None:
+            self.session = aiohttp.ClientSession()
 
-    def __init__(self, url, title, timeout):
-        self.URL = url
-        self.title = title
-        self.timeout = timeout
+        else:
+            self.session = session
 
-        # Initalise all API endpoints
-        self.random_url = self.URL + "api/random"
-        self.caption_url = self.URL + "api/caption?e={}&t={}"
-        self.search_url = self.URL + "api/search?q="
-        self.frames_url = self.URL + "api/frames/{}/{}/{}/{}"
-        self.nearby_url = self.URL + "api/nearby?e={}&t={}"
-        self.episode_url = self.URL + "api/episode/{}/{}/{}"
+    async def get(self, url, params=None):
+        async with self.session.get(url, timeout=self.timeout, params=params) as response:
+            if response.status == 200:
+                return await response.json()
+
+            else:
+                raise APIPageStatusError(response.status, self.URL)
+
+    async def close(self):
+        if self._is_auto_session:
+            await self.session.close()
 
     async def get_screencap(self, episode=None, timestamp=None, frame=None):
         """Performs a GET request to the ``api/caption?e={}&t={}`` endpoint and
@@ -99,17 +76,12 @@ class CompuGlobalAPI:
 
         else:
             raise TypeError(
-                "Expected str and int or compuglobal.Frame, "
-                "but received {}, {} and {} instead".format(episode, timestamp, frame)
+                "Expected str and int or compuglobal.Frame, but received "
+                f"{type(episode)}, {type(timestamp)} and {type(frame)} instead"
             )
 
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(caption_url, timeout=self.timeout) as screen:
-                if screen.status == 200:
-                    return AIOScreencap(self, await screen.json())
-
-                else:
-                    raise APIPageStatusError(screen.status, self.URL)
+        caption = await self.get(caption_url)
+        return AIOScreencap.model_validate_json(caption, context=self.context)
 
     async def get_random_screencap(self):
         """Performs a GET request to the ``api/random`` endpoint and gets a
@@ -129,13 +101,8 @@ class CompuGlobalAPI:
         ----
         Used for getting a random screencap when clicking the "RANDOM"
         button."""
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(self.random_url, timeout=self.timeout) as screen:
-                if screen.status == 200:
-                    return AIOScreencap(self, await screen.json())
-
-                else:
-                    raise APIPageStatusError(screen.status, self.URL)
+        random = await self.get(self.random_url)
+        return AIOScreencap.model_validate_json(random, context=self.context)
 
     async def search(self, search_text):
         """Performs a GET request to the ``api/search?q=`` endpoint and gets a
@@ -165,26 +132,21 @@ class CompuGlobalAPI:
         ----
         Used for displaying all the search results and their screencaps."""
 
-        search_url = self.search_url + search_text.replace(" ", "+")
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(search_url, timeout=self.timeout) as search:
-                if search.status == 200:
-                    search_results = await search.json()
+        params = {"q": search_text.replace(" ", "+")}
 
-                    if len(search_results) > 0:
-                        all_frames = []
-                        for result in search_results:
-                            all_frames.append(Frame(self, result))
+        search_results = await self.get(self.search_url, params=params)
 
-                        return all_frames
+        if len(search_results) > 0:
+            all_frames = []
+            for result in search_results:
+                all_frames.append(Frame.model_validate_json(result, context=self.context))
 
-                    else:
-                        raise NoSearchResultsFound()
+            return all_frames
 
-                else:
-                    raise APIPageStatusError(search.status, self.URL)
+        else:
+            raise NoSearchResultsFound()
 
-    async def search_for_screencap(self, search_text):
+    async def search_for_screencap(self, search_text) -> AIOScreencap:
         """Performs a GET request to the ``api/search?q=`` endpoint using
         :func:`search` to get a list of search results using search_text
         and gets a screencap using the episode and timestamp of the first
@@ -210,9 +172,8 @@ class CompuGlobalAPI:
             search results found using search_text."""
 
         search_results = await self.search(search_text)
-        if len(search_results) > 0:
-            result = search_results[0]
-            return await self.get_screencap(result.key, result.timestamp)
+        result = search_results[0]
+        return await self.get_screencap(result.key, result.timestamp)
 
     async def get_frames(self, episode, timestamp, before, after):
         """Performs a GET request to the
@@ -248,125 +209,13 @@ class CompuGlobalAPI:
         Used for displaying the valid frames available for the gifmaker."""
 
         frames_url = self.frames_url.format(episode, timestamp, before, after)
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(frames_url, timeout=self.timeout) as frames:
-                if frames.status == 200:
-                    all_frames = []
-                    for frame_result in await frames.json():
-                        all_frames.append(Frame(self, frame_result))
+        frames = await self.get(frames_url)
 
-                    return all_frames
+        all_frames = []
+        for frame_result in frames:
+            all_frames.append(Frame.model_validate_json(frame_result))
 
-                else:
-                    raise APIPageStatusError(frames.status, self.URL)
-
-    def format_caption(self, caption, max_lines=4, max_chars=24, shorten=True):
-        """Loops through the caption and formats it using max_lines and
-        max_chars and returns the formatted outcome.
-
-        Parameters
-        ----------
-        caption: str
-            The caption to format.
-        max_lines: int, optional
-            The maximum number of lines of captions allowed.
-        max_chars: int, optional
-            The maximum number of characters allowed per line.
-        shorten: bool, optional
-            Whether to shorten the caption at its latest
-            sentence ending.
-
-        Returns
-        -------
-        str
-            The formatted caption."""
-        char_count = 0
-        line_count = 0
-        formatted_caption = ""
-
-        # Loop through and format to suit max_lines and max_chars per line
-        for word in caption.split():
-            char_count += len(word) + 1
-
-            if char_count < max_chars and line_count < max_lines:
-                formatted_caption += " " + word
-
-            elif line_count < max_lines:
-                char_count = len(word) + 1
-                line_count += 1
-                if line_count < max_lines:
-                    formatted_caption += "\n" + " " + word
-
-        # Shorten caption at end of sentences if set to True
-        if shorten:
-            formatted_caption = self.shorten_caption(formatted_caption)
-
-        return formatted_caption
-
-    @staticmethod
-    def encode_caption(caption):
-        """Loops through the caption and formats it using max_lines and
-        max_chars and finally encodes it in base64 for use in the url.
-
-        Parameters
-        ----------
-        caption: str
-            The caption to format and encode.
-
-        Returns
-        -------
-        str
-            The caption encoded in base64."""
-
-        encoded = str.encode(caption, "utf-8")
-        b64encoded = b64encode(encoded, altchars=b"__")
-
-        return b64encoded.decode("utf-8")
-
-    @staticmethod
-    def shorten_caption(caption):
-        """Loops through the caption and trims it at its latest sentence
-        ending (., !, ? or ♪).
-
-        Parameters
-        ----------
-        caption: str
-            The caption to shorten/trim.
-
-        Returns
-        -------
-        caption: str
-            The shortened caption, ending at its latest sentence ending."""
-
-        for i in range(len(caption) - 1, 0, -1):
-            if caption[i] == "." or caption[i] == "!" or caption[i] == "?":
-                return caption[: i + 1]
-
-            elif caption[i] == "♪":
-                return caption[:i]
-
-        return caption
-
-    @staticmethod
-    def json_to_caption(subtitles_json):
-        """Loops through the subtitles of the json response, concatenates all
-        lines and returns all subtitles combined as a complete caption.
-
-        Parameters
-        ----------
-        subtitles_json: dict
-            The json response containing the subtitles of
-            the screencap.
-
-        Returns
-        -------
-        caption: str
-            The subtitles combined as a complete caption."""
-        caption = ""
-        for quote in subtitles_json["Subtitles"]:
-            caption += quote["Content"] + " "
-
-        return caption
+        return all_frames
 
     async def generate_gif(self, gif_url):
         """Performs a GET request using gif_url and returns the direct url
@@ -387,64 +236,54 @@ class CompuGlobalAPI:
         APIPageStatusError
             Raises an exception if the status code of the request is not 200."""
 
-        try:
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get(gif_url, timeout=self.timeout) as gif_loader:
-                    if gif_loader.status == 200:
-                        return gif_loader.url
-
-                    else:
-                        raise APIPageStatusError(gif_loader.status, self.URL)
-
-        except asyncio.TimeoutError:
-            return gif_url
+        raise NotImplementedError("Coming soon.")
 
 
 # West Wing Meme/GIF generator API
-class CapitalBeatUs(CompuGlobalAPI):
+class CapitalBeatUs(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing CapitalBeatUs API endpoints (West Wing)."""
 
-    def __init__(self, timeout=15):
-        super().__init__("https://capitalbeat.us/", "West Wing", timeout)
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
+        super().__init__("https://capitalbeat.us", "West Wing")
 
 
 # Simpsons Meme/GIF generator API
-class Frinkiac(CompuGlobalAPI):
+class Frinkiac(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing Frinkiac API endpoints (The Simpsons)."""
 
-    def __init__(self, timeout=15):
-        super().__init__("https://frinkiac.com/", "The Simpsons", timeout)
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
+        super().__init__("https://frinkiac.com", "The Simpsons")
 
 
 # Steamed Hams Meme/GIF generator API
-class FrinkiHams(CompuGlobalAPI):
+class FrinkiHams(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing FriniHams API endpoints
     (The Simpsons - Steamed Hams Skit)."""
 
-    def __init__(self, timeout=15):
-        super().__init__("https://frinkihams.com/", "Steamed Hams", timeout)
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
+        super().__init__("https://frinkihams.com", "Steamed Hams")
 
 
 # 30 Rock Meme/GIF generator API
-class GoodGodLemon(CompuGlobalAPI):
+class GoodGodLemon(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing GoodGodLemon API endpoints (30 Rock)."""
 
-    def __init__(self, timeout=15):
-        super().__init__("https://goodgodlemon.com/", "30 Rock", timeout)
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
+        super().__init__("https://goodgodlemon.com", "30 Rock")
 
 
 # Rick and Morty Meme/GIF generator API
-class MasterOfAllScience(CompuGlobalAPI):
+class MasterOfAllScience(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing MasterOfAllScience API endpoints
     (Rick and Morty)."""
 
-    def __init__(self, timeout=15):
-        super().__init__("https://masterofallscience.com/", "Rick and Morty", timeout)
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
+        super().__init__("https://masterofallscience.com", "Rick and Morty")
 
 
 # Futurama Meme/GIF generator API
-class Morbotron(CompuGlobalAPI):
+class Morbotron(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing Morbotron API endpoints (Futurama)."""
 
-    def __init__(self, timeout=15):
-        super().__init__("https://morbotron.com/", "Futurama", timeout)
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
+        super().__init__("https://morbotron.com", "Futurama")
