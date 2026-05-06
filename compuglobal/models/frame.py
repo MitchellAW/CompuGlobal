@@ -1,4 +1,16 @@
-class Frame:
+from pydantic import BaseModel, Field, model_validator
+
+from compuglobal.core import BaseCompuGlobalAPI
+
+
+class Frame(BaseModel):
+
+    id: int = Field(alias="Id")
+    key: str = Field("Episode")
+    timestamp: int = Field(alias="Timestamp", ge=0)
+    api: BaseCompuGlobalAPI
+    image_url: str = ""
+
     """Represents a single frame of a TVShow/Movie/Skit generated using an
     instance of CompuGlobalAPI.
 
@@ -23,13 +35,10 @@ class Frame:
             The direct url for the frame image.
     """
 
-    def __init__(self, api, frame_json):
-        self.json = frame_json
-        self.api = api
-        self.id = frame_json["Id"]
-        self.key = frame_json["Episode"]
-        self.timestamp = frame_json["Timestamp"]
-        self.image_url = api.URL + "img/{}/{}.jpg".format(self.key, self.timestamp)
+    @model_validator(mode="after")
+    def set_image_url(self):
+        self.image_url = f"{self.api.URL}img/{self.key}/{self.timestamp}.jpg"
+        return self
 
     def get_meme_url(self, caption=None):
         """Encodes the caption with base64 and then returns the meme url for
@@ -44,13 +53,7 @@ class Frame:
         -------
         str
             The meme url for the frame with an embedded caption."""
-
-        if caption is None:
-            caption = self.api.format_caption(caption, max_lines=4, max_chars=24, shorten=True)
-
-        b64_caption = self.api.encode_caption(caption)
-
-        return self.api.URL + "meme/{}/{}.jpg?b64lines={}".format(self.key, self.timestamp, b64_caption)
+        raise NotImplementedError("Coming soon.")
 
     def get_real_timestamp(self):
         """Gets a readable timestamp for the frame in format "mm:ss"

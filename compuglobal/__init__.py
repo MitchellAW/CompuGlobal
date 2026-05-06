@@ -1,8 +1,8 @@
 from . import aio, api
-from .aio_screencap import AIOScreencap
 from .errors import APIPageStatusError, NoSearchResultsFound
-from .frame import Frame
-from .screencap import Screencap
+from .models.aio_screencap import AIOScreencap
+from .models.frame import Frame
+from .models.screencap import Screencap
 
 __title__ = "compuglobal"
 __author__ = "MitchellAW"

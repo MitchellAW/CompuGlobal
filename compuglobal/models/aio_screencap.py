@@ -28,16 +28,7 @@ class AIOScreencap(Screencap):
         ----
         Defaults gif duration to  ~7 seconds (7000ms)."""
 
-        if caption is None:
-            caption = self.api.format_caption(self.caption, max_lines=4, max_chars=24, shorten=True)
-
-        b64_caption = self.api.encode_caption(caption)
-
-        # Get start and end frame numbers for gif
-        frames = await self.api.get_frames(self.key, self.timestamp, int(before), int(after))
-        start = frames[0].timestamp
-        end = frames[-1].timestamp
-        return self.gif_url.format(self.key, start, end, b64_caption)
+        raise NotImplementedError("Coming soon.")
 
     async def get_mp4_url(self, caption=None, before=3000, after=4000):
         """Gets the timestamps of the frames before and after the timestamp
@@ -65,16 +56,7 @@ class AIOScreencap(Screencap):
         ----
         Defaults mp4 duration to  ~7 seconds (7000ms)."""
 
-        if caption is None:
-            caption = self.api.format_caption(self.caption, max_lines=4, max_chars=24, shorten=True)
-
-        b64_caption = self.api.encode_caption(caption)
-
-        # Get start and end frame numbers for gif
-        frames = await self.api.get_frames(self.key, self.timestamp, int(before), int(after))
-        start = frames[0].timestamp
-        end = frames[-1].timestamp
-        return self.mp4_url.format(self.key, start, end, b64_caption)
+        raise NotImplementedError("Coming soon.")
 
     def __str__(self):
-        return str(self.frame) + ": " + self.title + " (" + self.get_real_timestamp() + ")"
+        return str(self.frame) + ": " + self.frame.key + " (" + self.get_real_timestamp() + ")"

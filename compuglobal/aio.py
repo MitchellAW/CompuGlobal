@@ -3,9 +3,9 @@ from base64 import b64encode
 
 import aiohttp
 
-from .aio_screencap import AIOScreencap
 from .errors import APIPageStatusError, NoSearchResultsFound
-from .frame import Frame
+from .models.aio_screencap import AIOScreencap
+from .models.frame import Frame
 
 """Contains the async API Wrappers used for accessing all the cghmc API
 endpoints."""

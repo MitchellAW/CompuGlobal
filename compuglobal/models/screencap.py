@@ -1,7 +1,22 @@
+from typing import List
+
+from pydantic import BaseModel, Field
+
+from ..core import BaseCompuGlobalAPI
+from .episode import Episode
 from .frame import Frame
+from .subtitle import Subtitle
 
 
-class Screencap:
+class Screencap(BaseModel):
+    episode: Episode = Field(alias="Episode")
+    frame: Frame = Field(alias="Frame")
+    subtitles: List[Subtitle] = Field(alias="Subtitles")
+    nearby: List[Frame] = Field(alias="Nearby")
+    min_timestamp: int = Field(alias="MinTimestamp", ge=0)
+    max_timestamp: int = Field(alias="MaxTimestamp", ge=0)
+    api: BaseCompuGlobalAPI
+
     """Represents a screencap of a TVShow/Movie/Skit generated using an instance
     of CompuGlobalAPI.
 
@@ -38,36 +53,7 @@ class Screencap:
             Url to the wiki of the episode.
         caption: str
             The caption/subtitles during the screencap.
-        gif_url: str
-            The gif url format for the screencap embedded with a caption.
-        mp4_url: str
-            The mp4 url format for the screencap embedded with a caption.
     """
-
-    def __init__(self, api, json: dict):
-        self.api = api
-        self.json = json
-
-        # Initialise Frame of Screencap
-        self.frame = Frame(self.api, self.json["Frame"])
-
-        # Inititalise Episode Information, setting title, director, writer
-        # and wiki url to None if they are empty
-        self.key = self.frame.key
-        self.timestamp = self.frame.timestamp
-        self.id = self.json["Episode"]["Id"]
-        self.episode = self.json["Episode"]["EpisodeNumber"]
-        self.season = self.json["Episode"]["Season"]
-        self.title = self.get_value(self.json["Episode"]["Title"])
-        self.director = self.get_value(self.json["Episode"]["Director"])
-        self.writer = self.get_value(self.json["Episode"]["Writer"])
-        self.air_date = self.json["Episode"]["OriginalAirDate"]
-        self.wiki_url = self.get_value(self.json["Episode"]["WikiLink"])
-
-        # Initalise caption and urls
-        self.caption = self.api.json_to_caption(self.json)
-        self.gif_url = self.api.URL + "gif/{}/{}/{}.gif?b64lines={}"
-        self.mp4_url = self.api.URL + "mp4/{}/{}/{}.mp4?b64lines={}"
 
     # Returns "" if empty string
     @staticmethod
@@ -112,8 +98,8 @@ class Screencap:
         str
             The meme url for the screencap with an embedded caption."""
 
-        if caption is None:
-            caption = self.caption
+        # if caption is None:
+        #     caption = self.caption
 
         return self.frame.get_meme_url(caption)
 
@@ -142,16 +128,7 @@ class Screencap:
         Note
         ----
         Defaults gif duration to  ~7 seconds (7000ms)."""
-        if caption is None:
-            caption = self.api.format_caption(self.caption, max_lines=4, max_chars=24, shorten=True)
-
-        b64_caption = self.api.encode_caption(caption)
-
-        # Get start and end frames for gif
-        frames = self.api.get_frames(self.frame.key, self.frame.timestamp, int(before), int(after))
-        start = frames[0].timestamp
-        end = frames[-1].timestamp
-        return self.gif_url.format(self.frame.key, start, end, b64_caption)
+        raise NotImplementedError("Coming soon.")
 
     # Gets the mp4 url for the screencap captioned with subtitles, defaults gif
     # length to < ~7000ms, before + after must not exceed 10,000ms (10 sec.)
@@ -180,16 +157,7 @@ class Screencap:
         Note
         ----
         Defaults mp4 duration to  ~7 seconds (7000ms)."""
-        if caption is None:
-            caption = self.api.format_caption(self.caption, max_lines=4, max_chars=24, shorten=True)
-
-        b64_caption = self.api.encode_caption(caption)
-
-        # Get start and end frames for mp4
-        frames = self.api.get_frames(self.frame.key, self.frame.timestamp, int(before), int(after))
-        start = frames[0].timestamp
-        end = frames[-1].timestamp
-        return self.mp4_url.format(self.frame.key, start, end, b64_caption)
+        raise NotImplementedError("Coming soon.")
 
     def __str__(self):
-        return str(self.frame) + ": " + self.title + " (" + self.frame.get_real_timestamp() + ")"
+        return str(self.frame) + ": " + self.frame.key + " (" + self.frame.get_real_timestamp() + ")"
