@@ -16,7 +16,7 @@ class CompuGlobalAPI(BaseCompuGlobalAPI):
             return response.json()
 
         else:
-            raise APIPageStatusError(response.status_code, self.URL)
+            raise APIPageStatusError(response.status_code, self.url)
 
     def get_screencap(self, episode=None, timestamp=None, frame=None):
         """Performs a GET request to the ``api/caption?e={}&t={}`` endpoint and

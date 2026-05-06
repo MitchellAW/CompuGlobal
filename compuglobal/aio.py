@@ -39,7 +39,7 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
                 return await response.json()
 
             else:
-                raise APIPageStatusError(response.status, self.URL)
+                raise APIPageStatusError(response.status, self.url)
 
     async def close(self):
         if self._is_auto_session:

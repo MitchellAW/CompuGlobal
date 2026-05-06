@@ -35,21 +35,21 @@ class BaseCompuGlobalAPI:
     """
 
     def __init__(self, url, title, default_font: FontFamily = FontFamily.IMPACT):
-        self.URL = url
+        self.url = url
         self.title = title
         self.context = {"api": self}
 
         # Initalise all API endpoints
-        self.random_url = self.URL + "api/random"
-        self.caption_url = f"{self.URL}/api/caption"  # api/caption?e=S01E01&t=9551&nearby=1
-        self.search_url = f"{self.URL}/api/search"
-        self.episode_url = self.URL + "api/episode"  # api/episode/S01E01/0/99999999
-        self.navigator_url = f"{self.URL}/api/navigator"
-        self.transcript_url = f"{self.URL}/api/transcript"  # api/transcript/?e=S01E01&t=9551
-        self.render_gif_url = f"{self.URL}/api/render/gif/stream"  # Stream-params
-        self.render_mp4_url = f"{self.URL}/api/render/mp4"  # Stream-params
-        self.comic_url = f"{self.URL}/comic/img"  # comic/img?b64=
-        self.frames_url = self.URL + "/{}/{}/{}"
+        self.random_url = self.url + "api/random"
+        self.caption_url = f"{self.url}/api/caption"  # api/caption?e=S01E01&t=9551&nearby=1
+        self.search_url = f"{self.url}/api/search"
+        self.episode_url = self.url + "api/episode"  # api/episode/S01E01/0/99999999
+        self.navigator_url = f"{self.url}/api/navigator"
+        self.transcript_url = f"{self.url}/api/transcript"  # api/transcript/?e=S01E01&t=9551
+        self.render_gif_url = f"{self.url}/api/render/gif/stream"  # Stream-params
+        self.render_mp4_url = f"{self.url}/api/render/mp4"  # Stream-params
+        self.comic_url = f"{self.url}/comic/img"  # comic/img?b64=
+        self.frames_url = self.url + "/{}/{}/{}"
 
         # Default font to use for text overlays on comics/gifs
         self.default_font = default_font

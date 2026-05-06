@@ -37,7 +37,7 @@ class Frame(BaseModel):
 
     @model_validator(mode="after")
     def set_image_url(self):
-        self.image_url = f"{self.api.URL}img/{self.key}/{self.timestamp}.jpg"
+        self.image_url = f"{self.api.url}img/{self.key}/{self.timestamp}.jpg"
         return self
 
     def get_meme_url(self, caption=None):
