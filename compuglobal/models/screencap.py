@@ -1,21 +1,20 @@
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-from ..core import BaseCompuGlobalAPI
+from .base import BaseCompuGlobalModel
 from .episode import Episode
 from .frame import Frame
 from .subtitle import Subtitle
 
 
-class Screencap(BaseModel):
+class Screencap(BaseCompuGlobalModel):
     episode: Episode = Field(alias="Episode")
     frame: Frame = Field(alias="Frame")
     subtitles: List[Subtitle] = Field(alias="Subtitles")
     nearby: List[Frame] = Field(alias="Nearby")
     min_timestamp: int = Field(alias="MinTimestamp", ge=0)
     max_timestamp: int = Field(alias="MaxTimestamp", ge=0)
-    api: BaseCompuGlobalAPI
 
     """Represents a screencap of a TVShow/Movie/Skit generated using an instance
     of CompuGlobalAPI.
