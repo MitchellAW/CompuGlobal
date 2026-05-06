@@ -3,12 +3,11 @@ from base64 import b64encode
 
 import aiohttp
 
-from .errors import *
 from .aio_screencap import AIOScreencap
+from .errors import APIPageStatusError, NoSearchResultsFound
 from .frame import Frame
 
-
-"""Contains the async API Wrappers used for accessing all the cghmc API 
+"""Contains the async API Wrappers used for accessing all the cghmc API
 endpoints."""
 
 
@@ -45,19 +44,20 @@ class CompuGlobalAPI:
         episode_url: str
             Endpoint for getting episode info and subtitles from start to
             end for episode ``episode/start/end``.
-        """
+    """
+
     def __init__(self, url, title, timeout):
         self.URL = url
         self.title = title
         self.timeout = timeout
 
         # Initalise all API endpoints
-        self.random_url = self.URL + 'api/random'
-        self.caption_url = self.URL + 'api/caption?e={}&t={}'
-        self.search_url = self.URL + 'api/search?q='
-        self.frames_url = self.URL + 'api/frames/{}/{}/{}/{}'
-        self.nearby_url = self.URL + 'api/nearby?e={}&t={}'
-        self.episode_url = self.URL + 'api/episode/{}/{}/{}'
+        self.random_url = self.URL + "api/random"
+        self.caption_url = self.URL + "api/caption?e={}&t={}"
+        self.search_url = self.URL + "api/search?q="
+        self.frames_url = self.URL + "api/frames/{}/{}/{}/{}"
+        self.nearby_url = self.URL + "api/nearby?e={}&t={}"
+        self.episode_url = self.URL + "api/episode/{}/{}/{}"
 
     async def get_screencap(self, episode=None, timestamp=None, frame=None):
         """Performs a GET request to the ``api/caption?e={}&t={}`` endpoint and
@@ -95,13 +95,13 @@ class CompuGlobalAPI:
             caption_url = self.caption_url.format(episode, timestamp)
 
         elif isinstance(frame, Frame):
-            caption_url = self.caption_url.format(frame.key,
-                                                  frame.timestamp)
+            caption_url = self.caption_url.format(frame.key, frame.timestamp)
 
         else:
-            raise TypeError('Expected str and int or compuglobal.Frame, '
-                            'but received {}, {} and {} instead'.
-                            format(episode, timestamp, frame))
+            raise TypeError(
+                "Expected str and int or compuglobal.Frame, "
+                "but received {}, {} and {} instead".format(episode, timestamp, frame)
+            )
 
         async with aiohttp.ClientSession() as cs:
             async with cs.get(caption_url, timeout=self.timeout) as screen:
@@ -165,7 +165,7 @@ class CompuGlobalAPI:
         ----
         Used for displaying all the search results and their screencaps."""
 
-        search_url = self.search_url + search_text.replace(' ', '+')
+        search_url = self.search_url + search_text.replace(" ", "+")
         async with aiohttp.ClientSession() as cs:
             async with cs.get(search_url, timeout=self.timeout) as search:
                 if search.status == 200:
@@ -282,20 +282,20 @@ class CompuGlobalAPI:
             The formatted caption."""
         char_count = 0
         line_count = 0
-        formatted_caption = ''
+        formatted_caption = ""
 
         # Loop through and format to suit max_lines and max_chars per line
         for word in caption.split():
             char_count += len(word) + 1
 
             if char_count < max_chars and line_count < max_lines:
-                formatted_caption += ' ' + word
+                formatted_caption += " " + word
 
             elif line_count < max_lines:
                 char_count = len(word) + 1
                 line_count += 1
                 if line_count < max_lines:
-                    formatted_caption += '\n' + ' ' + word
+                    formatted_caption += "\n" + " " + word
 
         # Shorten caption at end of sentences if set to True
         if shorten:
@@ -318,10 +318,10 @@ class CompuGlobalAPI:
         str
             The caption encoded in base64."""
 
-        encoded = str.encode(caption, 'utf-8')
-        b64encoded = b64encode(encoded, altchars=b'__')
+        encoded = str.encode(caption, "utf-8")
+        b64encoded = b64encode(encoded, altchars=b"__")
 
-        return b64encoded.decode('utf-8')
+        return b64encoded.decode("utf-8")
 
     @staticmethod
     def shorten_caption(caption):
@@ -339,10 +339,10 @@ class CompuGlobalAPI:
             The shortened caption, ending at its latest sentence ending."""
 
         for i in range(len(caption) - 1, 0, -1):
-            if caption[i] == '.' or caption[i] == '!' or caption[i] == '?':
-                return caption[:i + 1]
+            if caption[i] == "." or caption[i] == "!" or caption[i] == "?":
+                return caption[: i + 1]
 
-            elif caption[i] == '♪':
+            elif caption[i] == "♪":
                 return caption[:i]
 
         return caption
@@ -362,9 +362,9 @@ class CompuGlobalAPI:
         -------
         caption: str
             The subtitles combined as a complete caption."""
-        caption = ''
-        for quote in subtitles_json['Subtitles']:
-            caption += quote['Content'] + ' '
+        caption = ""
+        for quote in subtitles_json["Subtitles"]:
+            caption += quote["Content"] + " "
 
         return caption
 
@@ -403,43 +403,48 @@ class CompuGlobalAPI:
 # West Wing Meme/GIF generator API
 class CapitalBeatUs(CompuGlobalAPI):
     """An API Wrapper for accessing CapitalBeatUs API endpoints (West Wing)."""
+
     def __init__(self, timeout=15):
-        super().__init__('https://capitalbeat.us/', 'West Wing', timeout)
+        super().__init__("https://capitalbeat.us/", "West Wing", timeout)
 
 
 # Simpsons Meme/GIF generator API
 class Frinkiac(CompuGlobalAPI):
     """An API Wrapper for accessing Frinkiac API endpoints (The Simpsons)."""
+
     def __init__(self, timeout=15):
-        super().__init__('https://frinkiac.com/', 'The Simpsons', timeout)
+        super().__init__("https://frinkiac.com/", "The Simpsons", timeout)
 
 
 # Steamed Hams Meme/GIF generator API
 class FrinkiHams(CompuGlobalAPI):
     """An API Wrapper for accessing FriniHams API endpoints
     (The Simpsons - Steamed Hams Skit)."""
+
     def __init__(self, timeout=15):
-        super().__init__('https://frinkihams.com/', 'Steamed Hams', timeout)
+        super().__init__("https://frinkihams.com/", "Steamed Hams", timeout)
 
 
 # 30 Rock Meme/GIF generator API
 class GoodGodLemon(CompuGlobalAPI):
     """An API Wrapper for accessing GoodGodLemon API endpoints (30 Rock)."""
+
     def __init__(self, timeout=15):
-        super().__init__('https://goodgodlemon.com/', '30 Rock', timeout)
+        super().__init__("https://goodgodlemon.com/", "30 Rock", timeout)
 
 
 # Rick and Morty Meme/GIF generator API
 class MasterOfAllScience(CompuGlobalAPI):
     """An API Wrapper for accessing MasterOfAllScience API endpoints
     (Rick and Morty)."""
+
     def __init__(self, timeout=15):
-        super().__init__('https://masterofallscience.com/', 'Rick and Morty',
-                         timeout)
+        super().__init__("https://masterofallscience.com/", "Rick and Morty", timeout)
 
 
 # Futurama Meme/GIF generator API
 class Morbotron(CompuGlobalAPI):
     """An API Wrapper for accessing Morbotron API endpoints (Futurama)."""
+
     def __init__(self, timeout=15):
-        super().__init__('https://morbotron.com/', 'Futurama', timeout)
+        super().__init__("https://morbotron.com/", "Futurama", timeout)
