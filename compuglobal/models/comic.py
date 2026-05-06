@@ -31,14 +31,9 @@ class ComicOverlay(BaseModel):
 
 
 @staticmethod
-def build_overlays(subtitles: List[Subtitle]):
-    return [ComicOverlay(t=subtitle.content) for subtitle in subtitles]
-
-
-@staticmethod
-def build_overlay(subtitles: List[Subtitle]):
+def build_overlay(subtitles: List[Subtitle], font: FontFamily = FontFamily.IMPACT):
     content = " ".join(subtitle.content for subtitle in subtitles)
-    return [ComicOverlay(t=content)]
+    return [ComicOverlay(t=content, f=font)]
 
 
 class ComicPanel(BaseModel):

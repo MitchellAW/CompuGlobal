@@ -266,7 +266,7 @@ class Frinkiac(AsyncCompuGlobalAPI):
 
     def __init__(
         self,
-        default_font: FontFamily = FontFamily.IMPACT,
+        default_font: FontFamily = FontFamily.AKBAR,
         session: Optional[aiohttp.ClientSession] = None,
     ):
         super().__init__("https://frinkiac.com", "The Simpsons", default_font=default_font, session=session)

@@ -9,7 +9,6 @@ from .comic import (
     ComicPanel,
     ComicStrip,
     build_overlay,
-    build_overlays,
 )
 from .episode import Episode
 from .frame import Frame
@@ -114,7 +113,7 @@ class Screencap(BaseCompuGlobalModel):
         if len(subtitles) == 0:
             subtitles = self.subtitles
 
-        overlays = build_overlay(subtitles)
+        overlays = build_overlay(subtitles, font=self._api.default_font)
         panel = ComicPanel(e=self.frame.key, ts=self.frame.timestamp, o=overlays)
 
         b64 = panel.get_encoded()
@@ -130,7 +129,7 @@ class Screencap(BaseCompuGlobalModel):
 
         panels = []
         for subtitle in subtitles:
-            overlay = ComicOverlay(t=subtitle.content)
+            overlay = ComicOverlay(t=subtitle.content, f=self._api.default_font)
             panel = ComicPanel(e=subtitle.key, ts=subtitle.representative_timestamp, o=[overlay])
             panels.append(panel)
 
