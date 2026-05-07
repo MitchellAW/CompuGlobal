@@ -49,6 +49,7 @@ class BaseCompuGlobalAPI:
         self.render_gif_url = f"{self.url}/api/render/gif/stream"  # Stream-params
         self.render_mp4_url = f"{self.url}/api/render/mp4"  # Stream-params
         self.comic_url = f"{self.url}/comic/img"  # comic/img?b64=
+        self.image_url = "/img/{}/{}.jpg"
         self.frames_url = self.url + "/{}/{}/{}"
 
         # Default font to use for text overlays on comics/gifs

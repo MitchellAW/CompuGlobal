@@ -1,4 +1,4 @@
-from pydantic import Field, model_validator
+from pydantic import Field
 
 from .base import BaseCompuGlobalModel
 
@@ -8,7 +8,6 @@ class Frame(BaseCompuGlobalModel):
     id: int = Field(alias="Id")
     key: str = Field(alias="Episode")
     timestamp: int = Field(alias="Timestamp", ge=0)
-    image_url: str = ""
 
     """Represents a single frame of a TVShow/Movie/Skit generated using an
     instance of CompuGlobalAPI.
@@ -34,10 +33,9 @@ class Frame(BaseCompuGlobalModel):
             The direct url for the frame image.
     """
 
-    @model_validator(mode="after")
-    def set_image_url(self):
-        self.image_url = f"{self._api.url}/img/{self.key}/{self.timestamp}.jpg"
-        return self
+    @property
+    def image_url(self) -> str:
+        return self._api.image_url.format(self.key, self.timestamp)
 
     def get_meme_url(self, caption=None):
         """Encodes the caption with base64 and then returns the meme url for
