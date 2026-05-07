@@ -1,13 +1,16 @@
+import json
 from typing import List, Optional
 
 import aiohttp
 
-from compuglobal.models.font import FontFamily
-
 from .core import BaseCompuGlobalAPI
 from .errors import APIPageStatusError, NoSearchResultsFound
 from .models.aio_screencap import AIOScreencap
+from .models.font import FontFamily
 from .models.frame import Frame
+from .models.screencap import Screencap
+from .models.stream import Stream, build_stream_overlays
+from .models.subtitle import Subtitle
 
 """Contains the async API Wrappers used for accessing all the cghmc API
 endpoints."""
@@ -37,6 +40,14 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         async with self.session.get(url, timeout=self.timeout, params=params) as response:
             if response.status == 200:
                 return await response.json()
+
+            else:
+                raise APIPageStatusError(response.status, self.url)
+
+    async def post_data(self, url, data=None):
+        async with self.session.post(url, data=data) as response:
+            if response.status == 200:
+                return await response.text()
 
             else:
                 raise APIPageStatusError(response.status, self.url)
@@ -225,6 +236,35 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
             all_frames.append(Frame.model_validate(frame_result))
 
         return all_frames
+
+    async def get_gif_url(self, screencap: Screencap, subtitles: List[Subtitle] = []):
+        if len(subtitles) == 0:
+            subtitles = screencap.subtitles
+
+        if len(subtitles) > 4:
+            subtitles = subtitles[:4]
+
+        min_timestamp = min(subtitle.start_timestamp for subtitle in subtitles)
+        max_timestamp = max(subtitle.end_timestamp for subtitle in subtitles)
+
+        overlays = build_stream_overlays(subtitles, min_timestamp=min_timestamp, font=self.default_font)
+
+        stream = Stream(
+            episode=screencap.episode.key, start=min_timestamp, end=max_timestamp, overlays=overlays, check_only=False
+        )
+        dump = stream.model_dump(by_alias=True)
+        json_payload = json.dumps([dump], separators=(",", ":"))
+
+        print(json_payload)
+
+        response = await self.post_data(self.render_gif_url, data=json_payload)
+
+        for line in response.splitlines():
+            data = json.loads(line)
+            if "url" in data:
+                return f"{self.url}/{data.get("url")}"
+
+        raise APIPageStatusError(400, self.url)
 
     async def generate_gif(self, gif_url):
         """Performs a GET request using gif_url and returns the direct url
