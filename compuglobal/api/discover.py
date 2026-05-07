@@ -6,7 +6,7 @@ from ..models.screencap import Screencap
 from .base import EndpointBase
 from .client import CompuGlobalAPIClient
 from .config import CompuGlobalAPIConfig
-from .endpoints import Endpoint, RequestMethod
+from .endpoint import Endpoint, RequestMethod
 
 
 class DiscoverAPI(EndpointBase):

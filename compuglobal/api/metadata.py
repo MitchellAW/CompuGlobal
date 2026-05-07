@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from .base import EndpointBase
-from .endpoints import Endpoint, RequestMethod
+from .endpoint import Endpoint, RequestMethod
 
 
 @dataclass

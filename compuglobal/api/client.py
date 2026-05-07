@@ -1,7 +1,7 @@
 from aiohttp import ClientSession, ClientTimeout
 
 from ..errors import APIPageStatusError
-from .endpoints import PreparedRequest, RequestMethod
+from .endpoint import PreparedRequest, RequestMethod
 
 
 class CompuGlobalAPIClient:

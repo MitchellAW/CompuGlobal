@@ -7,7 +7,7 @@ from ..models.screencap import Screencap
 from ..models.stream import Stream, build_stream_overlays
 from ..models.subtitle import Subtitle
 from .base import EndpointBase
-from .endpoints import Endpoint, RequestMethod
+from .endpoint import Endpoint, RequestMethod
 
 
 class MediaAPI(EndpointBase):
