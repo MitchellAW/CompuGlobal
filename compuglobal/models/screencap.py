@@ -1,14 +1,13 @@
 from typing import List
 
-from pydantic import Field
+from pydantic import BaseModel, Field
 
-from .base import BaseCompuGlobalModel
 from .episode import Episode
 from .frame import Frame
 from .subtitle import Subtitle
 
 
-class Screencap(BaseCompuGlobalModel):
+class Screencap(BaseModel):
     episode: Episode = Field(alias="Episode")
     frame: Frame = Field(alias="Frame")
     subtitles: List[Subtitle] = Field(alias="Subtitles")

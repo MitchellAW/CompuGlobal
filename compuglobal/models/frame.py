@@ -1,9 +1,7 @@
-from pydantic import Field
-
-from .base import BaseCompuGlobalModel
+from pydantic import BaseModel, Field
 
 
-class Frame(BaseCompuGlobalModel):
+class Frame(BaseModel):
 
     id: int = Field(alias="Id")
     key: str = Field(alias="Episode")
