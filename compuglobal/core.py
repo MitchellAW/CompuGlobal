@@ -1,4 +1,5 @@
 from compuglobal.models.font import FontFamily
+from compuglobal.routes import Routes
 
 
 class BaseCompuGlobalAPI:
@@ -39,18 +40,8 @@ class BaseCompuGlobalAPI:
         self.title = title
         self.context = {"_api": self}
 
-        # Initalise all API endpoints
-        self.random_url = self.url + "/api/random"
-        self.caption_url = f"{self.url}/api/caption"  # api/caption?e=S01E01&t=9551&nearby=1
-        self.search_url = f"{self.url}/api/search"
-        self.episode_url = self.url + "/api/episode"  # api/episode/S01E01/0/99999999
-        self.navigator_url = f"{self.url}/api/navigator"
-        self.transcript_url = f"{self.url}/api/transcript"  # api/transcript/?e=S01E01&t=9551
-        self.render_gif_url = f"{self.url}/api/render/gif/stream"  # Stream-params
-        self.render_mp4_url = f"{self.url}/api/render/mp4"  # Stream-params
-        self.comic_url = f"{self.url}/comic/img"  # comic/img?b64=
-        self.image_url = "/img/{}/{}.jpg"
-        self.frames_url = self.url + "/{}/{}/{}"
+        # All API routes
+        self.routes = Routes()
 
         # Default font to use for text overlays on comics/gifs
         self.default_font = default_font
