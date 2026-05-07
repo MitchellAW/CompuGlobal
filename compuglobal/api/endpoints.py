@@ -7,8 +7,6 @@ from urllib.parse import urlencode
 
 from pydantic import BaseModel
 
-from .models.stream import Stream
-
 
 class RequestMethod(StrEnum):
     GET = "GET"
@@ -101,61 +99,3 @@ class Endpoint:
     @cached_property
     def required_path_params(self) -> set[str]:
         return {field_name for _, field_name, _, _ in Formatter().parse(self.path) if field_name is not None}
-
-
-class Endpoints:
-    RANDOM = Endpoint(path="/api/random")
-    NAVIGATOR = Endpoint(path="/api/navigator")
-
-    # With path params
-    EPISODE = Endpoint(
-        path="/api/episode/{key}/{start_timestamp}/{end_timestamp}",
-        method=RequestMethod.GET,
-    )
-    FRAMES = Endpoint(
-        path="/api/frames/{key}/{timestamp}/{before}/{after}",
-        method=RequestMethod.GET,
-    )
-    IMAGE = Endpoint(
-        path="/img/{key}/{timestamp}.jpg",
-        method=RequestMethod.GET,
-    )
-
-    # With query params
-    CAPTION = Endpoint(
-        path="/api/caption",
-        method=RequestMethod.GET,
-        query_params=frozenset({"e", "t", "nearby"}),
-    )
-    SEARCH = Endpoint(
-        path="/api/search",
-        method=RequestMethod.GET,
-        query_params=frozenset({"q"}),
-    )
-    COMIC_PANEL = Endpoint(
-        path="/comic/img",
-        method=RequestMethod.GET,
-        query_params=frozenset({"b64"}),
-    )
-    COMIC_STRIP = Endpoint(
-        path="/comic/img",
-        method=RequestMethod.GET,
-        query_params=frozenset({"b64", "layout"}),
-    )
-    TRANSCRIPT = Endpoint(
-        path="/api/transcript",
-        method=RequestMethod.GET,
-        query_params=frozenset({"e", "t"}),
-    )
-
-    # With body fields
-    RENDER_GIF = Endpoint(
-        path="/api/render/gif/stream",
-        method=RequestMethod.POST,
-        body_model=Stream,
-    )
-    RENDER_MP4 = Endpoint(
-        path="/api/render/mp4",
-        method=RequestMethod.POST,
-        body_model=Stream,
-    )
