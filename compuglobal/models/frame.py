@@ -33,10 +33,6 @@ class Frame(BaseCompuGlobalModel):
             The direct url for the frame image.
     """
 
-    @property
-    def image_url(self) -> str:
-        return self._api.image_url.format(self.key, self.timestamp)
-
     def get_meme_url(self, caption=None):
         """Encodes the caption with base64 and then returns the meme url for
         the frame with an embedded caption.

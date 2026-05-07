@@ -1,5 +1,5 @@
-from compuglobal.models.font import FontFamily
-from compuglobal.routes import Routes
+from .endpoints import Endpoints
+from .models.font import FontFamily
 
 
 class BaseCompuGlobalAPI:
@@ -40,8 +40,8 @@ class BaseCompuGlobalAPI:
         self.title = title
         self.context = {"_api": self}
 
-        # All API routes
-        self.routes = Routes()
+        # All API endpoints
+        self.endpoints = Endpoints()
 
         # Default font to use for text overlays on comics/gifs
         self.default_font = default_font

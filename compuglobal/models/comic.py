@@ -3,7 +3,7 @@ from base64 import b64encode
 from enum import StrEnum
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from .font import FontAlignment, FontFamily
 from .subtitle import Subtitle
@@ -51,7 +51,7 @@ class ComicPanel(BaseModel):
 
 class ComicStrip(BaseModel):
     panels: List[ComicPanel]
-    layout: ComicLayout
+    layout: ComicLayout | None = None
 
     def get_encoded(self):
         dump = [panel.model_dump(by_alias=True) for panel in self.panels]
@@ -59,3 +59,20 @@ class ComicStrip(BaseModel):
         encoded = str.encode(json_str, "utf-8")
         b64 = b64encode(encoded, altchars=b"__")
         return b64.decode("utf-8")
+
+    @model_validator(mode="after")
+    def set_default_layout(self):
+        # If user explicitly set layout → keep it
+        if self.layout is not None:
+            return self
+
+        panel_count = len(self.panels)
+        if panel_count == 1:
+            self.layout = ComicLayout.SINGLE
+        elif panel_count == 2:
+            self.layout = ComicLayout.WIDE
+        elif panel_count == 3:
+            self.layout = ComicLayout.ONE_OVER_TWO
+        else:
+            self.layout = ComicLayout.TWO_OVER_ONE
+        return self

@@ -4,6 +4,7 @@ from typing import List, Optional
 import aiohttp
 
 from .core import BaseCompuGlobalAPI
+from .endpoints import PreparedRequest, RequestMethod
 from .errors import APIPageStatusError, NoSearchResultsFound
 from .models.aio_screencap import AIOScreencap
 from .models.font import FontFamily
@@ -44,13 +45,19 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
             else:
                 raise APIPageStatusError(response.status, self.url)
 
-    async def post_data(self, url, data=None):
-        async with self.session.post(url, data=data) as response:
+    async def post_data(self, url, json=None):
+        async with self.session.post(url, json=json) as response:
             if response.status == 200:
                 return await response.text()
 
             else:
                 raise APIPageStatusError(response.status, self.url)
+
+    async def handle_request(self, request: PreparedRequest):
+        if request.method == RequestMethod.POST:
+            return await self.post_data(request.url, json=request.body)
+
+        return await self.get(request.url, params=request.params)
 
     async def close(self):
         if self._is_auto_session:
@@ -100,7 +107,8 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
                 f"{type(episode)}, {type(timestamp)} and {type(frame)} instead"
             )
 
-        caption = await self.get(self.caption_url, params=params)
+        request = self.endpoints.CAPTION.build_request(self.url, query=params)
+        caption = await self.handle_request(request)
         return AIOScreencap.model_validate(caption, context=self.context)
 
     async def get_random_screencap(self):
@@ -121,7 +129,8 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         ----
         Used for getting a random screencap when clicking the "RANDOM"
         button."""
-        random = await self.get(self.random_url)
+        request = self.endpoints.RANDOM.build_request(self.url)
+        random = await self.handle_request(request)
         return AIOScreencap.model_validate(random, context=self.context)
 
     async def search(self, search_text) -> List[Frame]:
@@ -154,7 +163,8 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
 
         params = {"q": search_text}
 
-        search_results = await self.get(self.search_url, params=params)
+        request = self.endpoints.SEARCH.build_request(self.url, query=params)
+        search_results = await self.handle_request(request)
 
         if len(search_results) > 0:
             all_frames = []
@@ -228,8 +238,10 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         ----
         Used for displaying the valid frames available for the gifmaker."""
 
-        frames_url = self.frames_url.format(episode, timestamp, before, after)
-        frames = await self.get(frames_url)
+        path_params = {"episode": episode, "timestamp": timestamp, "before": before, "after": after}
+
+        request = self.endpoints.FRAMES.build_request(self.url, path_params=path_params)
+        frames = await self.handle_request(request)
 
         all_frames = []
         for frame_result in frames:
@@ -252,12 +264,10 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         stream = Stream(
             episode=screencap.episode.key, start=min_timestamp, end=max_timestamp, overlays=overlays, check_only=False
         )
-        dump = stream.model_dump(by_alias=True)
-        json_payload = json.dumps([dump], separators=(",", ":"))
 
-        print(json_payload)
-
-        response = await self.post_data(self.render_gif_url, data=json_payload)
+        request = self.endpoints.RENDER_GIF.build_request(self.url, body=stream)
+        request.body = [request.body]
+        response = await self.handle_request(request)
 
         for line in response.splitlines():
             data = json.loads(line)

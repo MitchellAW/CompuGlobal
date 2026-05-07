@@ -56,7 +56,12 @@ class Endpoint:
         query = query or {}
         path_params = path_params or {}
         url = self.build_url(base_url, query, path_params)
-        return f"{url}?{urlencode(query, doseq=True)}"
+
+        if len(query.keys()) > 0:
+            return f"{url}?{urlencode(query, doseq=True)}"
+
+        else:
+            return url
 
     def build_request(
         self,

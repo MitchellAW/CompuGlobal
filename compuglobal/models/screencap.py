@@ -4,7 +4,6 @@ from pydantic import Field
 
 from .base import BaseCompuGlobalModel
 from .comic import (
-    ComicLayout,
     ComicOverlay,
     ComicPanel,
     ComicStrip,
@@ -87,7 +86,9 @@ class Screencap(BaseCompuGlobalModel):
         -------
         str
             The image url for the screencap without any caption."""
-        return self.frame.image_url
+
+        path_params = {"key": self.frame.key, "timestamp": self.frame.timestamp}
+        return self._api.endpoints.IMAGE.build_encoded_url(self._api.url, path_params=path_params)
 
     def get_meme_url(self, caption=None):
         """Encodes the caption with base64 and then returns the meme url for
@@ -116,9 +117,8 @@ class Screencap(BaseCompuGlobalModel):
         overlays = build_overlay(subtitles, font=self._api.default_font)
         panel = ComicPanel(e=self.frame.key, ts=self.frame.timestamp, o=overlays)
 
-        b64 = panel.get_encoded()
-
-        return f"{self._api.comic_url}?b64={b64}"
+        params = {"b64": panel.get_encoded()}
+        return self._api.endpoints.COMIC_PANEL.build_encoded_url(self._api.url, query=params)
 
     def get_comic_strip_url(self, subtitles: List[Subtitle] = []):
         if len(subtitles) == 0:
@@ -133,10 +133,9 @@ class Screencap(BaseCompuGlobalModel):
             panel = ComicPanel(e=subtitle.key, ts=subtitle.representative_timestamp, o=[overlay])
             panels.append(panel)
 
-        comic_strip = ComicStrip(panels=panels, layout=ComicLayout.WIDE)
-        b64 = comic_strip.get_encoded()
-
-        return f"{self._api.comic_url}?b64={b64}&layout={ComicLayout.WIDE}"
+        comic_strip = ComicStrip(panels=panels)
+        params = {"b64": comic_strip.get_encoded(), "layout": comic_strip.layout}
+        return self._api.endpoints.COMIC_STRIP.build_encoded_url(self._api.url, query=params)
 
     def get_gif_url(self, caption=None, before=3000, after=4000):
         """Gets the timestamps of the frames before and after the timestamp
