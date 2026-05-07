@@ -1,6 +1,5 @@
 from . import aio, api
 from .errors import APIPageStatusError, NoSearchResultsFound
-from .models.aio_screencap import AIOScreencap
 from .models.frame import Frame
 from .models.screencap import Screencap
 
@@ -12,7 +11,6 @@ __version__ = "0.2.7"
 __all__ = [
     "api",
     "aio",
-    "AIOScreencap",
     "APIPageStatusError",
     "NoSearchResultsFound",
     "Frame",

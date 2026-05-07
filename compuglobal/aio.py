@@ -6,7 +6,7 @@ import aiohttp
 from .core import BaseCompuGlobalAPI
 from .endpoints import PreparedRequest, RequestMethod
 from .errors import APIPageStatusError, NoSearchResultsFound
-from .models.aio_screencap import AIOScreencap
+from .models.comic import ComicOverlay, ComicPanel, ComicStrip, build_overlay
 from .models.font import FontFamily
 from .models.frame import Frame
 from .models.screencap import Screencap
@@ -109,7 +109,7 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
 
         request = self.endpoints.CAPTION.build_request(self.url, query=params)
         caption = await self.handle_request(request)
-        return AIOScreencap.model_validate(caption, context=self.context)
+        return Screencap.model_validate(caption, context=self.context)
 
     async def get_random_screencap(self):
         """Performs a GET request to the ``api/random`` endpoint and gets a
@@ -131,7 +131,7 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         button."""
         request = self.endpoints.RANDOM.build_request(self.url)
         random = await self.handle_request(request)
-        return AIOScreencap.model_validate(random, context=self.context)
+        return Screencap.model_validate(random, context=self.context)
 
     async def search(self, search_text) -> List[Frame]:
         """Performs a GET request to the ``api/search?q=`` endpoint and gets a
@@ -176,7 +176,7 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
         else:
             raise NoSearchResultsFound()
 
-    async def search_for_screencap(self, search_text) -> AIOScreencap:
+    async def search_for_screencap(self, search_text) -> Screencap:
         """Performs a GET request to the ``api/search?q=`` endpoint using
         :func:`search` to get a list of search results using search_text
         and gets a screencap using the episode and timestamp of the first
@@ -248,6 +248,44 @@ class AsyncCompuGlobalAPI(BaseCompuGlobalAPI):
             all_frames.append(Frame.model_validate(frame_result))
 
         return all_frames
+
+    def get_image_url(self, screencap: Screencap):
+        """Returns the direct image url for the screencap without any caption.
+
+        Returns
+        -------
+        str
+            The image url for the screencap without any caption."""
+
+        path_params = {"key": screencap.frame.key, "timestamp": screencap.frame.timestamp}
+        return self.endpoints.IMAGE.build_encoded_url(self.url, path_params=path_params)
+
+    def get_comic_panel_url(self, screencap: Screencap, subtitles: List[Subtitle] = []):
+        if len(subtitles) == 0:
+            subtitles = screencap.subtitles
+
+        overlays = build_overlay(subtitles, font=self.default_font)
+        panel = ComicPanel(e=screencap.frame.key, ts=screencap.frame.timestamp, o=overlays)
+
+        params = {"b64": panel.get_encoded()}
+        return self.endpoints.COMIC_PANEL.build_encoded_url(self.url, query=params)
+
+    def get_comic_strip_url(self, screencap: Screencap, subtitles: List[Subtitle] = []):
+        if len(subtitles) == 0:
+            subtitles = screencap.subtitles
+
+        if len(subtitles) > 4:
+            subtitles = subtitles[:4]
+
+        panels = []
+        for subtitle in subtitles:
+            overlay = ComicOverlay(t=subtitle.content, f=self.default_font)
+            panel = ComicPanel(e=subtitle.key, ts=subtitle.representative_timestamp, o=[overlay])
+            panels.append(panel)
+
+        comic_strip = ComicStrip(panels=panels)
+        params = {"b64": comic_strip.get_encoded(), "layout": comic_strip.layout}
+        return self.endpoints.COMIC_STRIP.build_encoded_url(self.url, query=params)
 
     async def get_gif_url(self, screencap: Screencap, subtitles: List[Subtitle] = []):
         if len(subtitles) == 0:
