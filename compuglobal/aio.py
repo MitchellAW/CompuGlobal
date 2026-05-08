@@ -1,6 +1,3 @@
-from dataclasses import dataclass
-from typing import Optional
-
 import aiohttp
 
 from .api.client import CompuGlobalAPIClient
@@ -14,12 +11,15 @@ from .models.font import FontFamily
 endpoints."""
 
 
-@dataclass
 class AsyncCompuGlobalAPI:
-    client: CompuGlobalAPIClient
-    config: CompuGlobalAPIConfig
+    BASE_URL: str
+    TITLE: str
+    DEFAULT_FONT: FontFamily
 
-    def __init__(self, client, config):
+    def __init__(self, session: aiohttp.ClientSession | None = None, timeout: int = 15):
+        client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session, timeout=timeout)
+        config = CompuGlobalAPIConfig(title=self.TITLE, default_font=self.DEFAULT_FONT)
+
         endpoints = [
             DiscoverAPI(client=client, config=config),
             MediaAPI(client=client, config=config),
@@ -30,7 +30,6 @@ class AsyncCompuGlobalAPI:
 
     def _attach_endpoint_methods(self, endpoints):
         for endpoint in endpoints:
-            print(type(endpoint))
             for name, method in endpoint._get_public_methods():
                 if hasattr(self, name):
                     raise RuntimeError(f"Duplicate API method: {name}")
@@ -43,30 +42,18 @@ class AsyncCompuGlobalAPI:
 class CapitalBeatUs(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing CapitalBeatUs API endpoints (West Wing)."""
 
-    def __init__(
-        self,
-        session: Optional[aiohttp.ClientSession] = None,
-        timeout: int = 15,
-    ):
-        client = CompuGlobalAPIClient(base_url="https://capitalbeat.us", session=session, timeout=timeout)
-        config = CompuGlobalAPIConfig(title="West Wing", default_font=FontFamily.IMPACT)
-
-        super().__init__(client=client, config=config)
+    BASE_URL = "https://capitalbeat.us"
+    TITLE = "West Wing"
+    DEFAULT_FONT = FontFamily.IMPACT
 
 
 # Simpsons Meme/GIF generator API
 class Frinkiac(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing Frinkiac API endpoints (The Simpsons)."""
 
-    def __init__(
-        self,
-        session: Optional[aiohttp.ClientSession] = None,
-        timeout: int = 15,
-    ):
-        client = CompuGlobalAPIClient(base_url="https://frinkiac.com", session=session, timeout=timeout)
-        config = CompuGlobalAPIConfig(title="The Simpsons", default_font=FontFamily.AKBAR)
-
-        super().__init__(client=client, config=config)
+    BASE_URL = "https://frinkiac.com"
+    TITLE = "Simpsons"
+    DEFAULT_FONT = FontFamily.AKBAR
 
 
 # Rick and Morty Meme/GIF generator API
@@ -74,27 +61,15 @@ class MasterOfAllScience(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing MasterOfAllScience API endpoints
     (Rick and Morty)."""
 
-    def __init__(
-        self,
-        session: Optional[aiohttp.ClientSession] = None,
-        timeout: int = 15,
-    ):
-        client = CompuGlobalAPIClient(base_url="https://masterofallscience.com", session=session, timeout=timeout)
-        config = CompuGlobalAPIConfig(title="Rick and Morty", default_font=FontFamily.IMPACT)
-
-        super().__init__(client=client, config=config)
+    BASE_URL = "https://masterofallscience.com"
+    TITLE = "Rick and Morty"
+    DEFAULT_FONT = FontFamily.IMPACT
 
 
 # Futurama Meme/GIF generator API
 class Morbotron(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing Morbotron API endpoints (Futurama)."""
 
-    def __init__(
-        self,
-        session: Optional[aiohttp.ClientSession] = None,
-        timeout: int = 15,
-    ):
-        client = CompuGlobalAPIClient(base_url="https://morbotron.com", session=session, timeout=timeout)
-        config = CompuGlobalAPIConfig(title="Futurama", default_font=FontFamily.FR_BOLD)
-
-        super().__init__(client=client, config=config)
+    BASE_URL = "https://morbotron.com"
+    TITLE = "Futurama"
+    DEFAULT_FONT = FontFamily.FR_BOLD
