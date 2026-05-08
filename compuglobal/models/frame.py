@@ -2,6 +2,17 @@ from pydantic import BaseModel, Field
 
 
 class Frame(BaseModel):
+    """A single frame of an episode at a point in time of a TV Show.
+
+    Attributes
+    ----------
+    id: int
+        The unique identifier of the frame
+    key: str
+        The episode key (S01E01)
+    timestamp: int
+        The timestamp of the frame
+    """
 
     id: int = Field(alias="Id")
     key: str = Field(alias="Episode")

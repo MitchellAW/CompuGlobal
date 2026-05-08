@@ -8,6 +8,24 @@ from .subtitle import Subtitle
 
 
 class Screencap(BaseModel):
+    """A Screencap of an episode at a point in time of a TV Show.
+
+    Attributes
+    ----------
+    episode: str
+        The episode key (S01E01)
+    frame: Frame
+        The primary frame of the screencap
+    subtitles: List[Subtitle]
+        The subtitles of the screencap
+    nearby: List[Frame]
+        A list of nearby frames
+    min_timestamp: int
+        The minimum timestamp of the screencap
+    max_timestamp: int
+        The maximum timestamp of the screencap
+    """
+
     episode: Episode = Field(alias="Episode")
     frame: Frame = Field(alias="Frame")
     subtitles: List[Subtitle] = Field(alias="Subtitles")

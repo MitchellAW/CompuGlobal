@@ -10,6 +10,8 @@ from .subtitle import Subtitle
 
 
 class ComicLayout(StrEnum):
+    """Defines a layout to be used by :class:`ComicStrip`"""
+
     SINGLE = "single"
     WIDE = "wide"
     TALL = "tall"
@@ -18,16 +20,20 @@ class ComicLayout(StrEnum):
 
 
 class ComicOverlay(BaseModel):
-    text: str = Field(alias="t")
-    font_family: FontFamily = Field(alias="f", default=FontFamily.IMPACT)
-    font_size: int = Field(alias="s", le=0, ge=120, default=0)
-    font_color: str = Field(alias="c", min_length=4, max_length=4, default="ffffffff")
-    text_position_x: int = Field(alias="x", default=50)
-    text_position_y: int = Field(alias="y", default=97)
-    text_alignment: FontAlignment = Field(alias="a", default=FontAlignment.ALIGN_CENTER)
-    all_caps: int = Field(alias="u", default=1)
-    b: int = Field(alias="b", default=0)
-    d: int = Field(alias="d", default=0)
+    """Defines an overlay to display text in a :class:`ComicPanel`"""
+
+    text: str = Field(alias="t", description="Text to overlay")
+    font_family: FontFamily = Field(alias="f", description="Font style to use", default=FontFamily.IMPACT)
+    font_size: int = Field(alias="s", description="Size of the font", le=0, ge=120, default=0)
+    font_color: str = Field(alias="c", description="Font color to use", min_length=4, max_length=4, default="ffffffff")
+    text_position_x: int = Field(alias="x", description="The x position of the overlay", default=50)
+    text_position_y: int = Field(alias="y", description="The y position of the overlay", default=97)
+    text_alignment: FontAlignment = Field(
+        alias="a", description="Alignment of the text overlay", default=FontAlignment.ALIGN_CENTER
+    )
+    all_caps: int = Field(alias="u", description="Display text in all uppercase", default=1)
+    b: int = Field(alias="b", description="Time before (unused)", default=0)
+    d: int = Field(alias="d", description="Duration (unused)", default=0)
 
 
 @staticmethod
@@ -37,11 +43,18 @@ def build_overlay(subtitles: List[Subtitle], font: FontFamily = FontFamily.IMPAC
 
 
 class ComicPanel(BaseModel):
-    key: str = Field(alias="e")
-    timestamp: int = Field(alias="ts", ge=0)
-    overlays: List[ComicOverlay] = Field(alias="o", default=[])
+    key: str = Field(alias="e", description="The episode key of the panel")
+    timestamp: int = Field(alias="ts", ge=0, description="The timestamp of the panel")
+    overlays: List[ComicOverlay] = Field(alias="o", description="The text overlays for each panel", default=[])
 
-    def get_encoded(self):
+    def get_encoded(self) -> str:
+        """get_encoded Gets the base 64 encoded representation of this panel
+
+        Returns
+        -------
+        str
+            A base 64 string
+        """
         dump = [self.model_dump(by_alias=True)]
         json_str = json.dumps(dump, separators=(",", ":"))
         encoded = str.encode(json_str, "utf-8")
@@ -50,10 +63,19 @@ class ComicPanel(BaseModel):
 
 
 class ComicStrip(BaseModel):
-    panels: List[ComicPanel]
-    layout: ComicLayout | None = None
+    panels: List[ComicPanel] = Field(alias="panels", description="The list of ComicPanels to use in the ComicStrip")
+    layout: ComicLayout | None = Field(
+        alias="layout", description="The layout to use when displaying the panels", default=None
+    )
 
-    def get_encoded(self):
+    def get_encoded(self) -> str:
+        """Gets the base 64 encoded representation of this comic strip
+
+        Returns
+        -------
+        str
+            A base 64 string
+        """
         dump = [panel.model_dump(by_alias=True) for panel in self.panels]
         json_str = json.dumps(dump, separators=(",", ":"))
         encoded = str.encode(json_str, "utf-8")
