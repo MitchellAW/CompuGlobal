@@ -5,19 +5,13 @@ import compuglobal
 # ----------------------------------------------------------------------------
 
 # The Simpsons
-simpsons = compuglobal.aio.Frinkiac()
+simpsons = compuglobal.Frinkiac()
 
 # Futurama
-futurama = compuglobal.aio.Morbotron()
+futurama = compuglobal.Morbotron()
 
 # Rick and Morty
-rick_and_morty = compuglobal.aio.MasterOfAllScience()
-
-# 30 Rock
-thirty_rock = compuglobal.aio.GoodGodLemon()
+rick_and_morty = compuglobal.MasterOfAllScience()
 
 # West Wing
-west_wing = compuglobal.aio.CapitalBeatUs()
-
-# The Simpsons' steamed hams skit
-steamed_hams = compuglobal.aio.FrinkiHams()
+west_wing = compuglobal.CapitalBeatUs()
