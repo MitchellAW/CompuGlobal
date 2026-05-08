@@ -1,3 +1,5 @@
+from warnings import deprecated
+
 import aiohttp
 
 from .api.client import CompuGlobalAPIClient
@@ -57,6 +59,7 @@ class Frinkiac(AsyncCompuGlobalAPI):
 
 
 # Rick and Morty Meme/GIF generator API
+@deprecated("The MasterOfAllScience API is deprecated, and currently redirects to Frinkiac")
 class MasterOfAllScience(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing MasterOfAllScience API endpoints
     (Rick and Morty)."""
