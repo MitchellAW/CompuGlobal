@@ -28,5 +28,13 @@ keywords = [
 Documentation = "https://compuglobal.readthedocs.io/en/latest/"
 Source = "https://github.com/MitchellAW/CompuGlobal"
 
+[project.optional-dependencies]
+docs = [
+    "sphinx<9.0",
+    "sphinxcontrib-trio",
+    "enum-tools[sphinx]",
+    "sphinx-rtd-theme",
+]
+
 [project.scripts]
 flit = "flit:main"
