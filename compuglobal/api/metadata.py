@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 
-from .base import EndpointBase
 from .endpoint import Endpoint, RequestMethod
 
 
 @dataclass
-class MetadataAPI(EndpointBase):
+class MetadataAPI:
     EPISODE = Endpoint(
         path="/api/episode/{key}/{start_timestamp}/{end_timestamp}",
         method=RequestMethod.GET,
