@@ -141,7 +141,7 @@ class AsyncCompuGlobalAPI:
 
         return all_frames
 
-    def get_image_url(self, screencap: Screencap):
+    async def get_image_url(self, screencap: Screencap):
         """Returns the direct image url for the screencap without any caption.
 
         Returns
@@ -152,7 +152,7 @@ class AsyncCompuGlobalAPI:
         path_params = {"key": screencap.frame.key, "timestamp": screencap.frame.timestamp}
         return self.media.IMAGE.build_encoded_url(self.client.base_url, path_params=path_params)
 
-    def get_comic_panel_url(self, screencap: Screencap, subtitles: List[Subtitle] = []):
+    async def get_comic_panel_url(self, screencap: Screencap, subtitles: List[Subtitle] = []):
         if len(subtitles) == 0:
             subtitles = screencap.subtitles
 
@@ -162,7 +162,7 @@ class AsyncCompuGlobalAPI:
         params = {"b64": panel.get_encoded()}
         return self.media.COMIC_PANEL.build_encoded_url(self.client.base_url, query=params)
 
-    def get_comic_strip_url(self, screencap: Screencap, subtitles: List[Subtitle] = []):
+    async def get_comic_strip_url(self, screencap: Screencap, subtitles: List[Subtitle] = []):
         if len(subtitles) == 0:
             subtitles = screencap.subtitles
 

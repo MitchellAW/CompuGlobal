@@ -20,17 +20,17 @@ async def main():
     random_screencap = await frinkiac.get_random_screencap()
 
     # Gets the image of the screencap without any captions
-    image = frinkiac.get_image_url(random_screencap)
+    image = await frinkiac.get_image_url(random_screencap)
     print(image)
 
     # Gets the image of the screencap with captions matching the quotes of the
     # screencap embedded in the image
-    comic_panel = frinkiac.get_comic_panel_url(random_screencap)
+    comic_panel = await frinkiac.get_comic_panel_url(random_screencap)
     print(comic_panel)
 
     # Gets a comic strip with mulitple screencaps and captions matching the quotes
     # of each screencap in the image
-    comic_strip = frinkiac.get_comic_strip_url(random_screencap)
+    comic_strip = await frinkiac.get_comic_strip_url(random_screencap)
     print(comic_strip)
 
     # Gets the gif of the screencap with captions embedded
