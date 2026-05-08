@@ -287,7 +287,6 @@ class AsyncCompuGlobalAPI:
         await self.client.close()
 
 
-# West Wing Meme/GIF generator API
 class CapitalBeatUs(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing CapitalBeatUs API endpoints (West Wing)."""
 
@@ -296,7 +295,6 @@ class CapitalBeatUs(AsyncCompuGlobalAPI):
     DEFAULT_FONT = FontFamily.IMPACT
 
 
-# Simpsons Meme/GIF generator API
 class Frinkiac(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing Frinkiac API endpoints (The Simpsons)."""
 
@@ -305,18 +303,15 @@ class Frinkiac(AsyncCompuGlobalAPI):
     DEFAULT_FONT = FontFamily.AKBAR
 
 
-# Rick and Morty Meme/GIF generator API
 @deprecated("The MasterOfAllScience API is deprecated, and currently redirects to Frinkiac")
 class MasterOfAllScience(AsyncCompuGlobalAPI):
-    """An API Wrapper for accessing MasterOfAllScience API endpoints
-    (Rick and Morty)."""
+    """An API Wrapper for accessing MasterOfAllScience API endpoints (Rick and Morty)."""
 
     BASE_URL = "https://masterofallscience.com"
     TITLE = "Rick and Morty"
     DEFAULT_FONT = FontFamily.IMPACT
 
 
-# Futurama Meme/GIF generator API
 class Morbotron(AsyncCompuGlobalAPI):
     """An API Wrapper for accessing Morbotron API endpoints (Futurama)."""
 
