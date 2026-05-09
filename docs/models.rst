@@ -27,6 +27,23 @@ Subtitle
     :members:
     :exclude-members: model_config
 
+Comics
+~~~~~~~~~~~~~~~~~~~~
+.. autoclass:: ComicPanel
+    :members:
+    :exclude-members: model_config
+
+.. autoclass:: ComicStrip
+    :members:
+    :exclude-members: model_config
+
+.. autoclass:: ComicOverlay
+    :members:
+    :exclude-members: model_config
+
+.. autoenum:: ComicLayout
+    :members:
+
 Stream
 ~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: Stream
