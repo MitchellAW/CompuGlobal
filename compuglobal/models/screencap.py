@@ -43,15 +43,45 @@ class Screencap(BaseModel, frozen=True):
 
         return self.frame.get_real_timestamp()
 
+    def captions(self) -> list[str]:
+        """Gets a list of captions for the screencap from all subttiles.
+
+        Returns
+        -------
+        list[str]
+            A list of captions from the subtitles
+        """
+        return [f"{subtitle.content}" for subtitle in self.subtitles]
+
     def get_caption(self) -> str:
-        """Gets the entire caption fo the screencap from all subtitles as a string.
+        """Gets the entire caption for the screencap from all subtitles as a string.
 
         Returns
         -------
         str
             The entire caption of the screencap
         """
-        return " ".join(f"{subtitle.content}" for subtitle in self.subtitles)
+        return " ".join(self.captions())
+
+    def get_start(self) -> int:
+        """Gets the earliest start timestamp from the subtitles.
+
+        Returns
+        -------
+        int
+            The start timestamp
+        """
+        return min(subtitle.start_timestamp for subtitle in self.subtitles)
+
+    def get_end(self) -> int:
+        """Gets the latest end timestamp from the subtitles.
+
+        Returns
+        -------
+        int
+            The end timestamp
+        """
+        return max(subtitle.end_timestamp for subtitle in self.subtitles)
 
     def __str__(self):
         return str(self.frame)

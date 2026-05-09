@@ -5,6 +5,7 @@ from typing import List
 
 from pydantic import BaseModel, Field, model_validator
 
+from .screencap import Screencap
 from .font import FontAlignment, FontFamily
 from .subtitle import Subtitle
 
@@ -35,17 +36,36 @@ class ComicOverlay(BaseModel, frozen=True):
     b: int = Field(alias="b", description="Time before (unused)", default=0)
     d: int = Field(alias="d", description="Duration (unused)", default=0)
 
+    @classmethod
+    def from_subtitles(cls, *, subtitles: List[Subtitle], font_family: FontFamily) -> "ComicOverlay":
+        """Builds a comic overlay using a list of Subtitles.
 
-@staticmethod
-def build_overlay(subtitles: List[Subtitle], font: FontFamily = FontFamily.IMPACT):
-    content = " ".join(subtitle.content for subtitle in subtitles)
-    return [ComicOverlay(t=content, f=font)]
+        Parameters
+        ----------
+        subtitles : List[Subtitle]
+            A list of subtitles
+        font_family : FontFamily
+            The family of font to use for the new overlay.
+
+        Returns
+        -------
+        ComicOverlay
+            The overlay to display on a ComicPanel
+        """
+        text = " ".join(subtitle.content for subtitle in subtitles)
+        return cls(t=text, f=font_family)
 
 
 class ComicPanel(BaseModel, frozen=True):
     key: str = Field(alias="e", description="The episode key of the panel")
     timestamp: int = Field(alias="ts", ge=0, description="The timestamp of the panel")
     overlays: List[ComicOverlay] = Field(alias="o", description="The text overlays for each panel", default=[])
+
+    @classmethod
+    def from_screencap(cls, *, screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> "ComicPanel":
+        overlays = [ComicOverlay.from_subtitles(subtitles=screencap.subtitles, font_family=font)]
+
+        return cls(e=screencap.frame.key, ts=screencap.frame.timestamp, o=overlays)
 
     def get_encoded(self) -> str:
         """get_encoded Gets the base 64 encoded representation of this panel
@@ -67,6 +87,38 @@ class ComicStrip(BaseModel):
     layout: ComicLayout | None = Field(
         alias="layout", description="The layout to use when displaying the panels", default=None
     )
+
+    @classmethod
+    def from_screencap(cls, *, screencap: Screencap, font_family: FontFamily = FontFamily.IMPACT) -> "ComicStrip":
+        """Build a comic strip from a Screencap object.
+
+        Parameters
+        ----------
+        screencap : Screencap
+            The screencap to use for the comic strip
+        font_family : FontFamily, optional
+            The font to use for all overlays in the comic strip
+
+        Returns
+        -------
+        ComicStrip
+            The comic strip depicting the given screencap
+        """
+        panels = [
+            ComicPanel(
+                e=screencap.frame.key,
+                ts=screencap.frame.timestamp,
+                o=cls.build_comic_overlays(screencap.subtitles, font_family=font_family),
+            )
+        ]
+
+        return cls(panels=panels)
+
+    @staticmethod
+    def build_comic_overlays(
+        subtitles: List[Subtitle], font_family: FontFamily = FontFamily.IMPACT
+    ) -> List[ComicOverlay]:
+        return [ComicOverlay(t=subtitle.content, f=font_family) for subtitle in subtitles]
 
     def get_encoded(self) -> str:
         """Gets the base 64 encoded representation of this comic strip

@@ -2,8 +2,8 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
+from .screencap import Screencap
 from .font import FontAlignment, FontFamily
-from .subtitle import Subtitle
 
 
 class StreamOverlay(BaseModel, frozen=True):
@@ -43,37 +43,6 @@ class StreamOverlay(BaseModel, frozen=True):
     end: int = Field(alias="end", ge=0)
 
 
-@staticmethod
-def build_stream_overlays(
-    subtitles: List[Subtitle], min_timestamp: int, font: FontFamily = FontFamily.IMPACT
-) -> List[StreamOverlay]:
-    """Builds the stream overlays with the given subtitles, timestamp, and font.
-
-    Parameters
-    ----------
-    subtitles : List[Subtitle]
-        The subtitles to use in the overlay
-    min_timestamp : int
-        The minimum timestamp of any of the overlays
-    font : FontFamily, optional
-        The font to use for all overlays
-
-    Returns
-    -------
-    List[StreamOverlay]
-        The built list of overlays for the stream
-    """
-    return [
-        StreamOverlay(
-            text=subtitle.content,
-            font=font,
-            start=subtitle.start_timestamp - min_timestamp,
-            end=subtitle.end_timestamp - min_timestamp,
-        )
-        for subtitle in subtitles
-    ]
-
-
 class Stream(BaseModel, frozen=True):
     """A stream/gif of a TV show.
 
@@ -96,6 +65,60 @@ class Stream(BaseModel, frozen=True):
     end: int = Field(alias="end", ge=0)
     overlays: List[StreamOverlay] = Field(alias="overlays")
     check_only: bool = Field(alias="check_only")
+
+    @classmethod
+    def from_screencap(cls, *, screencap: Screencap, font_family: FontFamily = FontFamily.IMPACT) -> "Stream":
+        """Build a stream using a screencap object.
+
+        Parameters
+        ----------
+        screencap : Screencap
+            The screencap to use for the Stream
+        font : FontFamily
+            The font to use in any overlays
+
+        Returns
+        -------
+        Stream
+            The stream with overlays for the given screencap.
+        """
+        overlays = cls.build_stream_overlays(screencap, font_family)
+
+        return cls(
+            episode=screencap.episode.key,
+            start=screencap.get_start(),
+            end=screencap.get_end(),
+            overlays=overlays,
+            check_only=False,
+        )
+
+    @staticmethod
+    def build_stream_overlays(screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> List[StreamOverlay]:
+        """Builds the stream overlays with the given subtitles, timestamp, and font.
+
+        Parameters
+        ----------
+        subtitles : List[Subtitle]
+            The subtitles to use in the overlay
+        min_timestamp : int
+            The minimum timestamp of any of the overlays
+        font : FontFamily, optional
+            The font to use for all overlays
+
+        Returns
+        -------
+        List[StreamOverlay]
+            The built list of overlays for the stream
+        """
+        return [
+            StreamOverlay(
+                text=subtitle.content,
+                font=font,
+                start=subtitle.start_timestamp - screencap.get_start(),
+                end=subtitle.end_timestamp - screencap.get_start(),
+            )
+            for subtitle in screencap.subtitles
+        ]
 
     def get_caption(self) -> str:
         """Gets the entire caption of the Stream (all overlays) as a string.

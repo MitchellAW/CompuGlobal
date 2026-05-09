@@ -10,11 +10,11 @@ from .api.discover import DiscoverAPI
 from .api.media import MediaAPI
 from .api.metadata import MetadataAPI
 from .errors import NoSearchResultsFound
-from .models.comic import ComicOverlay, ComicPanel, ComicStrip, build_overlay
+from .models.comic import ComicPanel, ComicStrip
 from .models.font import FontFamily
 from .models.frame import Frame
 from .models.screencap import Screencap
-from .models.stream import Stream, build_stream_overlays
+from .models.stream import Stream
 from .models.subtitle import Subtitle
 
 """Contains the async API Wrappers used for accessing all the cghmc API endpoints."""
@@ -194,7 +194,7 @@ class AsyncCompuGlobalAPI:
         screencap : Screencap
             The screencap to use in the comic panel
         subtitles : List[Subtitle], optional
-            A list of subtitles to overlay in the comic panel, by default []
+            A list of subtitles to overlay in the comic panel
 
         Returns
         -------
@@ -204,8 +204,7 @@ class AsyncCompuGlobalAPI:
         if len(subtitles) == 0:
             subtitles = screencap.subtitles
 
-        overlays = build_overlay(subtitles, font=self.config.default_font)
-        panel = ComicPanel(e=screencap.frame.key, ts=screencap.frame.timestamp, o=overlays)
+        panel = ComicPanel.from_screencap(screencap=screencap, font=self.config.default_font)
 
         params = {"b64": panel.get_encoded()}
         return self.media.COMIC_PANEL.build_encoded_url(self.client.base_url, query=params)
@@ -218,7 +217,7 @@ class AsyncCompuGlobalAPI:
         screencap : Screencap
             The screencap to use in the comic strip
         subtitles : List[Subtitle], optional
-            A list of subtitles to overlay in the comic strip, by default []
+            A list of subtitles to overlay in the comic strip
 
         Returns
         -------
@@ -231,45 +230,32 @@ class AsyncCompuGlobalAPI:
         if len(subtitles) > 4:
             subtitles = subtitles[:4]
 
-        panels = []
-        for subtitle in subtitles:
-            overlay = ComicOverlay(t=subtitle.content, f=self.config.default_font)
-            panel = ComicPanel(e=subtitle.key, ts=subtitle.representative_timestamp, o=[overlay])
-            panels.append(panel)
-
-        comic_strip = ComicStrip(panels=panels)
+        comic_strip = ComicStrip.from_screencap(screencap=screencap, font_family=self.config.default_font)
         params = {"b64": comic_strip.get_encoded(), "layout": comic_strip.layout}
         return self.media.COMIC_STRIP.build_encoded_url(self.client.base_url, query=params)
 
-    async def get_gif_url(self, screencap: Screencap, subtitles: List[Subtitle] = []) -> str:
-        """get_gif_url Gets the URL for a gif of the given screencap with subtitles.
+    async def get_gif_url(self, screencap: Screencap, subtitles: List[Subtitle] | None = None) -> str:
+        """Gets the URL for a gif of the given screencap with default or given subtitles.
 
         Parameters
         ----------
         screencap : Screencap
             The screencap to use for the gif
         subtitles : List[Subtitle], optional
-            The subtitles to overlay in the gif, by default []
+            The subtitles to overlay in the gif
 
         Returns
         -------
         str
             The URL of the gif, or a comic strip as a fallback if gif rendering fails.
         """
-        if len(subtitles) == 0:
+        if subtitles is None:
             subtitles = screencap.subtitles
 
         if len(subtitles) > 4:
             subtitles = subtitles[:4]
 
-        min_timestamp = min(subtitle.start_timestamp for subtitle in subtitles)
-        max_timestamp = max(subtitle.end_timestamp for subtitle in subtitles)
-
-        overlays = build_stream_overlays(subtitles, min_timestamp=min_timestamp, font=self.config.default_font)
-
-        stream = Stream(
-            episode=screencap.episode.key, start=min_timestamp, end=max_timestamp, overlays=overlays, check_only=False
-        )
+        stream = Stream.from_screencap(screencap=screencap, font_family=self.config.default_font)
 
         request = self.media.RENDER_GIF.build_request(self.client.base_url, body=stream)
         request.body = [request.body]
