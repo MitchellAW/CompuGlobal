@@ -9,10 +9,10 @@ from .aio import (
 )
 from .errors import APIPageStatusError, NoSearchResultsFound
 from .models.comic import ComicStrip, ComicPanel, ComicOverlay, ComicLayout
-from .models.episode import Episode
+from .models.episode import Episode, EpisodeMetadata, EpisodeSummary
 from .models.font import FontAlignment, FontColorRGB, FontFamily
 from .models.frame import Frame
-from .models.screencap import Screencap
+from .models.screencap import Screencap, ScreencapMoment
 from .models.subtitle import Subtitle
 from .models.stream import StreamOverlay, Stream
 
@@ -30,7 +30,10 @@ __all__ = [
     "ComicLayout",
     "Frame",
     "Screencap",
+    "ScreencapMoment",
     "Episode",
+    "EpisodeSummary",
+    "EpisodeMetadata",
     "FontAlignment",
     "FontColorRGB",
     "FontFamily",

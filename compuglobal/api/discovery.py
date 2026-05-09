@@ -1,7 +1,7 @@
 from .endpoint import Endpoint, RequestMethod
 
 
-class DiscoverAPI:
+class DiscoveryAPI:
     CAPTION = Endpoint(
         path="/api/caption",
         method=RequestMethod.GET,

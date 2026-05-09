@@ -6,14 +6,15 @@ import aiohttp
 
 from .api.client import CompuGlobalAPIClient
 from .api.config import CompuGlobalAPIConfig
-from .api.discover import DiscoverAPI
+from .api.discovery import DiscoveryAPI
 from .api.media import MediaAPI
 from .api.metadata import MetadataAPI
 from .errors import NoSearchResultsFound
 from .models.comic import ComicPanel, ComicStrip
+from .models.episode import Episode, EpisodeSummary
 from .models.font import FontFamily
 from .models.frame import Frame
-from .models.screencap import Screencap
+from .models.screencap import Screencap, ScreencapMoment
 from .models.stream import Stream
 from .models.subtitle import Subtitle
 
@@ -25,7 +26,7 @@ class AsyncCompuGlobalAPI:
     TITLE: str
     DEFAULT_FONT: FontFamily
 
-    discover: DiscoverAPI = DiscoverAPI()
+    discovery: DiscoveryAPI = DiscoveryAPI()
     media: MediaAPI = MediaAPI()
     metadata: MetadataAPI = MetadataAPI()
 
@@ -69,7 +70,7 @@ class AsyncCompuGlobalAPI:
                 f"{type(episode)}, {type(timestamp)} and {type(frame)} instead"
             )
 
-        request = self.discover.CAPTION.build_request(self.client.base_url, query=params)
+        request = self.discovery.CAPTION.build_request(self.client.base_url, query=params)
         caption = await self.client.handle_request(request)
         return Screencap.model_validate(caption)
 
@@ -93,7 +94,7 @@ class AsyncCompuGlobalAPI:
         """
         params = {"q": search_text}
 
-        request = self.discover.SEARCH.build_request(self.client.base_url, query=params)
+        request = self.discovery.SEARCH.build_request(self.client.base_url, query=params)
         search_results = await self.client.handle_request(request)
 
         if len(search_results) > 0:
@@ -135,9 +136,71 @@ class AsyncCompuGlobalAPI:
         ------
         APIPageStatusError
             Raises an exception if the status code of the request is not 200."""
-        request = self.discover.RANDOM.build_request(self.client.base_url)
+        request = self.discovery.RANDOM.build_request(self.client.base_url)
         random = await self.client.handle_request(request)
         return Screencap.model_validate(random)
+
+    async def browse_episode(self, episode: str) -> Episode:
+        """Gets all episode metadata and subtitles for a given episode.
+
+        Parameters
+        ----------
+        episode : str
+            Episode key (S01E01)
+
+        Returns
+        -------
+        Episode
+            The episode containing all metadata and subtitles
+        """
+        path_params = {"key": episode, "start_timestamp": 0, "end_timestamp": 99999999}
+        request = self.metadata.EPISODE.build_request(self.client.base_url, path_params=path_params)
+        episode = await self.client.handle_request(request)
+        return Episode.model_validate(episode)
+
+    async def get_transcript(self, episode: str, timestamp: int) -> List[Subtitle]:
+        """Gets a transcript of subtitles around the given episode key and timestamp.
+
+        Parameters
+        ----------
+        episode : str
+            Episode key (S01E01)
+        timestamp : int
+            Timestamp in the episode
+
+        Returns
+        -------
+        List[Subtitle]
+            The list of subtitles
+        """
+        params = {"e": episode, "t": timestamp}
+        request = self.metadata.TRANSCRIPT.build_request(self.client.base_url, query=params)
+        subtitles = await self.client.handle_request(request)
+        return [Subtitle.model_validate(subtitle) for subtitle in subtitles]
+
+    async def discover(self) -> List[ScreencapMoment]:
+        """Discover random moments with their screencap and caption.
+
+        Returns
+        -------
+        List[ScreencapMoment]
+            List of random screencap moments
+        """
+        request = self.discovery.DISCOVER.build_request(self.client.base_url)
+        moments = await self.client.handle_request(request)
+        return [ScreencapMoment.model_validate(moment) for moment in moments]
+
+    async def navigator(self) -> List[EpisodeSummary]:
+        """Gets a for every single episode containing distributed frame IDs throughout the episode.
+
+        Returns
+        -------
+        List[EpisodeSummary]
+            A list of episode summaries
+        """
+        request = self.discovery.NAVIGATOR.build_request(self.client.base_url)
+        summaries = await self.client.handle_request(request)
+        return [EpisodeSummary.model_validate(summary) for summary in summaries]
 
     async def get_frames(self, episode: str, timestamp: int, before: int, after: int) -> List[Frame]:
         """Gets a list of all valid frames before and after the timestamp of the episode.
@@ -166,7 +229,7 @@ class AsyncCompuGlobalAPI:
 
         path_params = {"episode": episode, "timestamp": timestamp, "before": before, "after": after}
 
-        request = self.discover.FRAMES.build_request(self.client.base_url, path_params=path_params)
+        request = self.discovery.FRAMES.build_request(self.client.base_url, path_params=path_params)
         frames = await self.client.handle_request(request)
 
         all_frames = []

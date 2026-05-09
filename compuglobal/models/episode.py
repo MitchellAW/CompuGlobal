@@ -1,8 +1,12 @@
+from typing import List
+
 from pydantic import BaseModel, Field
 
+from .subtitle import Subtitle
 
-class Episode(BaseModel, frozen=True):
-    """An episode of a TV show.
+
+class EpisodeMetadata(BaseModel, frozen=True):
+    """The metadata for an episode of a TV show.
 
     Attributes
     ----------
@@ -35,3 +39,45 @@ class Episode(BaseModel, frozen=True):
     writer: str = Field(alias="Writer")
     original_air_date: str = Field(alias="OriginalAirDate")
     wiki_link: str = Field(alias="WikiLink")
+
+
+class EpisodeSummary(BaseModel, frozen=True):
+    """An entire episode of a TV show
+
+    Attributes
+    ----------
+    key: str
+        The episode key (S01E01)
+    season: int
+        The season number
+    episode_number: int
+        The episode number
+    title: str
+        The title of the episode
+    original_air_date: str
+        The original air date of the episode (yyyy-mm-dd)
+    frames: List[int]
+        A list of 20 frame IDs distributed throughout the episode.
+    """
+
+    key: str
+    season: int
+    episode_number: int
+    title: str
+    original_air_date: str
+    frames: List[int]
+
+
+class Episode(BaseModel, frozen=True):
+    """An entire episode of a TV show
+
+    Attributes
+    ----------
+    episode: EpisodeMetadata
+        The metadata of the episode
+    subtitles: List[Subtitle]
+        A list of subtitles for the entire episode
+    """
+
+    episode: EpisodeMetadata = Field(alias="Episode")
+    subtitles: List[Subtitle] = Field(alias="Subtitles")

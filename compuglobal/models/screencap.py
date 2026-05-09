@@ -2,9 +2,30 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
-from .episode import Episode
+from .episode import EpisodeMetadata
 from .frame import Frame
 from .subtitle import Subtitle
+
+
+class ScreencapMoment(BaseModel, frozen=True):
+    """A moment from an episode with the episode title and a single subtitle.
+
+    Attributes
+    ----------
+    episode: str
+        The episode key (S01E01)
+    timestamp: int
+        The timestamp of the snapshot
+    content: str
+        The content of the subtitle
+    title: str
+        The title of the episode in the snapshot
+    """
+
+    episode: str = Field(alias="Episode")
+    timestamp: int = Field(alias="Timestamp", ge=0)
+    content: str = Field(alias="Content")
+    title: str = Field(alias="Title")
 
 
 class Screencap(BaseModel, frozen=True):
@@ -12,8 +33,8 @@ class Screencap(BaseModel, frozen=True):
 
     Attributes
     ----------
-    episode: str
-        The episode key (S01E01)
+    episode: EpisodeMetadata
+        The metadata of the episode in the screencap
     frame: Frame
         The primary frame of the screencap
     subtitles: List[Subtitle]
@@ -26,7 +47,7 @@ class Screencap(BaseModel, frozen=True):
         The maximum timestamp of the screencap
     """
 
-    episode: Episode = Field(alias="Episode")
+    episode: EpisodeMetadata = Field(alias="Episode")
     frame: Frame = Field(alias="Frame")
     subtitles: List[Subtitle] = Field(alias="Subtitles")
     nearby: List[Frame] = Field(alias="Nearby")
