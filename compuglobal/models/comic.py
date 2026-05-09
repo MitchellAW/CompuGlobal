@@ -21,7 +21,23 @@ class ComicLayout(StrEnum):
 
 
 class ComicOverlay(BaseModel, frozen=True):
-    """Defines an overlay to display text in a :class:`ComicPanel`"""
+    """Defines an overlay to display text in a comic.
+
+    Attributes
+    ----------
+    text: str
+        Text to overlay in the comic
+    font_family: FontFamily
+        Font family to use for the text
+    font_size: int
+        Size of the font
+    text_position_x: int
+        Position of the text overlay on the X-axis
+    text_position_y: int
+        Position of the text overlay on the Y-axis
+    text_alignment: FontAlignment
+        Alignment of the text overlay
+    """
 
     text: str = Field(alias="t", description="Text to overlay")
     font_family: FontFamily = Field(alias="f", description="Font style to use", default=FontFamily.IMPACT)
@@ -57,12 +73,38 @@ class ComicOverlay(BaseModel, frozen=True):
 
 
 class ComicPanel(BaseModel, frozen=True):
+    """Defines a comic panel of a TV show.
+
+    Attributes
+    ----------
+    key: str
+        The episode key (S01E01)
+    timestamp: int
+        The timestamp of the panel
+    overlays: List[ComicOverlay]
+        The text overlays to use in the panel
+    """
+
     key: str = Field(alias="e", description="The episode key of the panel")
     timestamp: int = Field(alias="ts", ge=0, description="The timestamp of the panel")
     overlays: List[ComicOverlay] = Field(alias="o", description="The text overlays for each panel", default=[])
 
     @classmethod
     def from_screencap(cls, *, screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> "ComicPanel":
+        """Builds a comic panel from a Screencap.
+
+        Parameters
+        ----------
+        screencap : Screencap
+            Screencap to use for the comic panel
+        font : FontFamily, optional
+            The font to use in the comic overlays
+
+        Returns
+        -------
+        ComicPanel
+            The comic panel of the screencap
+        """
         overlays = [ComicOverlay.from_subtitles(subtitles=screencap.subtitles, font_family=font)]
 
         return cls(e=screencap.frame.key, ts=screencap.frame.timestamp, o=overlays)
@@ -83,6 +125,16 @@ class ComicPanel(BaseModel, frozen=True):
 
 
 class ComicStrip(BaseModel):
+    """ComicStrip _summary_
+
+    Attributes
+    ----------
+    panels: List[ComicPanel]
+        The list of ComicPanels to use in the comic strip
+    layout: ComicLayout
+        The layout to use when displaying the panels
+    """
+
     panels: List[ComicPanel] = Field(alias="panels", description="The list of ComicPanels to use in the ComicStrip")
     layout: ComicLayout | None = Field(
         alias="layout", description="The layout to use when displaying the panels", default=None
@@ -118,6 +170,20 @@ class ComicStrip(BaseModel):
     def build_comic_overlays(
         subtitles: List[Subtitle], font_family: FontFamily = FontFamily.IMPACT
     ) -> List[ComicOverlay]:
+        """Builds a list comic overlays using the given subtitles and font.
+
+        Parameters
+        ----------
+        subtitles : List[Subtitle]
+            The subtitles to use for the overlays
+        font_family : FontFamily, optional
+            The font to use in all the comic overlays
+
+        Returns
+        -------
+        List[ComicOverlay]
+            A list of comic overlays
+        """
         return [ComicOverlay(t=subtitle.content, f=font_family) for subtitle in subtitles]
 
     def get_encoded(self) -> str:
