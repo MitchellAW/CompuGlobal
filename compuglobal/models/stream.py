@@ -6,7 +6,7 @@ from .font import FontAlignment, FontFamily
 from .subtitle import Subtitle
 
 
-class StreamOverlay(BaseModel):
+class StreamOverlay(BaseModel, frozen=True):
     """A subtitle overlay to use in a gif for a given period of time in a TV show.
 
     Attributes
@@ -74,7 +74,7 @@ def build_stream_overlays(
     ]
 
 
-class Stream(BaseModel):
+class Stream(BaseModel, frozen=True):
     """A stream/gif of a TV show.
 
     Attributes

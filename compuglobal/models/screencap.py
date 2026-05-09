@@ -7,7 +7,7 @@ from .frame import Frame
 from .subtitle import Subtitle
 
 
-class Screencap(BaseModel):
+class Screencap(BaseModel, frozen=True):
     """A Screencap of an episode at a point in time of a TV Show.
 
     Attributes

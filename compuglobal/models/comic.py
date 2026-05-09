@@ -19,7 +19,7 @@ class ComicLayout(StrEnum):
     TWO_OVER_ONE = "2x2"
 
 
-class ComicOverlay(BaseModel):
+class ComicOverlay(BaseModel, frozen=True):
     """Defines an overlay to display text in a :class:`ComicPanel`"""
 
     text: str = Field(alias="t", description="Text to overlay")
@@ -42,7 +42,7 @@ def build_overlay(subtitles: List[Subtitle], font: FontFamily = FontFamily.IMPAC
     return [ComicOverlay(t=content, f=font)]
 
 
-class ComicPanel(BaseModel):
+class ComicPanel(BaseModel, frozen=True):
     key: str = Field(alias="e", description="The episode key of the panel")
     timestamp: int = Field(alias="ts", ge=0, description="The timestamp of the panel")
     overlays: List[ComicOverlay] = Field(alias="o", description="The text overlays for each panel", default=[])

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class Subtitle(BaseModel):
+class Subtitle(BaseModel, frozen=True):
     """A Subtitle for a given period of time in a TV show.
 
     Attributes

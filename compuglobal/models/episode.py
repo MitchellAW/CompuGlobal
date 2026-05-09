@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class Episode(BaseModel):
+class Episode(BaseModel, frozen=True):
     """An episode of a TV show.
 
     Attributes

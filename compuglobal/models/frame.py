@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class Frame(BaseModel):
+class Frame(BaseModel, frozen=True):
     """A single frame of an episode at a point in time of a TV Show.
 
     Attributes
