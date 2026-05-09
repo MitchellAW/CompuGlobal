@@ -15,8 +15,20 @@ Screencap
     :members:
     :exclude-members: model_config
 
+.. autoclass:: ScreencapMoment
+    :members:
+    :exclude-members: model_config
+
 Episode
 ~~~~~~~~~~~~~~~~~~~~
+.. autoclass:: EpisodeMetadata
+    :members:
+    :exclude-members: model_config
+
+.. autoclass:: EpisodeSummary
+    :members:
+    :exclude-members: model_config
+
 .. autoclass:: Episode
     :members:
     :exclude-members: model_config
