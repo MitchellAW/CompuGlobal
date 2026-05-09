@@ -8,7 +8,7 @@ from .aio import (
     Morbotron,
 )
 from .errors import APIPageStatusError, NoSearchResultsFound
-from .models.comic import ComicStrip
+from .models.comic import ComicStrip, ComicPanel, ComicOverlay, ComicLayout
 from .models.episode import Episode
 from .models.font import FontAlignment, FontColorRGB, FontFamily
 from .models.frame import Frame
@@ -25,6 +25,9 @@ __all__ = [
     "APIPageStatusError",
     "NoSearchResultsFound",
     "ComicStrip",
+    "ComicPanel",
+    "ComicOverlay",
+    "ComicLayout",
     "Frame",
     "Screencap",
     "Episode",
