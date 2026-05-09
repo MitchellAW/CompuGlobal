@@ -96,3 +96,13 @@ class Stream(BaseModel, frozen=True):
     end: int = Field(alias="end", ge=0)
     overlays: List[StreamOverlay] = Field(alias="overlays")
     check_only: bool = Field(alias="check_only")
+
+    def get_caption(self) -> str:
+        """Gets the entire caption of the Stream (all overlays) as a string.
+
+        Returns
+        -------
+        str
+            The entire caption of the stream
+        """
+        return " ".join(f"{overlay.text}" for overlay in self.overlays)

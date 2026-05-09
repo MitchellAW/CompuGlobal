@@ -43,5 +43,15 @@ class Screencap(BaseModel, frozen=True):
 
         return self.frame.get_real_timestamp()
 
+    def get_caption(self) -> str:
+        """Gets the entire caption fo the screencap from all subtitles as a string.
+
+        Returns
+        -------
+        str
+            The entire caption of the screencap
+        """
+        return " ".join(f"{subtitle.content}" for subtitle in self.subtitles)
+
     def __str__(self):
         return str(self.frame)
