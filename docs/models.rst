@@ -33,6 +33,10 @@ Stream
     :members:
     :exclude-members: model_config
 
+.. autoclass:: StreamOverlay
+    :members:
+    :exclude-members: model_config
+
 Fonts
 ~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: FontColorRGB
