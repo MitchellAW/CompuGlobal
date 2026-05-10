@@ -60,12 +60,12 @@ class EpisodeSummary(BaseModel, frozen=True):
         A list of 20 frame IDs distributed throughout the episode.
     """
 
-    key: str
-    season: int
-    episode_number: int
-    title: str
-    original_air_date: str
-    frames: List[int]
+    key: str = Field(alias="Key")
+    season: int = Field(alias="Season")
+    episode_number: int = Field(alias="EpisodeNumber")
+    title: str = Field(alias="Title")
+    original_air_date: str = Field(alias="OriginalAirDate")
+    frames: List[int] = Field(alias="Frames")
 
 
 class Episode(BaseModel, frozen=True):
