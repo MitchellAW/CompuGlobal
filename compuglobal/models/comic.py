@@ -53,14 +53,16 @@ class ComicOverlay(BaseModel, frozen=True):
     d: int = Field(alias="d", description="Duration (unused)", default=0)
 
     @classmethod
-    def from_subtitles(cls, *, subtitles: List[Subtitle], font_family: FontFamily) -> "ComicOverlay":
+    def from_subtitles(
+        cls, *, subtitles: List[Subtitle], font_family: FontFamily = FontFamily.IMPACT
+    ) -> "ComicOverlay":
         """Builds a comic overlay using a list of Subtitles.
 
         Parameters
         ----------
         subtitles : List[Subtitle]
             A list of subtitles
-        font_family : FontFamily
+        font_family : FontFamily, optional
             The family of font to use for the new overlay.
 
         Returns
@@ -110,7 +112,7 @@ class ComicPanel(BaseModel, frozen=True):
         return cls(e=screencap.frame.key, ts=screencap.frame.timestamp, o=overlays)
 
     def get_encoded(self) -> str:
-        """get_encoded Gets the base 64 encoded representation of this panel
+        """Gets the base 64 encoded representation of this panel
 
         Returns
         -------
@@ -125,7 +127,7 @@ class ComicPanel(BaseModel, frozen=True):
 
 
 class ComicStrip(BaseModel):
-    """ComicStrip _summary_
+    """A comic strip composed of multiple comic panels in a given layout.
 
     Attributes
     ----------
@@ -160,8 +162,9 @@ class ComicStrip(BaseModel):
             ComicPanel(
                 e=screencap.frame.key,
                 ts=screencap.frame.timestamp,
-                o=cls.build_comic_overlays(screencap.subtitles, font_family=font_family),
+                o=cls.build_comic_overlays([subtitle], font_family=font_family),
             )
+            for subtitle in screencap.subtitles
         ]
 
         return cls(panels=panels)
