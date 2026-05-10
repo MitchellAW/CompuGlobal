@@ -19,7 +19,7 @@ from .models.stream import StreamOverlay, Stream
 __title__ = "compuglobal"
 __author__ = "MitchellAW"
 __license__ = "MIT"
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 
 __all__ = [
     "APIPageStatusError",
