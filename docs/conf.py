@@ -1,3 +1,5 @@
+from compuglobal import __version__
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -9,7 +11,7 @@
 project = "compuglobal"
 copyright = "2018, MitchellAW"
 author = "MitchellAW"
-release = "0.3.2"
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
