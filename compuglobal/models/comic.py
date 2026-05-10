@@ -161,7 +161,7 @@ class ComicStrip(BaseModel):
         panels = [
             ComicPanel(
                 e=screencap.frame.key,
-                ts=screencap.frame.timestamp,
+                ts=subtitle.representative_timestamp,
                 o=cls.build_comic_overlays([subtitle], font_family=font_family),
             )
             for subtitle in screencap.subtitles
