@@ -202,7 +202,7 @@ class AsyncCompuGlobalAPI:
         summaries = await self.client.handle_request(request)
         return [EpisodeSummary.model_validate(summary) for summary in summaries]
 
-    async def get_frames(self, episode: str, timestamp: int, before: int, after: int) -> List[Frame]:
+    async def get_frames(self, key: str, timestamp: int, before: int, after: int) -> List[Frame]:
         """Gets a list of all valid frames before and after the timestamp of the episode.
 
         Parameters
@@ -227,7 +227,7 @@ class AsyncCompuGlobalAPI:
         APIPageStatusError
             Raises an exception if the status code of the request is not 200."""
 
-        path_params = {"episode": episode, "timestamp": timestamp, "before": before, "after": after}
+        path_params = {"key": key, "timestamp": timestamp, "before": before, "after": after}
 
         request = self.discovery.FRAMES.build_request(self.client.base_url, path_params=path_params)
         frames = await self.client.handle_request(request)
