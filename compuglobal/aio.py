@@ -272,7 +272,7 @@ class AsyncCompuGlobalAPI:
         params = {"b64": panel.get_encoded()}
         return self.media.COMIC_PANEL.build_encoded_url(self.client.base_url, query=params)
 
-    async def get_comic_strip_url(self, screencap: Screencap, subtitles: List[Subtitle] = []) -> str:
+    async def get_comic_strip_url(self, screencap: Screencap, subtitles: List[Subtitle] | None = None) -> str:
         """Gets the URL for a comic strip showing the given screencap with subtitles.
 
         Parameters
@@ -280,18 +280,21 @@ class AsyncCompuGlobalAPI:
         screencap : Screencap
             The screencap to use in the comic strip
         subtitles : List[Subtitle], optional
-            A list of subtitles to overlay in the comic strip
+            The subtitles to overlay in the comic strip
 
         Returns
         -------
         str
             The url of the comic strip
         """
-        if len(subtitles) == 0:
+        if subtitles is None:
             subtitles = screencap.subtitles
 
         if len(subtitles) > 4:
             subtitles = subtitles[:4]
+
+        # Change subtitles
+        screencap = screencap.model_copy(update={"subtitles": subtitles})
 
         comic_strip = ComicStrip.from_screencap(screencap=screencap, font_family=self.config.default_font)
         params = {"b64": comic_strip.get_encoded(), "layout": comic_strip.layout}
@@ -317,6 +320,9 @@ class AsyncCompuGlobalAPI:
 
         if len(subtitles) > 4:
             subtitles = subtitles[:4]
+
+        # Change subtitles
+        screencap = screencap.model_copy(update={"subtitles": subtitles})
 
         stream = Stream.from_screencap(screencap=screencap, font_family=self.config.default_font)
 
