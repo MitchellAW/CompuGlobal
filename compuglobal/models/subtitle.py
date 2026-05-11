@@ -29,3 +29,13 @@ class Subtitle(BaseModel, frozen=True):
     end_timestamp: int = Field(alias="EndTimestamp", ge=0)
     content: str = Field(alias="Content")
     language: str = Field(alias="Language")
+
+    def get_duration(self) -> int:
+        """Gets the duration of the subtitle in milliseconds.
+
+        Returns
+        -------
+        int
+            The duration in milliseonds.
+        """
+        return self.end_timestamp - self.end_timestamp
