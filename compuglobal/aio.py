@@ -333,7 +333,7 @@ class AsyncCompuGlobalAPI:
         for line in response.splitlines():
             data = json.loads(line)
             if "url" in data:
-                return f"{self.client.base_url}{data.get("url")}"
+                return f"{self.client.base_url}{data.get('url')}"
 
         return await self.get_comic_strip_url(screencap)
 

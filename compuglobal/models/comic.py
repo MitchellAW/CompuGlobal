@@ -5,8 +5,8 @@ from typing import List
 
 from pydantic import BaseModel, Field, model_validator
 
-from .screencap import Screencap
 from .font import FontAlignment, FontFamily
+from .screencap import Screencap
 from .subtitle import Subtitle
 
 

@@ -8,13 +8,13 @@ from .aio import (
     Morbotron,
 )
 from .errors import APIPageStatusError, NoSearchResultsFound
-from .models.comic import ComicStrip, ComicPanel, ComicOverlay, ComicLayout
+from .models.comic import ComicLayout, ComicOverlay, ComicPanel, ComicStrip
 from .models.episode import Episode, EpisodeMetadata, EpisodeSummary
 from .models.font import FontAlignment, FontColorRGB, FontFamily
 from .models.frame import Frame
 from .models.screencap import Screencap, ScreencapMoment
+from .models.stream import Stream, StreamOverlay
 from .models.subtitle import Subtitle
-from .models.stream import StreamOverlay, Stream
 
 __title__ = "compuglobal"
 __author__ = "MitchellAW"

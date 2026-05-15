@@ -3,7 +3,6 @@ import unittest
 
 import compuglobal
 
-
 FRINKIAC = compuglobal.Frinkiac()
 
 with open('frinkiac.json') as frinkiac:

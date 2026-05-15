@@ -2,8 +2,8 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
-from .screencap import Screencap
 from .font import FontAlignment, FontFamily
+from .screencap import Screencap
 
 
 class StreamOverlay(BaseModel, frozen=True):
