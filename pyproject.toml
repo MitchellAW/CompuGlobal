@@ -35,6 +35,3 @@ docs = [
     "enum-tools[sphinx]",
     "sphinx-rtd-theme",
 ]
-
-[project.scripts]
-flit = "flit:main"
