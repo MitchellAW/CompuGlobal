@@ -1,3 +1,5 @@
+"""Definitions for fonts and text in Comic/Stream overlays."""
+
 from enum import StrEnum
 
 from pydantic import BaseModel, Field
@@ -35,6 +37,7 @@ class FontColorRGB(BaseModel):
         The amount of blue in the color (0-255)
     alpha: int
         The amount of alpha transparency in the color (0-255)
+
     """
 
     red: int = Field(alias="r", ge=0, le=255)
@@ -43,4 +46,12 @@ class FontColorRGB(BaseModel):
     alpha: int = Field(alias="a", ge=0, le=255)
 
     def get_rgba(self) -> list[int]:
+        """Get a list of the rgba values.
+
+        Returns
+        -------
+        list[int]
+            A list of the rgba values in that order [red, green, blue, alpha]
+
+        """
         return [self.red, self.green, self.blue, self.alpha]

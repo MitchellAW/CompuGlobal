@@ -1,3 +1,5 @@
+"""Used for interacting with and building CGHMC APIs."""
+
 import json
 from warnings import deprecated
 
@@ -21,6 +23,8 @@ from compuglobal.models.subtitle import Subtitle
 
 
 class AsyncCompuGlobalAPI:
+    """Represents a base API of the CGHMC family."""
+
     BASE_URL: str
     TITLE: str
     DEFAULT_FONT: FontFamily
@@ -31,6 +35,16 @@ class AsyncCompuGlobalAPI:
     metadata: MetadataAPI = MetadataAPI()
 
     def __init__(self, session: aiohttp.ClientSession | None = None, timeout: int = 15) -> None:
+        """Create an API using the given session and timeout.
+
+        Parameters
+        ----------
+        session : aiohttp.ClientSession | None, optional
+            The client session to use for all API calls
+        timeout : int, optional
+            The time to wait on an API request before raising a timeout exception.
+
+        """
         self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session, timeout=timeout)
         self.config = CompuGlobalAPIConfig(title=self.TITLE, default_font=self.DEFAULT_FONT)
 
@@ -40,7 +54,7 @@ class AsyncCompuGlobalAPI:
         timestamp: int | None = None,
         frame: Frame | None = None,
     ) -> Screencap:
-        """Gets the screencap for the given episode & timestamp, or a screencap of the Frame object.
+        """Get the screencap for the given episode & timestamp, or a screencap of the Frame object.
 
         Parameters
         ----------
@@ -60,6 +74,7 @@ class AsyncCompuGlobalAPI:
         ------
         TypeError
             Must give only episode + timestamp, or a Frame object.
+
         """
         if isinstance(episode, str) and isinstance(timestamp, int):
             params = {"e": episode, "t": timestamp, "nearby": 1}
@@ -79,7 +94,7 @@ class AsyncCompuGlobalAPI:
         return Screencap.model_validate(caption)
 
     async def search(self, search_text: str) -> list[Frame]:
-        """Performs a search of the given search text and returns a list of all the Frames.
+        """Perform a search of the given search text and returns a list of all the Frames.
 
         Parameters
         ----------
@@ -95,6 +110,7 @@ class AsyncCompuGlobalAPI:
         ------
         NoSearchResultsFound
             _description_
+
         """
         params = {"q": search_text}
 
@@ -107,7 +123,7 @@ class AsyncCompuGlobalAPI:
         raise NoSearchResultsFoundError
 
     async def search_for_screencap(self, search_text: str) -> Screencap:
-        """Performs a search of the given search text and returns the top result.
+        """Perform a search of the given search text and returns the top result.
 
         Parameters
         ----------
@@ -118,13 +134,14 @@ class AsyncCompuGlobalAPI:
         -------
         Screencap
             The screencap of the top search result
+
         """
         search_results = await self.search(search_text)
         result = search_results[0]
         return await self.get_screencap(result.key, result.timestamp)
 
     async def get_random_screencap(self) -> Screencap:
-        """Gets a random TV Show screencap.
+        """Get a random TV Show screencap.
 
         Returns
         -------
@@ -134,13 +151,15 @@ class AsyncCompuGlobalAPI:
         Raises
         ------
         APIPageStatusError
-            Raises an exception if the status code of the request is not 200."""
+            Raises an exception if the status code of the request is not 200.
+
+        """
         request = self.discovery.RANDOM.build_request(self.client.base_url)
         random = await self.client.handle_request(request)
         return Screencap.model_validate(random)
 
     async def browse_episode(self, episode: str) -> Episode:
-        """Gets all episode metadata and subtitles for a given episode.
+        """Get all episode metadata and subtitles for a given episode.
 
         Parameters
         ----------
@@ -151,6 +170,7 @@ class AsyncCompuGlobalAPI:
         -------
         Episode
             The episode containing all metadata and subtitles
+
         """
         path_params = {"key": episode, "start_timestamp": 0, "end_timestamp": 99999999}
         request = self.metadata.EPISODE.build_request(self.client.base_url, path_params=path_params)
@@ -158,7 +178,7 @@ class AsyncCompuGlobalAPI:
         return Episode.model_validate(episode_data)
 
     async def get_transcript(self, episode: str, timestamp: int) -> list[Subtitle]:
-        """Gets a transcript of subtitles around the given episode key and timestamp.
+        """Get a transcript of subtitles around the given episode key and timestamp.
 
         Parameters
         ----------
@@ -171,6 +191,7 @@ class AsyncCompuGlobalAPI:
         -------
         List[Subtitle]
             The list of subtitles
+
         """
         params = {"e": episode, "t": timestamp}
         request = self.metadata.TRANSCRIPT.build_request(self.client.base_url, query=params)
@@ -184,29 +205,31 @@ class AsyncCompuGlobalAPI:
         -------
         List[ScreencapMoment]
             List of random screencap moments
+
         """
         request = self.discovery.DISCOVER.build_request(self.client.base_url)
         moments = await self.client.handle_request(request)
         return [ScreencapMoment.model_validate(moment) for moment in moments]
 
     async def navigator(self) -> list[EpisodeSummary]:
-        """Gets a for every single episode containing distributed frame IDs throughout the episode.
+        """Get a summary for every single episode containing distributed frame IDs throughout the episode.
 
         Returns
         -------
         List[EpisodeSummary]
             A list of episode summaries
+
         """
         request = self.discovery.NAVIGATOR.build_request(self.client.base_url)
         summaries = await self.client.handle_request(request)
         return [EpisodeSummary.model_validate(summary) for summary in summaries]
 
     async def get_frames(self, key: str, timestamp: int, before: int, after: int) -> list[Frame]:
-        """Gets a list of all valid frames before and after the timestamp of the episode.
+        """Get a list of all valid frames before and after the timestamp of the episode.
 
         Parameters
         ----------
-        episode: str
+        key: str
             The episode key of the screencap.
         timestamp: int
             The timestamp of the screencap.
@@ -224,8 +247,9 @@ class AsyncCompuGlobalAPI:
         Raises
         ------
         APIPageStatusError
-            Raises an exception if the status code of the request is not 200."""
+            Raises an exception if the status code of the request is not 200.
 
+        """
         path_params = {"key": key, "timestamp": timestamp, "before": before, "after": after}
 
         request = self.discovery.FRAMES.build_request(self.client.base_url, path_params=path_params)
@@ -234,18 +258,19 @@ class AsyncCompuGlobalAPI:
         return [Frame.model_validate(frame_result) for frame_result in frames]
 
     async def get_image_url(self, screencap: Screencap) -> str:
-        """Returns the direct image url for the screencap without any caption.
+        """Get the direct image url for the screencap without any caption.
 
         Returns
         -------
         str
-            The image url for the screencap without any caption."""
+            The image url for the screencap without any caption.
 
+        """
         path_params = {"key": screencap.frame.key, "timestamp": screencap.frame.timestamp}
         return self.media.IMAGE.build_encoded_url(self.client.base_url, path_params=path_params)
 
     async def get_comic_panel_url(self, screencap: Screencap, subtitles: list[Subtitle] | None = None) -> str:
-        """Gets the URL for a single comic panel showing the given screencap with subtitles.
+        """Get the URL for a single comic panel showing the given screencap with subtitles.
 
         Parameters
         ----------
@@ -258,6 +283,7 @@ class AsyncCompuGlobalAPI:
         -------
         str
             The url of the comic panel
+
         """
         if subtitles is None:
             subtitles = screencap.subtitles
@@ -268,7 +294,7 @@ class AsyncCompuGlobalAPI:
         return self.media.COMIC_PANEL.build_encoded_url(self.client.base_url, query=params)
 
     async def get_comic_strip_url(self, screencap: Screencap, subtitles: list[Subtitle] | None = None) -> str:
-        """Gets the URL for a comic strip showing the given screencap with subtitles.
+        """Get the URL for a comic strip showing the given screencap with subtitles.
 
         Parameters
         ----------
@@ -281,6 +307,7 @@ class AsyncCompuGlobalAPI:
         -------
         str
             The url of the comic strip
+
         """
         if subtitles is None:
             subtitles = screencap.subtitles
@@ -296,7 +323,7 @@ class AsyncCompuGlobalAPI:
         return self.media.COMIC_STRIP.build_encoded_url(self.client.base_url, query=params)
 
     async def get_gif_url(self, screencap: Screencap, subtitles: list[Subtitle] | None = None) -> str:
-        """Gets the URL for a gif of the given screencap with default or given subtitles.
+        """Get the URL for a gif of the given screencap with default or given subtitles.
 
         Parameters
         ----------
@@ -309,6 +336,7 @@ class AsyncCompuGlobalAPI:
         -------
         str
             The URL of the gif, or a comic strip as a fallback if gif rendering fails.
+
         """
         if subtitles is None:
             subtitles = screencap.subtitles
@@ -334,7 +362,7 @@ class AsyncCompuGlobalAPI:
         return await self.get_comic_strip_url(screencap)
 
     async def close(self) -> None:
-        """Closes any client sessions used for performing API requests."""
+        """Close any client sessions used for performing API requests."""
         await self.client.close()
 
 

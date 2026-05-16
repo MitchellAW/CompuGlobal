@@ -1,3 +1,5 @@
+"""Models for building a comic panel, or comic strip."""
+
 import json
 from base64 import b64encode
 from enum import IntEnum, StrEnum
@@ -10,7 +12,7 @@ from .subtitle import Subtitle
 
 
 class ComicLayout(StrEnum):
-    """Defines a layout to be used by :class:`ComicStrip`"""
+    """Defines a layout to be used by :class:`ComicStrip`."""
 
     SINGLE = "single"
     WIDE = "wide"
@@ -43,6 +45,7 @@ class ComicOverlay(BaseModel, frozen=True):
         Position of the text overlay on the Y-axis
     text_alignment: FontAlignment
         Alignment of the text overlay
+
     """
 
     text: str = Field(alias="t", description="Text to overlay")
@@ -67,7 +70,7 @@ class ComicOverlay(BaseModel, frozen=True):
         subtitles: list[Subtitle],
         font_family: FontFamily = FontFamily.IMPACT,
     ) -> "ComicOverlay":
-        """Builds a comic overlay using a list of Subtitles.
+        """Build a comic overlay using a list of Subtitles.
 
         Parameters
         ----------
@@ -80,6 +83,7 @@ class ComicOverlay(BaseModel, frozen=True):
         -------
         ComicOverlay
             The overlay to display on a ComicPanel
+
         """
         text = " ".join(subtitle.content for subtitle in subtitles)
         return cls(t=text, f=font_family)
@@ -96,6 +100,7 @@ class ComicPanel(BaseModel, frozen=True):
         The timestamp of the panel
     overlays: List[ComicOverlay]
         The text overlays to use in the panel
+
     """
 
     key: str = Field(alias="e", description="The episode key of the panel")
@@ -104,7 +109,7 @@ class ComicPanel(BaseModel, frozen=True):
 
     @classmethod
     def from_screencap(cls, *, screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> "ComicPanel":
-        """Builds a comic panel from a Screencap.
+        """Build a comic panel from a Screencap.
 
         Parameters
         ----------
@@ -117,18 +122,20 @@ class ComicPanel(BaseModel, frozen=True):
         -------
         ComicPanel
             The comic panel of the screencap
+
         """
         overlays = [ComicOverlay.from_subtitles(subtitles=screencap.subtitles, font_family=font)]
 
         return cls(e=screencap.frame.key, ts=screencap.frame.timestamp, o=overlays)
 
     def get_encoded(self) -> str:
-        """Gets the base 64 encoded representation of this panel
+        """Get the base 64 encoded representation of this panel.
 
         Returns
         -------
         str
             A base 64 string
+
         """
         dump = [self.model_dump(by_alias=True)]
         json_str = json.dumps(dump, separators=(",", ":"))
@@ -146,6 +153,7 @@ class ComicStrip(BaseModel):
         The list of ComicPanels to use in the comic strip
     layout: ComicLayout
         The layout to use when displaying the panels
+
     """
 
     panels: list[ComicPanel] = Field(alias="panels", description="The list of ComicPanels to use in the ComicStrip")
@@ -170,6 +178,7 @@ class ComicStrip(BaseModel):
         -------
         ComicStrip
             The comic strip depicting the given screencap
+
         """
         panels = [
             ComicPanel(
@@ -187,7 +196,7 @@ class ComicStrip(BaseModel):
         subtitles: list[Subtitle],
         font_family: FontFamily = FontFamily.IMPACT,
     ) -> list[ComicOverlay]:
-        """Builds a list comic overlays using the given subtitles and font.
+        """Build a list comic overlays using the given subtitles and font.
 
         Parameters
         ----------
@@ -200,16 +209,18 @@ class ComicStrip(BaseModel):
         -------
         List[ComicOverlay]
             A list of comic overlays
+
         """
         return [ComicOverlay(t=subtitle.content, f=font_family) for subtitle in subtitles]
 
     def get_encoded(self) -> str:
-        """Gets the base 64 encoded representation of this comic strip
+        """Get the base 64 encoded representation of this comic strip.
 
         Returns
         -------
         str
             A base 64 string
+
         """
         dump = [panel.model_dump(by_alias=True) for panel in self.panels]
         json_str = json.dumps(dump, separators=(",", ":"))
@@ -219,6 +230,14 @@ class ComicStrip(BaseModel):
 
     @model_validator(mode="after")
     def set_default_layout(self) -> "ComicStrip":
+        """Set the default layout for the comic strip based on the number of panels.
+
+        Returns
+        -------
+        ComicStrip
+            The comic strip with default layout.
+
+        """
         # If user explicitly set layout → keep it
         if self.layout is not None:
             return self

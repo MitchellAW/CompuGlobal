@@ -1,4 +1,4 @@
-"""Python wrapper for the CGHMC API (Frinkiac, Morbotron Master Of All Science and more!"""
+"""Python wrapper for the CGHMC API (Frinkiac, Morbotron Master Of All Science and more."""
 
 from compuglobal.aio import (
     AsyncCompuGlobalAPI,

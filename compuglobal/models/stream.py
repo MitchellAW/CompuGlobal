@@ -1,3 +1,5 @@
+"""Streams are posted to the CGHMC APIs for generating gifs/mp4s."""
+
 from pydantic import BaseModel, Field
 
 from compuglobal.models.font import FontAlignment, FontFamily
@@ -27,6 +29,7 @@ class StreamOverlay(BaseModel, frozen=True):
         The time where the overlay begins
     end: int
         The time where the overlay ends
+
     """
 
     text: str = Field(alias="text")
@@ -56,6 +59,7 @@ class Stream(BaseModel, frozen=True):
         A list of stream overlays to use throughout the stream
     check_only: bool
         Whether to only check locally, or render the stream for others
+
     """
 
     key: str = Field(alias="episode")
@@ -72,13 +76,14 @@ class Stream(BaseModel, frozen=True):
         ----------
         screencap : Screencap
             The screencap to use for the Stream
-        font : FontFamily
+        font_family : FontFamily
             The font to use in any overlays
 
         Returns
         -------
         Stream
             The stream with overlays for the given screencap.
+
         """
         overlays = cls.build_stream_overlays(screencap, font_family)
 
@@ -92,10 +97,12 @@ class Stream(BaseModel, frozen=True):
 
     @staticmethod
     def build_stream_overlays(screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> list[StreamOverlay]:
-        """Builds the stream overlays with the given subtitles, timestamp, and font.
+        """Build stream overlays with the given screencap, subtitles, timestamp, and font.
 
         Parameters
         ----------
+        screencap: Screencap
+            The screencap to use for hte overlays
         subtitles : List[Subtitle]
             The subtitles to use in the overlay
         min_timestamp : int
@@ -107,6 +114,7 @@ class Stream(BaseModel, frozen=True):
         -------
         List[StreamOverlay]
             The built list of overlays for the stream
+
         """
         return [
             StreamOverlay(
@@ -119,11 +127,12 @@ class Stream(BaseModel, frozen=True):
         ]
 
     def get_caption(self) -> str:
-        """Gets the entire caption of the Stream (all overlays) as a string.
+        """Get the entire caption of the Stream (all overlays) as a string.
 
         Returns
         -------
         str
             The entire caption of the stream
+
         """
         return " ".join(f"{overlay.text}" for overlay in self.overlays)
