@@ -15,15 +15,15 @@ async def main():
     # Full episode object
     episode = screencap.episode
 
-    # Returns: S07E03
+    # Returns - S07E03
     episode_key = episode.key
     print(episode_key)
 
-    # Returns: 3
+    # Returns - 3
     episode_number = episode.episode_number
     print(episode_number)
 
-    # Returns: 7
+    # Returns - 7
     season_number = episode.season
     print(season_number)
 
@@ -39,19 +39,19 @@ async def main():
     writer = episode.writer
     print(writer)
 
-    # Returns: 1-Jul-10
+    # Returns - 2016-04-10
     air_date = episode.original_air_date
     print(air_date)
 
-    # Returns: https://en.wikipedia.org/wiki/Attack_of_the_Killer_App
+    # Returns - https://en.wikipedia.org/wiki/Attack_of_the_Killer_App
     wiki_url = episode.wiki_link
     print(wiki_url)
 
-    # Returns: 343676
+    # Returns - 343676
     timestamp = screencap.frame.timestamp
     print(timestamp)
 
-    # Returns: 5:43
+    # Returns - 5:43
     real_timestamp = screencap.get_real_timestamp()
     print(real_timestamp)
 
