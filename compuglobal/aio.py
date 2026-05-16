@@ -9,7 +9,7 @@ from .api.config import CompuGlobalAPIConfig
 from .api.discovery import DiscoveryAPI
 from .api.media import MediaAPI
 from .api.metadata import MetadataAPI
-from .errors import NoSearchResultsFound
+from .errors import NoSearchResultsFoundError
 from .models.comic import ComicPanel, ComicStrip
 from .models.episode import Episode, EpisodeSummary
 from .models.font import FontFamily
@@ -105,7 +105,7 @@ class AsyncCompuGlobalAPI:
             return all_frames
 
         else:
-            raise NoSearchResultsFound()
+            raise NoSearchResultsFoundError()
 
     async def search_for_screencap(self, search_text: str) -> Screencap:
         """Performs a search of the given search text and returns the top result.

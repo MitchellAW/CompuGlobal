@@ -1,4 +1,4 @@
-class NoSearchResultsFound(Exception):
+class NoSearchResultsFoundError(Exception):
     """Raised when no search results are returned during a search query to the
     search endpoint of the API."""
 

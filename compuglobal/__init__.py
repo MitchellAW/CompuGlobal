@@ -7,7 +7,7 @@ from .aio import (
     MasterOfAllScience,
     Morbotron,
 )
-from .errors import APIPageStatusError, NoSearchResultsFound
+from .errors import APIPageStatusError, NoSearchResultsFoundError
 from .models.comic import ComicLayout, ComicOverlay, ComicPanel, ComicStrip
 from .models.episode import Episode, EpisodeMetadata, EpisodeSummary
 from .models.font import FontAlignment, FontColorRGB, FontFamily
@@ -23,7 +23,7 @@ __version__ = "0.3.5"
 
 __all__ = [
     "APIPageStatusError",
-    "NoSearchResultsFound",
+    "NoSearchResultsFoundError",
     "ComicStrip",
     "ComicPanel",
     "ComicOverlay",
