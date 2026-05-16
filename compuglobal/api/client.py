@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from aiohttp import ClientSession, ClientTimeout
 
 from ..errors import APIPageStatusError
@@ -26,7 +28,7 @@ class CompuGlobalAPIClient:
 
     async def get(self, url, params=None):
         async with self.session.get(url, params=params) as response:
-            if response.status == 200:
+            if HTTPStatus.OK <= response.status < HTTPStatus.MULTIPLE_CHOICES:
                 return await response.json()
 
             else:
@@ -34,7 +36,7 @@ class CompuGlobalAPIClient:
 
     async def post_data(self, url, json=None):
         async with self.session.post(url, json=json) as response:
-            if response.status == 200:
+            if HTTPStatus.OK <= response.status < HTTPStatus.MULTIPLE_CHOICES:
                 return await response.text()
 
             else:
