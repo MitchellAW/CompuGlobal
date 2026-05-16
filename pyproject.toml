@@ -44,4 +44,6 @@ package = true
 
 [tool.ruff]
 line-length = 120
-select = ["E", "W", "F", "I", "ASYNC"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "B", "S", "PL", "ASYNC", "DOC"]
