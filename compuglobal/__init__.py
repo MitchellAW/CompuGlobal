@@ -1,20 +1,20 @@
-"""Python wrapper for the CGHMC API (Frinkiac, Morbotron Master Of All Science and more!"""
+"""Python wrapper for the CGHMC API (Frinkiac, Morbotron Master Of All Science and more."""
 
-from .aio import (
+from compuglobal.aio import (
     AsyncCompuGlobalAPI,
     CapitalBeatUs,
     Frinkiac,
     MasterOfAllScience,
     Morbotron,
 )
-from .errors import APIPageStatusError, NoSearchResultsFound
-from .models.comic import ComicStrip, ComicPanel, ComicOverlay, ComicLayout
-from .models.episode import Episode, EpisodeMetadata, EpisodeSummary
-from .models.font import FontAlignment, FontColorRGB, FontFamily
-from .models.frame import Frame
-from .models.screencap import Screencap, ScreencapMoment
-from .models.subtitle import Subtitle
-from .models.stream import StreamOverlay, Stream
+from compuglobal.errors import APIPageStatusError, NoSearchResultsFoundError
+from compuglobal.models.comic import ComicLayout, ComicOverlay, ComicPanel, ComicStrip
+from compuglobal.models.episode import Episode, EpisodeMetadata, EpisodeSummary
+from compuglobal.models.font import FontAlignment, FontColorRGB, FontFamily
+from compuglobal.models.frame import Frame
+from compuglobal.models.screencap import Screencap, ScreencapMoment
+from compuglobal.models.stream import Stream, StreamOverlay
+from compuglobal.models.subtitle import Subtitle
 
 __title__ = "compuglobal"
 __author__ = "MitchellAW"
@@ -23,26 +23,26 @@ __version__ = "0.3.5"
 
 __all__ = [
     "APIPageStatusError",
-    "NoSearchResultsFound",
-    "ComicStrip",
-    "ComicPanel",
-    "ComicOverlay",
+    "AsyncCompuGlobalAPI",
+    "CapitalBeatUs",
     "ComicLayout",
-    "Frame",
-    "Screencap",
-    "ScreencapMoment",
+    "ComicOverlay",
+    "ComicPanel",
+    "ComicStrip",
     "Episode",
-    "EpisodeSummary",
     "EpisodeMetadata",
+    "EpisodeSummary",
     "FontAlignment",
     "FontColorRGB",
     "FontFamily",
-    "Subtitle",
-    "Stream",
-    "StreamOverlay",
-    "CapitalBeatUs",
+    "Frame",
     "Frinkiac",
     "MasterOfAllScience",
     "Morbotron",
-    "AsyncCompuGlobalAPI",
+    "NoSearchResultsFoundError",
+    "Screencap",
+    "ScreencapMoment",
+    "Stream",
+    "StreamOverlay",
+    "Subtitle",
 ]

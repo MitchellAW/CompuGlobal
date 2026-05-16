@@ -1,10 +1,10 @@
-from typing import List
+"""Models for  Screencaps and ScreencapMoments."""
 
 from pydantic import BaseModel, Field
 
-from .episode import EpisodeMetadata
-from .frame import Frame
-from .subtitle import Subtitle
+from compuglobal.models.episode import EpisodeMetadata
+from compuglobal.models.frame import Frame
+from compuglobal.models.subtitle import Subtitle
 
 
 class ScreencapMoment(BaseModel, frozen=True):
@@ -20,6 +20,7 @@ class ScreencapMoment(BaseModel, frozen=True):
         The content of the subtitle
     title: str
         The title of the episode in the snapshot
+
     """
 
     episode: str = Field(alias="Episode")
@@ -45,64 +46,78 @@ class Screencap(BaseModel, frozen=True):
         The minimum timestamp of the screencap
     max_timestamp: int
         The maximum timestamp of the screencap
+
     """
 
     episode: EpisodeMetadata = Field(alias="Episode")
     frame: Frame = Field(alias="Frame")
-    subtitles: List[Subtitle] = Field(alias="Subtitles")
-    nearby: List[Frame] = Field(alias="Nearby")
+    subtitles: list[Subtitle] = Field(alias="Subtitles")
+    nearby: list[Frame] = Field(alias="Nearby")
     min_timestamp: int = Field(alias="MinTimestamp", ge=0)
     max_timestamp: int = Field(alias="MaxTimestamp", ge=0)
 
-    def get_real_timestamp(self):
-        """Gets a readable timestamp for the frame in format "mm:ss"
+    def get_real_timestamp(self) -> str:
+        """Get a readable timestamp for the frame in format "mm:ss".
 
         Returns
         -------
         str
-            A readable timestamp for the frame in format `mm:ss`."""
+            A readable timestamp for the frame in format `mm:ss`.
 
+        """
         return self.frame.get_real_timestamp()
 
     def captions(self) -> list[str]:
-        """Gets a list of captions for the screencap from all subttiles.
+        """Get a list of captions for the screencap from all subttiles.
 
         Returns
         -------
         list[str]
             A list of captions from the subtitles
+
         """
         return [f"{subtitle.content}" for subtitle in self.subtitles]
 
     def get_caption(self) -> str:
-        """Gets the entire caption for the screencap from all subtitles as a string.
+        """Get the entire caption for the screencap from all subtitles as a string.
 
         Returns
         -------
         str
             The entire caption of the screencap
+
         """
         return " ".join(self.captions())
 
     def get_start(self) -> int:
-        """Gets the earliest start timestamp from the subtitles.
+        """Get the earliest start timestamp from the subtitles.
 
         Returns
         -------
         int
             The start timestamp
+
         """
         return min(subtitle.start_timestamp for subtitle in self.subtitles)
 
     def get_end(self) -> int:
-        """Gets the latest end timestamp from the subtitles.
+        """Get the latest end timestamp from the subtitles.
 
         Returns
         -------
         int
             The end timestamp
+
         """
         return max(subtitle.end_timestamp for subtitle in self.subtitles)
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """Get the string representation of the Screencap.
+
+        Returns
+        -------
+        str
+            The string representation of the Screencap.
+
+        """
         return str(self.frame)

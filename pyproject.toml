@@ -24,17 +24,39 @@ keywords = [
     "The Simpsons", "Futurama", "Rick and Morty", "West Wing", "Frinkiac", "Morbotron", "Master of all Science", "Capital Beat", "API", "API Wrapper", "CompuGlobal", "CompuGlobalHyperMegaNet", "CGHMC"
 ]
 
+[dependency-groups]
+dev = [
+    "pyrefly>=1.0.0",
+    "ruff>=0.15.13",
+]
+docs = [
+    "enum-tools[sphinx]>=0.13.0",
+    "sphinx<9.0",
+    "sphinx-rtd-theme>=3.1.0",
+    "sphinxcontrib-trio>=1.2.0",
+]
+
 [project.urls]
 Documentation = "https://compuglobal.readthedocs.io/en/latest/"
 Source = "https://github.com/MitchellAW/CompuGlobal"
 
-[project.optional-dependencies]
-docs = [
-    "sphinx<9.0",
-    "sphinxcontrib-trio",
-    "enum-tools[sphinx]",
-    "sphinx-rtd-theme",
-]
+[tool.uv]
+package = true
 
-[project.scripts]
-flit = "flit:main"
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+preview = true
+select = ["ALL"]
+ignore = ["CPY001"]
+
+[tool.ruff.per-file-ignores]
+"examples/*" = ["INP001", "T201", "ANN201", "D103", "CPY001"]
+"docs/*" = ["A001", "INP001", "D100", "CPY001"]
+
+[tool.pyrefly]
+project-includes = [
+    "**/*.py*",
+    "**/*.ipynb",
+]

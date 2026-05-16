@@ -1,3 +1,5 @@
+"""Subtitles are used in Screencaps and Comic/Stream overlays."""
+
 from pydantic import BaseModel, Field
 
 
@@ -20,6 +22,7 @@ class Subtitle(BaseModel, frozen=True):
         The content/text of the subtitle
     language: str
         The language of the subtitle
+
     """
 
     id: int = Field(alias="Id")
@@ -31,11 +34,12 @@ class Subtitle(BaseModel, frozen=True):
     language: str = Field(alias="Language")
 
     def get_duration(self) -> int:
-        """Gets the duration of the subtitle in milliseconds.
+        """Get the duration of the subtitle in milliseconds.
 
         Returns
         -------
         int
             The duration in milliseonds.
+
         """
         return self.end_timestamp - self.end_timestamp

@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // Source: https://github.com/astral-sh/ruff-vscode/issues/145#issuecomment-4187903472
+      "label": "ruff check",
+      "type": "shell",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      },
+      "command": "uv",
+      "args": [
+        "run",
+        "ruff",
+        "check",
+        "--watch",
+        "--output-format",
+        "github",
+        "."
+      ],
+      "problemMatcher": [
+        {
+          "source": "Ruff",
+          "owner": "Ruff",
+          "severity": "warning",
+          "background": {
+            "beginsPattern": "\\[[^\\]]+\\] Found \\d+ errors\\. Watching for file changes\\.",
+            "endsPattern": "^$"
+          },
+          "pattern": [
+            {
+              "regexp": "^::\\w+ title=ruff \\(([^)]+)\\),file=[^,]+,line=(\\d+),col=(\\d+),endLine=(\\d+),endColumn=(\\d+)::([^:]+):\\d+:\\d+: [^\\s]+ (.*)$",
+              "code": 1,
+              "line": 2,
+              "column": 3,
+              "endLine": 4,
+              "endColumn": 5,
+              "file": 6,
+              "message": 7
+            }
+          ]
+        }
+      ],
+    }
+  ]
+}
