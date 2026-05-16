@@ -32,7 +32,7 @@ class Frame(BaseModel, frozen=True):
         """
         seconds = int(self.timestamp / 1000)
         minutes = int(seconds / 60)
-        seconds -= int(minutes * 60)
+        seconds -= minutes * 60
         return f"{minutes}:{seconds:02d}"
 
     def __str__(self) -> str:

@@ -41,7 +41,6 @@ class PreparedRequest:
     body: dict[str, Any] | list[Any] | None = None
 
 
-@staticmethod
 def _format_validation_error_message(message: str, values: set[str]) -> str:
     return f"{message}: {values}"
 

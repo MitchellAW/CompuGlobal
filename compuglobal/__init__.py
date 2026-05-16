@@ -4,6 +4,7 @@ from compuglobal.aio import (
     AsyncCompuGlobalAPI,
     CapitalBeatUs,
     Frinkiac,
+    # pyrefly: ignore [deprecated]
     MasterOfAllScience,
     Morbotron,
 )
