@@ -1,11 +1,10 @@
+"""Example of the information that can be obtained from a Screencap/Episode."""
+
 import asyncio
 
 import compuglobal
 
 
-# ----------------------------------------------------------------------------
-# This an example of the information that can be obtained from a Screencap/Episode
-# ----------------------------------------------------------------------------
 async def main():
     # Futurama/Morbotron API
     futurama = compuglobal.Morbotron()

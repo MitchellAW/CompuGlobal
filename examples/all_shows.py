@@ -1,8 +1,6 @@
-import compuglobal
+"""Example of the different APIs that are available for use."""
 
-# ----------------------------------------------------------------------------
-# This an example of the different APIs that are available for use:
-# ----------------------------------------------------------------------------
+import compuglobal
 
 # The Simpsons
 simpsons = compuglobal.Frinkiac()

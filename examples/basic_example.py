@@ -1,11 +1,10 @@
+"""Example of the basic image/comic/gif functionality available."""
+
 import asyncio
 
 import compuglobal
 
 
-# ----------------------------------------------------------------------------
-# This an example of the basic image/comic/gif functionality available
-# ----------------------------------------------------------------------------
 async def main():
     # The API used as the example here is Frinkiac (The Simpsons)
     # Everything below can be used for any of the APIs (Morbotron, Master of All
