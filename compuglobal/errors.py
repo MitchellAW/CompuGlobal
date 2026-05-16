@@ -2,7 +2,7 @@ class NoSearchResultsFoundError(Exception):
     """Raised when no search results are returned during a search query to the
     search endpoint of the API."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("No search results found.")
 
 
@@ -16,5 +16,5 @@ class APIPageStatusError(Exception):
     url: str
         The url page that encountered the error."""
 
-    def __init__(self, page_status, url):
+    def __init__(self, page_status: int, url: str) -> None:
         super().__init__(f"Error {page_status}. {url} may be down.")

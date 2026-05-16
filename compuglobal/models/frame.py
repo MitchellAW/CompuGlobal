@@ -18,7 +18,7 @@ class Frame(BaseModel, frozen=True):
     key: str = Field(alias="Episode")
     timestamp: int = Field(alias="Timestamp", ge=0)
 
-    def get_real_timestamp(self):
+    def get_real_timestamp(self) -> str:
         """Gets a readable timestamp for the frame in format "mm:ss"
 
         Returns
@@ -31,5 +31,5 @@ class Frame(BaseModel, frozen=True):
         seconds -= int(minutes * 60)
         return f"{minutes}:{seconds:02d}"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.key} - {self.timestamp} ({self.get_real_timestamp()})"

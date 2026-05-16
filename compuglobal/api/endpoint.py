@@ -36,21 +36,20 @@ class Endpoint:
         base_url: str,
         query: dict[str, Any],
         path_params: dict[str, Any],
-    ):
+    ) -> str:
         # Validate that query and path params match what is expected
         self.validate_query(query)
         self.validate_path_params(path_params)
 
         # Form url with path params
-        new_url = base_url + self.path.format(**path_params)
-        return new_url
+        return base_url + self.path.format(**path_params)
 
     def build_encoded_url(
         self,
         base_url: str,
         query: dict[str, Any] | None = None,
         path_params: dict[str, Any] | None = None,
-    ):
+    ) -> str:
         query = query or {}
         path_params = path_params or {}
         url = self.build_url(base_url, query, path_params)
@@ -58,8 +57,7 @@ class Endpoint:
         if len(query.keys()) > 0:
             return f"{url}?{urlencode(query, doseq=True)}"
 
-        else:
-            return url
+        return url
 
     def build_request(
         self,
@@ -67,7 +65,7 @@ class Endpoint:
         query: dict[str, Any] | None = None,
         path_params: dict[str, Any] | None = None,
         body: BaseModel | None = None,
-    ):
+    ) -> PreparedRequest:
         query = query or {}
         path_params = path_params or {}
         new_url = self.build_url(base_url, query, path_params)
@@ -77,24 +75,33 @@ class Endpoint:
 
         return PreparedRequest(url=new_url, method=self.method, params=query, body=body_data)
 
-    def validate_query(self, query: dict[str, Any]):
-        missing = self.query_params - query.keys()
+    def _format_validation_error_message(self, message: str, values: set[str]) -> str:
+        return f"{message}: {values}"
+
+    def validate_query(self, query: dict[str, Any]) -> None:
+        missing = set(self.query_params - query.keys())
         unexpected = query.keys() - self.query_params
 
         if missing:
-            raise ValueError(f"Missing the following query params: {missing}")
+            raise ValueError(
+                self._format_validation_error_message(message="Missing query params", values=missing),
+            )
         if unexpected:
-            raise ValueError(f"Unexpected query params: {unexpected}")
+            raise ValueError(
+                self._format_validation_error_message(message="Unexpected query params", values=unexpected),
+            )
 
-    def validate_path_params(self, path_params: dict[str, Any]):
+    def validate_path_params(self, path_params: dict[str, Any]) -> None:
         missing = self.required_path_params - path_params.keys()
         unexpected = path_params.keys() - self.required_path_params
 
         if missing:
-            raise ValueError(f"Missing path params: {missing}")
+            raise ValueError(self._format_validation_error_message(message="Missing path params", values=missing))
 
         if unexpected:
-            raise ValueError(f"Unexpected path params: {unexpected}")
+            raise ValueError(
+                self._format_validation_error_message(message="Unexpected query params", values=unexpected),
+            )
 
     @cached_property
     def required_path_params(self) -> set[str]:

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ..models.font import FontFamily
+from compuglobal.models.font import FontFamily
 
 
 @dataclass

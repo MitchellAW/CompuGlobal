@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
-from .font import FontAlignment, FontFamily
-from .screencap import Screencap
+from compuglobal.models.font import FontAlignment, FontFamily
+from compuglobal.models.screencap import Screencap
 
 
 class StreamOverlay(BaseModel, frozen=True):

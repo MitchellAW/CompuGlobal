@@ -3,19 +3,19 @@ from warnings import deprecated
 
 import aiohttp
 
-from .api.client import CompuGlobalAPIClient
-from .api.config import CompuGlobalAPIConfig
-from .api.discovery import DiscoveryAPI
-from .api.media import MediaAPI
-from .api.metadata import MetadataAPI
-from .errors import NoSearchResultsFoundError
-from .models.comic import ComicPanel, ComicStrip
-from .models.episode import Episode, EpisodeSummary
-from .models.font import FontFamily
-from .models.frame import Frame
-from .models.screencap import Screencap, ScreencapMoment
-from .models.stream import Stream
-from .models.subtitle import Subtitle
+from compuglobal.api.client import CompuGlobalAPIClient
+from compuglobal.api.config import CompuGlobalAPIConfig
+from compuglobal.api.discovery import DiscoveryAPI
+from compuglobal.api.media import MediaAPI
+from compuglobal.api.metadata import MetadataAPI
+from compuglobal.errors import NoSearchResultsFoundError
+from compuglobal.models.comic import ComicPanel, ComicStrip
+from compuglobal.models.episode import Episode, EpisodeSummary
+from compuglobal.models.font import FontFamily
+from compuglobal.models.frame import Frame
+from compuglobal.models.screencap import Screencap, ScreencapMoment
+from compuglobal.models.stream import Stream
+from compuglobal.models.subtitle import Subtitle
 
 """Contains the async API Wrappers used for accessing all the cghmc API endpoints."""
 
@@ -30,12 +30,15 @@ class AsyncCompuGlobalAPI:
     media: MediaAPI = MediaAPI()
     metadata: MetadataAPI = MetadataAPI()
 
-    def __init__(self, session: aiohttp.ClientSession | None = None, timeout: int = 15):
+    def __init__(self, session: aiohttp.ClientSession | None = None, timeout: int = 15) -> None:
         self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session, timeout=timeout)
         self.config = CompuGlobalAPIConfig(title=self.TITLE, default_font=self.DEFAULT_FONT)
 
     async def get_screencap(
-        self, episode: str | None = None, timestamp: int | None = None, frame: Frame | None = None
+        self,
+        episode: str | None = None,
+        timestamp: int | None = None,
+        frame: Frame | None = None,
     ) -> Screencap:
         """Gets the screencap for the given episode & timestamp, or a screencap of the Frame object.
 
@@ -65,10 +68,11 @@ class AsyncCompuGlobalAPI:
             params = {"e": frame.key, "t": frame.timestamp, "nearby": 1}
 
         else:
-            raise TypeError(
-                "Expected str and int or compuglobal.Frame, but received "
-                f"{type(episode)}, {type(timestamp)} and {type(frame)} instead"
+            invalid_args_error = (
+                f"Expected str and int or compuglobal.Frame, but received {type(episode)},"
+                f" {type(timestamp)} and {type(frame)} instead"
             )
+            raise TypeError(invalid_args_error)
 
         request = self.discovery.CAPTION.build_request(self.client.base_url, query=params)
         caption = await self.client.handle_request(request)
@@ -98,14 +102,9 @@ class AsyncCompuGlobalAPI:
         search_results = await self.client.handle_request(request)
 
         if len(search_results) > 0:
-            all_frames = []
-            for result in search_results:
-                all_frames.append(Frame.model_validate(result))
+            return [Frame.model_validate(result) for result in search_results]
 
-            return all_frames
-
-        else:
-            raise NoSearchResultsFoundError()
+        raise NoSearchResultsFoundError
 
     async def search_for_screencap(self, search_text: str) -> Screencap:
         """Performs a search of the given search text and returns the top result.
@@ -155,8 +154,8 @@ class AsyncCompuGlobalAPI:
         """
         path_params = {"key": episode, "start_timestamp": 0, "end_timestamp": 99999999}
         request = self.metadata.EPISODE.build_request(self.client.base_url, path_params=path_params)
-        episode = await self.client.handle_request(request)
-        return Episode.model_validate(episode)
+        episode_data = await self.client.handle_request(request)
+        return Episode.model_validate(episode_data)
 
     async def get_transcript(self, episode: str, timestamp: int) -> list[Subtitle]:
         """Gets a transcript of subtitles around the given episode key and timestamp.
@@ -232,11 +231,7 @@ class AsyncCompuGlobalAPI:
         request = self.discovery.FRAMES.build_request(self.client.base_url, path_params=path_params)
         frames = await self.client.handle_request(request)
 
-        all_frames = []
-        for frame_result in frames:
-            all_frames.append(Frame.model_validate(frame_result))
-
-        return all_frames
+        return [Frame.model_validate(frame_result) for frame_result in frames]
 
     async def get_image_url(self, screencap: Screencap) -> str:
         """Returns the direct image url for the screencap without any caption.
@@ -330,14 +325,15 @@ class AsyncCompuGlobalAPI:
         request.body = [request.body]
         response = await self.client.handle_request(request)
 
-        for line in response.splitlines():
-            data = json.loads(line)
-            if "url" in data:
-                return f"{self.client.base_url}{data.get('url')}"
+        if isinstance(response, str):
+            for line in response.splitlines():
+                data = json.loads(line)
+                if "url" in data:
+                    return f"{self.client.base_url}{data.get('url')}"
 
         return await self.get_comic_strip_url(screencap)
 
-    async def close(self):
+    async def close(self) -> None:
         """Closes any client sessions used for performing API requests."""
         await self.client.close()
 

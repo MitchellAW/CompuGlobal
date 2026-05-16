@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 
-from .episode import EpisodeMetadata
-from .frame import Frame
-from .subtitle import Subtitle
+from compuglobal.models.episode import EpisodeMetadata
+from compuglobal.models.frame import Frame
+from compuglobal.models.subtitle import Subtitle
 
 
 class ScreencapMoment(BaseModel, frozen=True):
@@ -52,7 +52,7 @@ class Screencap(BaseModel, frozen=True):
     min_timestamp: int = Field(alias="MinTimestamp", ge=0)
     max_timestamp: int = Field(alias="MaxTimestamp", ge=0)
 
-    def get_real_timestamp(self):
+    def get_real_timestamp(self) -> str:
         """Gets a readable timestamp for the frame in format "mm:ss"
 
         Returns
@@ -102,5 +102,5 @@ class Screencap(BaseModel, frozen=True):
         """
         return max(subtitle.end_timestamp for subtitle in self.subtitles)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.frame)

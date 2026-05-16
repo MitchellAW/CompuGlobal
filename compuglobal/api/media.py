@@ -1,4 +1,5 @@
-from ..models.stream import Stream
+from compuglobal.models.stream import Stream
+
 from .endpoint import Endpoint, RequestMethod
 
 

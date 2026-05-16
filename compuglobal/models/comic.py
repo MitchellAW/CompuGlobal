@@ -52,7 +52,9 @@ class ComicOverlay(BaseModel, frozen=True):
     text_position_x: int = Field(alias="x", description="The x position of the overlay", default=50)
     text_position_y: int = Field(alias="y", description="The y position of the overlay", default=97)
     text_alignment: FontAlignment = Field(
-        alias="a", description="Alignment of the text overlay", default=FontAlignment.ALIGN_CENTER
+        alias="a",
+        description="Alignment of the text overlay",
+        default=FontAlignment.ALIGN_CENTER,
     )
     all_caps: int = Field(alias="u", description="Display text in all uppercase", default=1)
     b: int = Field(alias="b", description="Time before (unused)", default=0)
@@ -60,7 +62,10 @@ class ComicOverlay(BaseModel, frozen=True):
 
     @classmethod
     def from_subtitles(
-        cls, *, subtitles: list[Subtitle], font_family: FontFamily = FontFamily.IMPACT
+        cls,
+        *,
+        subtitles: list[Subtitle],
+        font_family: FontFamily = FontFamily.IMPACT,
     ) -> "ComicOverlay":
         """Builds a comic overlay using a list of Subtitles.
 
@@ -145,7 +150,9 @@ class ComicStrip(BaseModel):
 
     panels: list[ComicPanel] = Field(alias="panels", description="The list of ComicPanels to use in the ComicStrip")
     layout: ComicLayout | None = Field(
-        alias="layout", description="The layout to use when displaying the panels", default=None
+        alias="layout",
+        description="The layout to use when displaying the panels",
+        default=None,
     )
 
     @classmethod
@@ -177,7 +184,8 @@ class ComicStrip(BaseModel):
 
     @staticmethod
     def build_comic_overlays(
-        subtitles: list[Subtitle], font_family: FontFamily = FontFamily.IMPACT
+        subtitles: list[Subtitle],
+        font_family: FontFamily = FontFamily.IMPACT,
     ) -> list[ComicOverlay]:
         """Builds a list comic overlays using the given subtitles and font.
 
@@ -210,7 +218,7 @@ class ComicStrip(BaseModel):
         return b64.decode("utf-8")
 
     @model_validator(mode="after")
-    def set_default_layout(self):
+    def set_default_layout(self) -> "ComicStrip":
         # If user explicitly set layout → keep it
         if self.layout is not None:
             return self

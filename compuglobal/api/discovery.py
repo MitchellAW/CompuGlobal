@@ -1,4 +1,4 @@
-from .endpoint import Endpoint, RequestMethod
+from compuglobal.api.endpoint import Endpoint, RequestMethod
 
 
 class DiscoveryAPI:
