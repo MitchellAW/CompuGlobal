@@ -25,6 +25,7 @@ class AsyncCompuGlobalAPI:
     BASE_URL: str
     TITLE: str
     DEFAULT_FONT: FontFamily
+    _MAX_ALLOWED_SUBTITLES = 4
 
     discovery: DiscoveryAPI = DiscoveryAPI()
     media: MediaAPI = MediaAPI()
@@ -249,7 +250,7 @@ class AsyncCompuGlobalAPI:
         path_params = {"key": screencap.frame.key, "timestamp": screencap.frame.timestamp}
         return self.media.IMAGE.build_encoded_url(self.client.base_url, path_params=path_params)
 
-    async def get_comic_panel_url(self, screencap: Screencap, subtitles: List[Subtitle] = []) -> str:
+    async def get_comic_panel_url(self, screencap: Screencap, subtitles: List[Subtitle] | None = None) -> str:
         """Gets the URL for a single comic panel showing the given screencap with subtitles.
 
         Parameters
@@ -264,7 +265,7 @@ class AsyncCompuGlobalAPI:
         str
             The url of the comic panel
         """
-        if len(subtitles) == 0:
+        if subtitles is None:
             subtitles = screencap.subtitles
 
         panel = ComicPanel.from_screencap(screencap=screencap, font=self.config.default_font)
@@ -290,8 +291,8 @@ class AsyncCompuGlobalAPI:
         if subtitles is None:
             subtitles = screencap.subtitles
 
-        if len(subtitles) > 4:
-            subtitles = subtitles[:4]
+        if len(subtitles) > self._MAX_ALLOWED_SUBTITLES:
+            subtitles = subtitles[: self._MAX_ALLOWED_SUBTITLES]
 
         # Change subtitles
         screencap = screencap.model_copy(update={"subtitles": subtitles})
@@ -318,8 +319,8 @@ class AsyncCompuGlobalAPI:
         if subtitles is None:
             subtitles = screencap.subtitles
 
-        if len(subtitles) > 4:
-            subtitles = subtitles[:4]
+        if len(subtitles) > self._MAX_ALLOWED_SUBTITLES:
+            subtitles = subtitles[: self._MAX_ALLOWED_SUBTITLES]
 
         # Change subtitles
         screencap = screencap.model_copy(update={"subtitles": subtitles})
