@@ -1,6 +1,6 @@
 import json
 from base64 import b64encode
-from enum import StrEnum
+from enum import IntEnum, StrEnum
 from typing import List
 
 from pydantic import BaseModel, Field, model_validator
@@ -18,6 +18,13 @@ class ComicLayout(StrEnum):
     TALL = "tall"
     ONE_OVER_TWO = "1over2"
     TWO_OVER_ONE = "2x2"
+
+
+class _DefaultComicLayoutSize(IntEnum):
+    SINGLE = 1
+    WIDE = 2
+    ONE_OVER_TWO = 3
+    TWO_OVER_ONE = 4
 
 
 class ComicOverlay(BaseModel, frozen=True):
@@ -210,12 +217,14 @@ class ComicStrip(BaseModel):
             return self
 
         panel_count = len(self.panels)
-        if panel_count == 1:
+        if panel_count == _DefaultComicLayoutSize.SINGLE:
             self.layout = ComicLayout.SINGLE
-        elif panel_count == 2:
+        elif panel_count == _DefaultComicLayoutSize.WIDE:
             self.layout = ComicLayout.WIDE
-        elif panel_count == 3:
+        elif panel_count == _DefaultComicLayoutSize.ONE_OVER_TWO:
             self.layout = ComicLayout.ONE_OVER_TWO
+        elif panel_count == _DefaultComicLayoutSize.TWO_OVER_ONE:
+            self.layout = ComicLayout.TWO_OVER_ONE
         else:
             self.layout = ComicLayout.TWO_OVER_ONE
         return self
