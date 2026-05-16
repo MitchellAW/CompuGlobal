@@ -34,14 +34,14 @@ class AsyncCompuGlobalAPI:
     media: MediaAPI = MediaAPI()
     metadata: MetadataAPI = MetadataAPI()
 
-    def __init__(self, session: aiohttp.ClientSession | None = None, timeout: int = 15) -> None:
+    def __init__(self, session: aiohttp.ClientSession | None = None, timeout: float = 15) -> None:
         """Create an API using the given session and timeout.
 
         Parameters
         ----------
         session : aiohttp.ClientSession | None, optional
             The client session to use for all API calls
-        timeout : int, optional
+        timeout : float, optional
             The time to wait on an API request before raising a timeout exception.
 
         """

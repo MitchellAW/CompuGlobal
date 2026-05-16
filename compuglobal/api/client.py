@@ -16,7 +16,7 @@ class CompuGlobalAPIClient:
         self,
         base_url: str,
         session: ClientSession | None = None,
-        timeout: int = 15,
+        timeout: float = 15,
     ) -> None:
         """Define an API client for interacting with CGHMC APIs.
 
@@ -26,19 +26,16 @@ class CompuGlobalAPIClient:
             The base URL of the API (e.g. https://frinkiac.com)
         session : ClientSession | None, optional
             The client session to use for all API requests
-        timeout : int, optional
+        timeout : float, optional
             The number of seconds to wait before raising a timeout error for each API request
 
         """
         self.base_url = base_url
-        self.timeout = timeout
-
-        self.timeout = ClientTimeout(total=timeout)
 
         self._is_auto_session = session is None
 
         if session is None:
-            self.session = ClientSession(timeout=self.timeout)
+            self.session = ClientSession(timeout=ClientTimeout(total=timeout))
 
         else:
             self.session = session

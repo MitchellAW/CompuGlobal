@@ -34,7 +34,7 @@ class StreamOverlay(BaseModel, frozen=True):
 
     text: str = Field(alias="text")
     font_family: FontFamily = Field(alias="font", default=FontFamily.IMPACT)
-    font_size: int = Field(alias="size", le=0, ge=120, default=0)
+    font_size: int = Field(alias="size", ge=0, le=120, default=0)
     font_color: list[int] = Field(alias="color", min_length=4, max_length=4, default=[255, 255, 255, 255])
     text_position_x: int = Field(alias="x", default=50)
     text_position_y: int = Field(alias="y", default=97)

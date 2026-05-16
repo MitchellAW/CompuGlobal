@@ -50,7 +50,7 @@ class ComicOverlay(BaseModel, frozen=True):
 
     text: str = Field(alias="t", description="Text to overlay")
     font_family: FontFamily = Field(alias="f", description="Font style to use", default=FontFamily.IMPACT)
-    font_size: int = Field(alias="s", description="Size of the font", le=0, ge=120, default=0)
+    font_size: int = Field(alias="s", description="Size of the font", ge=0, le=120, default=0)
     font_color: str = Field(alias="c", description="Font color to use", min_length=4, max_length=4, default="ffffffff")
     text_position_x: int = Field(alias="x", description="The x position of the overlay", default=50)
     text_position_y: int = Field(alias="y", description="The y position of the overlay", default=97)
