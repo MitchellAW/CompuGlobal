@@ -1,5 +1,4 @@
 from enum import StrEnum
-from typing import List
 
 from pydantic import BaseModel, Field
 
@@ -43,5 +42,5 @@ class FontColorRGB(BaseModel):
     blue: int = Field(alias="b", ge=0, le=255)
     alpha: int = Field(alias="a", ge=0, le=255)
 
-    def get_rgba(self) -> List[int]:
+    def get_rgba(self) -> list[int]:
         return [self.red, self.green, self.blue, self.alpha]

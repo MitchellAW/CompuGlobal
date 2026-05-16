@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel, Field
 
 from .episode import EpisodeMetadata
@@ -49,8 +47,8 @@ class Screencap(BaseModel, frozen=True):
 
     episode: EpisodeMetadata = Field(alias="Episode")
     frame: Frame = Field(alias="Frame")
-    subtitles: List[Subtitle] = Field(alias="Subtitles")
-    nearby: List[Frame] = Field(alias="Nearby")
+    subtitles: list[Subtitle] = Field(alias="Subtitles")
+    nearby: list[Frame] = Field(alias="Nearby")
     min_timestamp: int = Field(alias="MinTimestamp", ge=0)
     max_timestamp: int = Field(alias="MaxTimestamp", ge=0)
 

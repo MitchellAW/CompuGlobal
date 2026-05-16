@@ -1,7 +1,6 @@
 import json
 from base64 import b64encode
 from enum import IntEnum, StrEnum
-from typing import List
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -61,7 +60,7 @@ class ComicOverlay(BaseModel, frozen=True):
 
     @classmethod
     def from_subtitles(
-        cls, *, subtitles: List[Subtitle], font_family: FontFamily = FontFamily.IMPACT
+        cls, *, subtitles: list[Subtitle], font_family: FontFamily = FontFamily.IMPACT
     ) -> "ComicOverlay":
         """Builds a comic overlay using a list of Subtitles.
 
@@ -96,7 +95,7 @@ class ComicPanel(BaseModel, frozen=True):
 
     key: str = Field(alias="e", description="The episode key of the panel")
     timestamp: int = Field(alias="ts", ge=0, description="The timestamp of the panel")
-    overlays: List[ComicOverlay] = Field(alias="o", description="The text overlays for each panel", default=[])
+    overlays: list[ComicOverlay] = Field(alias="o", description="The text overlays for each panel", default=[])
 
     @classmethod
     def from_screencap(cls, *, screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> "ComicPanel":
@@ -144,7 +143,7 @@ class ComicStrip(BaseModel):
         The layout to use when displaying the panels
     """
 
-    panels: List[ComicPanel] = Field(alias="panels", description="The list of ComicPanels to use in the ComicStrip")
+    panels: list[ComicPanel] = Field(alias="panels", description="The list of ComicPanels to use in the ComicStrip")
     layout: ComicLayout | None = Field(
         alias="layout", description="The layout to use when displaying the panels", default=None
     )
@@ -178,8 +177,8 @@ class ComicStrip(BaseModel):
 
     @staticmethod
     def build_comic_overlays(
-        subtitles: List[Subtitle], font_family: FontFamily = FontFamily.IMPACT
-    ) -> List[ComicOverlay]:
+        subtitles: list[Subtitle], font_family: FontFamily = FontFamily.IMPACT
+    ) -> list[ComicOverlay]:
         """Builds a list comic overlays using the given subtitles and font.
 
         Parameters

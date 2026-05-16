@@ -17,4 +17,4 @@ class APIPageStatusError(Exception):
         The url page that encountered the error."""
 
     def __init__(self, page_status, url):
-        super().__init__("Error {}. {} may be down.".format(page_status, url))
+        super().__init__(f"Error {page_status}. {url} may be down.")

@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel, Field
 
 from .subtitle import Subtitle
@@ -65,7 +63,7 @@ class EpisodeSummary(BaseModel, frozen=True):
     episode_number: int = Field(alias="EpisodeNumber")
     title: str = Field(alias="Title")
     original_air_date: str = Field(alias="OriginalAirDate")
-    frames: List[int] = Field(alias="Frames")
+    frames: list[int] = Field(alias="Frames")
 
 
 class Episode(BaseModel, frozen=True):
@@ -80,4 +78,4 @@ class Episode(BaseModel, frozen=True):
     """
 
     episode: EpisodeMetadata = Field(alias="Episode")
-    subtitles: List[Subtitle] = Field(alias="Subtitles")
+    subtitles: list[Subtitle] = Field(alias="Subtitles")

@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel, Field
 
 from .font import FontAlignment, FontFamily
@@ -34,7 +32,7 @@ class StreamOverlay(BaseModel, frozen=True):
     text: str = Field(alias="text")
     font_family: FontFamily = Field(alias="font", default=FontFamily.IMPACT)
     font_size: int = Field(alias="size", le=0, ge=120, default=0)
-    font_color: List[int] = Field(alias="color", min_length=4, max_length=4, default=[255, 255, 255, 255])
+    font_color: list[int] = Field(alias="color", min_length=4, max_length=4, default=[255, 255, 255, 255])
     text_position_x: int = Field(alias="x", default=50)
     text_position_y: int = Field(alias="y", default=97)
     text_alignment: FontAlignment = Field(alias="text_align", default=FontAlignment.ALIGN_CENTER)
@@ -63,7 +61,7 @@ class Stream(BaseModel, frozen=True):
     key: str = Field(alias="episode")
     start: int = Field(alias="start", ge=0)
     end: int = Field(alias="end", ge=0)
-    overlays: List[StreamOverlay] = Field(alias="overlays")
+    overlays: list[StreamOverlay] = Field(alias="overlays")
     check_only: bool = Field(alias="check_only")
 
     @classmethod
@@ -93,7 +91,7 @@ class Stream(BaseModel, frozen=True):
         )
 
     @staticmethod
-    def build_stream_overlays(screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> List[StreamOverlay]:
+    def build_stream_overlays(screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> list[StreamOverlay]:
         """Builds the stream overlays with the given subtitles, timestamp, and font.
 
         Parameters

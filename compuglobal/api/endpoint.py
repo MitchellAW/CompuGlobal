@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from functools import cached_property
 from string import Formatter
-from typing import Any, FrozenSet, Type
+from typing import Any
 from urllib.parse import urlencode
 
 from pydantic import BaseModel
@@ -27,8 +27,8 @@ class PreparedRequest:
 class Endpoint:
     path: str
     method: RequestMethod = RequestMethod.GET
-    query_params: FrozenSet[str] = frozenset()
-    body_model: Type[BaseModel] | None = None
+    query_params: frozenset[str] = frozenset()
+    body_model: type[BaseModel] | None = None
     is_async: bool = True
 
     def build_url(
