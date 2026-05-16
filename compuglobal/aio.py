@@ -108,8 +108,8 @@ class AsyncCompuGlobalAPI:
 
         Raises
         ------
-        NoSearchResultsFound
-            _description_
+        NoSearchResultsFoundError
+            Raises an error if no search results are found
 
         """
         params = {"q": search_text}
@@ -147,11 +147,6 @@ class AsyncCompuGlobalAPI:
         -------
         compuglobal.Screencap
             A random screencap object.
-
-        Raises
-        ------
-        APIPageStatusError
-            Raises an exception if the status code of the request is not 200.
 
         """
         request = self.discovery.RANDOM.build_request(self.client.base_url)
@@ -243,11 +238,6 @@ class AsyncCompuGlobalAPI:
         list
             A list of valid frames before and after the timestamp of
             the episode.
-
-        Raises
-        ------
-        APIPageStatusError
-            Raises an exception if the status code of the request is not 200.
 
         """
         path_params = {"key": key, "timestamp": timestamp, "before": before, "after": after}

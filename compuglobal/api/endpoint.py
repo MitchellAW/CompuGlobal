@@ -41,6 +41,11 @@ class PreparedRequest:
     body: dict[str, Any] | list[Any] | None = None
 
 
+@staticmethod
+def _format_validation_error_message(message: str, values: set[str]) -> str:
+    return f"{message}: {values}"
+
+
 @dataclass(frozen=True)
 class Endpoint:
     """Defines an endpoint of an API.
@@ -160,9 +165,6 @@ class Endpoint:
 
         return PreparedRequest(url=new_url, method=self.method, params=query, body=body_data)
 
-    def _format_validation_error_message(self, message: str, values: set[str]) -> str:
-        return f"{message}: {values}"
-
     def validate_query(self, query: dict[str, Any]) -> None:
         """Validate the query params against the expectation of the endpoint.
 
@@ -182,11 +184,11 @@ class Endpoint:
 
         if missing:
             raise ValueError(
-                self._format_validation_error_message(message="Missing query params", values=missing),
+                _format_validation_error_message(message="Missing query params", values=missing),
             )
         if unexpected:
             raise ValueError(
-                self._format_validation_error_message(message="Unexpected query params", values=unexpected),
+                _format_validation_error_message(message="Unexpected query params", values=unexpected),
             )
 
     def validate_path_params(self, path_params: dict[str, Any]) -> None:
@@ -207,11 +209,11 @@ class Endpoint:
         unexpected = path_params.keys() - self.required_path_params
 
         if missing:
-            raise ValueError(self._format_validation_error_message(message="Missing path params", values=missing))
+            raise ValueError(_format_validation_error_message(message="Missing path params", values=missing))
 
         if unexpected:
             raise ValueError(
-                self._format_validation_error_message(message="Unexpected query params", values=unexpected),
+                _format_validation_error_message(message="Unexpected query params", values=unexpected),
             )
 
     @cached_property

@@ -46,8 +46,10 @@ package = true
 line-length = 120
 
 [tool.ruff.lint]
+preview = true
 select = ["ALL"]
+ignore = ["CPY001"]
 
 [tool.ruff.per-file-ignores]
-"examples/*" = ["ERA001", "INP001", "T201", "ANN201", "D100", "D103"]
-"docs/*" = ["A001", "INP001", "D100"]
+"examples/*" = ["ERA001", "INP001", "T201", "ANN201", "D100", "D103", "CPY001"]
+"docs/*" = ["A001", "INP001", "D100", "CPY001"]

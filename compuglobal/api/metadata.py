@@ -1,11 +1,8 @@
 """All metadata endpoints of an CGHMC API."""
 
-from dataclasses import dataclass
-
 from .endpoint import Endpoint, RequestMethod
 
 
-@dataclass
 class MetadataAPI:
     """An object with the available metadata endpoints.
 

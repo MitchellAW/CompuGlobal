@@ -103,10 +103,6 @@ class Stream(BaseModel, frozen=True):
         ----------
         screencap: Screencap
             The screencap to use for hte overlays
-        subtitles : List[Subtitle]
-            The subtitles to use in the overlay
-        min_timestamp : int
-            The minimum timestamp of any of the overlays
         font : FontFamily, optional
             The font to use for all overlays
 
