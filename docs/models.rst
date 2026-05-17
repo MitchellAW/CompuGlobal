@@ -9,6 +9,11 @@ Frame
     :members:
     :exclude-members: model_config
 
+.. autoclass:: FrameResult
+    :members:
+    :show-inheritance:
+    :exclude-members: model_config
+
 Screencap
 ~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: Screencap

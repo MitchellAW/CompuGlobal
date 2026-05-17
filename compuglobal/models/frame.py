@@ -47,3 +47,19 @@ class Frame(BaseCompuGlobalModel):
 
         """
         return f"{self.key} - {self.timestamp} ({self.get_real_timestamp()})"
+
+
+class FrameResult(Frame):
+    """Extend Frame with additional context from a search result.
+
+    Attributes
+    ----------
+    content: str
+        The subtitle content of the frame of this search result
+    title: str
+        The title of the episode for this frame
+
+    """
+
+    content: str = Field(alias="Content")
+    title: str = Field(alias="Title")

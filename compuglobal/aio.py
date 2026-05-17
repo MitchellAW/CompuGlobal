@@ -14,7 +14,7 @@ from compuglobal.errors import NoSearchResultsFoundError
 from compuglobal.models.comic import ComicPanel, ComicStrip
 from compuglobal.models.episode import Episode, EpisodeSummary
 from compuglobal.models.font import FontFamily
-from compuglobal.models.frame import Frame
+from compuglobal.models.frame import Frame, FrameResult
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream
 from compuglobal.models.subtitle import Subtitle
@@ -93,7 +93,7 @@ class AsyncCompuGlobalAPI:
         caption = await self.client.handle_request(request)
         return Screencap.model_validate(caption)
 
-    async def search(self, search_text: str) -> list[Frame]:
+    async def search(self, search_text: str) -> list[FrameResult]:
         """Perform a search of the given search text and returns a list of all the Frames.
 
         Parameters
@@ -118,7 +118,7 @@ class AsyncCompuGlobalAPI:
         search_results = await self.client.handle_request(request)
 
         if len(search_results) > 0:
-            return [Frame.model_validate(result) for result in search_results]
+            return [FrameResult.model_validate(result) for result in search_results]
 
         raise NoSearchResultsFoundError
 
