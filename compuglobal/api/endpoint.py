@@ -160,7 +160,7 @@ class Endpoint:
         new_url = self.build_url(base_url, query, path_params)
 
         # Get body data
-        body_data = body.model_dump(by_alias=True) if body is not None else None
+        body_data = body.model_dump() if body is not None else None
 
         return PreparedRequest(url=new_url, method=self.method, params=query, body=body_data)
 

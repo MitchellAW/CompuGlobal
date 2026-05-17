@@ -1,12 +1,13 @@
 """Streams are posted to the CGHMC APIs for generating gifs/mp4s."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from compuglobal.models.base import BaseCompuGlobalModel
 from compuglobal.models.font import FontAlignment, FontFamily
 from compuglobal.models.screencap import Screencap
 
 
-class StreamOverlay(BaseModel, frozen=True):
+class StreamOverlay(BaseCompuGlobalModel):
     """A subtitle overlay to use in a gif for a given period of time in a TV show.
 
     Attributes
@@ -44,7 +45,7 @@ class StreamOverlay(BaseModel, frozen=True):
     end: int = Field(alias="end", ge=0)
 
 
-class Stream(BaseModel, frozen=True):
+class Stream(BaseCompuGlobalModel):
     """A stream/gif of a TV show.
 
     Attributes

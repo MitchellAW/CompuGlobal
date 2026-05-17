@@ -4,7 +4,9 @@ import json
 from base64 import b64encode
 from enum import IntEnum, StrEnum
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import Field, model_validator
+
+from compuglobal.models.base import BaseCompuGlobalModel
 
 from .font import FontAlignment, FontFamily
 from .screencap import Screencap
@@ -28,7 +30,7 @@ class _DefaultComicLayoutSize(IntEnum):
     TWO_OVER_ONE = 4
 
 
-class ComicOverlay(BaseModel, frozen=True):
+class ComicOverlay(BaseCompuGlobalModel):
     """Defines an overlay to display text in a comic.
 
     Attributes
@@ -89,7 +91,7 @@ class ComicOverlay(BaseModel, frozen=True):
         return cls(t=text, f=font_family)
 
 
-class ComicPanel(BaseModel, frozen=True):
+class ComicPanel(BaseCompuGlobalModel):
     """Defines a comic panel of a TV show.
 
     Attributes
@@ -137,14 +139,14 @@ class ComicPanel(BaseModel, frozen=True):
             A base 64 string
 
         """
-        dump = [self.model_dump(by_alias=True)]
+        dump = [self.model_dump()]
         json_str = json.dumps(dump, separators=(",", ":"))
         encoded = str.encode(json_str, "utf-8")
         b64 = b64encode(encoded, altchars=b"__")
         return b64.decode("utf-8")
 
 
-class ComicStrip(BaseModel):
+class ComicStrip(BaseCompuGlobalModel, frozen=False):
     """A comic strip composed of multiple comic panels in a given layout.
 
     Attributes
@@ -222,7 +224,7 @@ class ComicStrip(BaseModel):
             A base 64 string
 
         """
-        dump = [panel.model_dump(by_alias=True) for panel in self.panels]
+        dump = [panel.model_dump() for panel in self.panels]
         json_str = json.dumps(dump, separators=(",", ":"))
         encoded = str.encode(json_str, "utf-8")
         b64 = b64encode(encoded, altchars=b"__")

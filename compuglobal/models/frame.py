@@ -1,9 +1,11 @@
 """A single frame of a TV episode at a given point in time."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from compuglobal.models.base import BaseCompuGlobalModel
 
 
-class Frame(BaseModel, frozen=True):
+class Frame(BaseCompuGlobalModel):
     """A single frame of an episode at a point in time of a TV Show.
 
     Attributes

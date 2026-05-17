@@ -1,11 +1,13 @@
 """Models used for representing an enite episode, or metadata/summaries of a TV episode."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from compuglobal.models.base import BaseCompuGlobalModel
 
 from .subtitle import Subtitle
 
 
-class EpisodeMetadata(BaseModel, frozen=True):
+class EpisodeMetadata(BaseCompuGlobalModel):
     """The metadata for an episode of a TV show.
 
     Attributes
@@ -42,7 +44,7 @@ class EpisodeMetadata(BaseModel, frozen=True):
     wiki_link: str = Field(alias="WikiLink")
 
 
-class EpisodeSummary(BaseModel, frozen=True):
+class EpisodeSummary(BaseCompuGlobalModel):
     """A summary of an episode of a TV show.
 
     Attributes
@@ -70,7 +72,7 @@ class EpisodeSummary(BaseModel, frozen=True):
     frames: list[int] = Field(alias="Frames")
 
 
-class Episode(BaseModel, frozen=True):
+class Episode(BaseCompuGlobalModel):
     """An entire episode of a TV show.
 
     Attributes
