@@ -35,6 +35,14 @@ docs = [
     "sphinx-rtd-theme>=3.1.0",
     "sphinxcontrib-trio>=1.2.0",
 ]
+test = [
+    "aioresponses>=0.7.8",
+    "hypothesis>=6.152.7",
+    "inline-snapshot>=0.33.0",
+    "pytest>=9.0.3",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov>=7.1.0",
+]
 
 [project.urls]
 Documentation = "https://compuglobal.readthedocs.io/en/latest/"
@@ -54,9 +62,22 @@ ignore = ["CPY001"]
 [tool.ruff.per-file-ignores]
 "examples/*" = ["INP001", "T201", "ANN201", "D103", "CPY001"]
 "docs/*" = ["A001", "INP001", "D100", "CPY001"]
+"tests/*" = ["S101", "D103", "PLR2004"]
 
 [tool.pyrefly]
 project-includes = [
     "**/*.py*",
     "**/*.ipynb",
 ]
+
+[tool.pytest]
+minversion = "9.0"
+addopts = ["-ra", "-q"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false

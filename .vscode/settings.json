@@ -3,10 +3,13 @@
         "editor.defaultFormatter": "charliermarsh.ruff",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-            "source.organizeImports": "explicit"
+            "source.organizeImports": "explicit",
+            "source.fixAll": "explicit",
         },
     },
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
-    "files.insertFinalNewline": true
+    "files.insertFinalNewline": true,
+    "python.pyrefly.typeCheckingMode": "strict",
+    "python.testing.pytestEnabled": true,
 }
