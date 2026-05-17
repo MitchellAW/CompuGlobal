@@ -212,7 +212,7 @@ class Endpoint:
 
         if unexpected:
             raise ValueError(
-                _format_validation_error_message(message="Unexpected query params", values=unexpected),
+                _format_validation_error_message(message="Unexpected path params", values=unexpected),
             )
 
     @cached_property
