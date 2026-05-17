@@ -44,9 +44,6 @@ async def example(session: aiohttp.ClientSession):
     gif = await frinkiac.get_gif_url(searched_screencap)
     print(gif)
 
-    # Close API Client
-    await frinkiac.close()
-
 
 if __name__ == "__main__":
     asyncio.run(main())

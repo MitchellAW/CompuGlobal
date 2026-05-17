@@ -66,9 +66,6 @@ async def example(session: aiohttp.ClientSession):
     subtitles = screencap.subtitles
     print(subtitles)
 
-    # Close API client connections
-    await futurama.close()
-
 
 if __name__ == "__main__":
     asyncio.run(main())
