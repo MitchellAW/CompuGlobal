@@ -2,12 +2,20 @@
 
 import asyncio
 
+import aiohttp
+
 import compuglobal
 
 
+# Ensure aiohttp sessions are closed if any errors occur
 async def main():
+    async with aiohttp.ClientSession() as session:
+        await example(session=session)
+
+
+async def example(session: aiohttp.ClientSession):
     # Futurama/Morbotron API
-    futurama = compuglobal.Morbotron()
+    futurama = compuglobal.Morbotron(session=session)
 
     # Get a screencap from The Simpsons using search terms: Nothing at all
     screencap = await futurama.search_for_screencap("Shut up and take my money")
