@@ -42,4 +42,4 @@ class Subtitle(BaseModel, frozen=True):
             The duration in milliseonds.
 
         """
-        return self.end_timestamp - self.end_timestamp
+        return self.end_timestamp - self.start_timestamp
