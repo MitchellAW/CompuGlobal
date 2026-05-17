@@ -213,7 +213,7 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
             A list of comic overlays
 
         """
-        return [ComicOverlay(t=subtitle.content, f=font_family) for subtitle in subtitles]
+        return [ComicOverlay(text=subtitle.content, font_family=font_family) for subtitle in subtitles]
 
     def get_encoded(self) -> str:
         """Get the base 64 encoded representation of this comic strip.
