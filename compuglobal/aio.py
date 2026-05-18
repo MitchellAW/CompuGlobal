@@ -34,18 +34,16 @@ class AsyncCompuGlobalAPI:
     media: MediaAPI = MediaAPI()
     metadata: MetadataAPI = MetadataAPI()
 
-    def __init__(self, session: aiohttp.ClientSession | None = None, timeout: float = 15) -> None:
+    def __init__(self, session: aiohttp.ClientSession) -> None:
         """Create an API using the given session and timeout.
 
         Parameters
         ----------
         session : aiohttp.ClientSession | None, optional
             The client session to use for all API calls
-        timeout : float, optional
-            The time to wait on an API request before raising a timeout exception.
 
         """
-        self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session, timeout=timeout)
+        self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session)
         self.config = CompuGlobalAPIConfig(title=self.TITLE, default_font=self.DEFAULT_FONT)
 
     async def get_screencap(
@@ -350,10 +348,6 @@ class AsyncCompuGlobalAPI:
                     return f"{self.client.base_url}{data.get('url')}"
 
         return await self.get_comic_strip_url(screencap)
-
-    async def close(self) -> None:
-        """Close any client sessions used for performing API requests."""
-        await self.client.close()
 
 
 class CapitalBeatUs(AsyncCompuGlobalAPI):
