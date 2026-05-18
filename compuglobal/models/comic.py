@@ -251,8 +251,6 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
             self.layout = ComicLayout.WIDE
         elif panel_count == _DefaultComicLayoutSize.ONE_OVER_TWO:
             self.layout = ComicLayout.ONE_OVER_TWO
-        elif panel_count == _DefaultComicLayoutSize.TWO_OVER_ONE:
-            self.layout = ComicLayout.TWO_OVER_ONE
         else:
             self.layout = ComicLayout.TWO_OVER_ONE
         return self
