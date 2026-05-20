@@ -1,17 +1,18 @@
 """Shared pytest fixtures."""
 
-from collections.abc import Generator
+from collections.abc import AsyncGenerator
 from typing import Any
 
 import pytest
-from aioresponses import aioresponses
+import pytest_asyncio
+from aiointercept import aiointercept
 
 from compuglobal.models.screencap import Screencap
 
 
-@pytest.fixture
-def mock_aioresponse() -> Generator[aioresponses]:
-    with aioresponses() as m:
+@pytest_asyncio.fixture
+async def mock_http() -> AsyncGenerator[aiointercept]:
+    async with aiointercept(mock_external_urls=True) as m:
         yield m
 
 

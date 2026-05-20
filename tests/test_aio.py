@@ -7,7 +7,7 @@ from typing import Any
 import aiohttp
 import pytest
 import pytest_asyncio
-from aioresponses import aioresponses
+from aiointercept import aiointercept
 from inline_snapshot import snapshot
 
 from compuglobal.aio import AsyncCompuGlobalAPI
@@ -72,13 +72,13 @@ async def test_api_defaults() -> None:
 @pytest.mark.asyncio
 async def test_api_get_screencap_frame(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     screencap: Screencap,
 ) -> None:
     frame = Frame(id=9, key="S11E10", timestamp=350725)
     params = {"e": "S11E10", "t": 350725, "nearby": 1}
     url = api.discovery.CAPTION.build_encoded_url(api.BASE_URL, query=params)
-    mock_aioresponse.get(url, payload=screencap.model_dump())
+    mock_http.get(url, payload=screencap.model_dump())
     result = await api.get_screencap(frame=frame)
     assert result.model_dump() == screencap.model_dump()
 
@@ -86,12 +86,12 @@ async def test_api_get_screencap_frame(
 @pytest.mark.asyncio
 async def test_api_get_screencap_episode_timestamp(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     screencap: Screencap,
 ) -> None:
     params = {"e": "S11E10", "t": 350725, "nearby": 1}
     url = api.discovery.CAPTION.build_encoded_url(api.BASE_URL, query=params)
-    mock_aioresponse.get(url, payload=screencap.model_dump())
+    mock_http.get(url, payload=screencap.model_dump())
     result = await api.get_screencap(episode="S11E10", timestamp=350725)
     assert result.model_dump() == screencap.model_dump()
 
@@ -109,10 +109,10 @@ async def test_api_get_screencap_no_episode(api: CustomCompuGlobalAPI) -> None:
 
 
 @pytest.mark.asyncio
-async def test_api_search(api: CustomCompuGlobalAPI, mock_aioresponse: aioresponses) -> None:
+async def test_api_search(api: CustomCompuGlobalAPI, mock_http: aiointercept) -> None:
     url = api.discovery.SEARCH.build_encoded_url(api.BASE_URL, query={"q": "test"})
     expected_results = random_frame_results(3)
-    mock_aioresponse.get(url, payload=expected_results)
+    mock_http.get(url, payload=expected_results)
 
     results = await api.search("test")
     for result, expected in zip(results, expected_results, strict=True):
@@ -120,10 +120,10 @@ async def test_api_search(api: CustomCompuGlobalAPI, mock_aioresponse: aiorespon
 
 
 @pytest.mark.asyncio
-async def test_api_search_no_results_error(api: CustomCompuGlobalAPI, mock_aioresponse: aioresponses) -> None:
+async def test_api_search_no_results_error(api: CustomCompuGlobalAPI, mock_http: aiointercept) -> None:
     url = api.discovery.SEARCH.build_encoded_url(api.BASE_URL, query={"q": "test"})
 
-    mock_aioresponse.get(url, payload=[])
+    mock_http.get(url, payload=[])
 
     with pytest.raises(NoSearchResultsFoundError):
         await api.search("test")
@@ -132,7 +132,7 @@ async def test_api_search_no_results_error(api: CustomCompuGlobalAPI, mock_aiore
 @pytest.mark.asyncio
 async def test_api_search_for_screencap(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     screencap: Screencap,
 ) -> None:
     expected_results = [
@@ -147,12 +147,12 @@ async def test_api_search_for_screencap(
     ]
     # First mock (search)
     url = api.discovery.SEARCH.build_encoded_url(api.BASE_URL, query={"q": "example"})
-    mock_aioresponse.get(url, payload=expected_results)
+    mock_http.get(url, payload=expected_results)
 
     # Second mock (captions endpoint)
     params = {"e": "S11E10", "t": 350725, "nearby": 1}
     url = api.discovery.CAPTION.build_encoded_url(api.BASE_URL, query=params)
-    mock_aioresponse.get(url, payload=screencap.model_dump())
+    mock_http.get(url, payload=screencap.model_dump())
 
     result = await api.search_for_screencap("example")
     assert result == screencap
@@ -161,11 +161,11 @@ async def test_api_search_for_screencap(
 @pytest.mark.asyncio
 async def test_api_search_for_screencap_no_results_error(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
 ) -> None:
     # First mock (search)
     url = api.discovery.SEARCH.build_encoded_url(api.BASE_URL, query={"q": "example"})
-    mock_aioresponse.get(url, payload=[])
+    mock_http.get(url, payload=[])
     with pytest.raises(NoSearchResultsFoundError):
         await api.search_for_screencap("example")
 
@@ -173,11 +173,11 @@ async def test_api_search_for_screencap_no_results_error(
 @pytest.mark.asyncio
 async def test_api_get_random_screencap(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     screencap: Screencap,
 ) -> None:
     url = api.discovery.RANDOM.build_encoded_url(api.BASE_URL, query={}, path_params={})
-    mock_aioresponse.get(url, payload=screencap.model_dump())
+    mock_http.get(url, payload=screencap.model_dump())
     random = await api.get_random_screencap()
     assert random == screencap
 
@@ -185,12 +185,12 @@ async def test_api_get_random_screencap(
 @pytest.mark.asyncio
 async def test_api_browse_episode(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     episode_json: dict[str, Any],
 ) -> None:
     path_params = {"key": "S11E10", "start_timestamp": 0, "end_timestamp": 99999999}
     url = api.metadata.EPISODE.build_encoded_url(api.BASE_URL, path_params=path_params)
-    mock_aioresponse.get(url, payload=episode_json)
+    mock_http.get(url, payload=episode_json)
 
     episode = await api.browse_episode("S11E10")
     assert episode.model_dump() == episode_json
@@ -199,13 +199,13 @@ async def test_api_browse_episode(
 @pytest.mark.asyncio
 async def test_api_get_transcript(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     subtitle_json: dict[str, Any],
 ) -> None:
     params = {"e": "S11E10", "t": 353228}
     url = api.metadata.TRANSCRIPT.build_encoded_url(api.BASE_URL, query=params)
 
-    mock_aioresponse.get(url, payload=[subtitle_json])
+    mock_http.get(url, payload=[subtitle_json])
 
     transcript = await api.get_transcript("S11E10", 353228)
     assert transcript[0].model_dump() == subtitle_json
@@ -214,12 +214,12 @@ async def test_api_get_transcript(
 @pytest.mark.asyncio
 async def test_api_discover(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     screencap_moment: ScreencapMoment,
 ) -> None:
     moments = [screencap_moment.model_dump() for _ in range(5)]
     url = api.discovery.DISCOVER.build_encoded_url(api.BASE_URL)
-    mock_aioresponse.get(url, payload=moments)
+    mock_http.get(url, payload=moments)
     results = await api.discover()
     for result in results:
         assert result == screencap_moment
@@ -228,13 +228,13 @@ async def test_api_discover(
 @pytest.mark.asyncio
 async def test_api_navigator(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     episode_summary_json: dict[str, Any],
 ) -> None:
     summaries = [episode_summary_json for _ in range(5)]
     url = api.discovery.NAVIGATOR.build_encoded_url(api.BASE_URL)
 
-    mock_aioresponse.get(url, payload=summaries)
+    mock_http.get(url, payload=summaries)
 
     results = await api.navigator()
     assert len(results) == 5
@@ -245,14 +245,14 @@ async def test_api_navigator(
 @pytest.mark.asyncio
 async def test_api_get_frames(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     frame_json: dict[str, Any],
 ) -> None:
     frames = [frame_json for _ in range(5)]
     path_params = {"key": "S11E10", "timestamp": 350725, "before": 0, "after": 0}
     url = api.discovery.FRAMES.build_encoded_url(api.BASE_URL, path_params=path_params)
 
-    mock_aioresponse.get(url, payload=frames)
+    mock_http.get(url, payload=frames)
     results = await api.get_frames(key="S11E10", timestamp=350725, before=0, after=0)
     assert len(results) == 5
     for result in results:
@@ -333,27 +333,24 @@ async def test_api_get_comic_strip_url_custom_subtitles_truncated_subtitles(
 
 
 @pytest.mark.asyncio
-async def test_api_get_gif_url(api: CustomCompuGlobalAPI, mock_aioresponse: aioresponses, screencap: Screencap) -> None:
+async def test_api_get_gif_url(api: CustomCompuGlobalAPI, mock_http: aiointercept, screencap: Screencap) -> None:
     url = api.media.RENDER_GIF.build_encoded_url(api.BASE_URL)
     stream = Stream.from_screencap(screencap=screencap, font_family=api.DEFAULT_FONT)
     payload = {
         "url": "/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif",
     }
 
-    # aioresponses does not verify correct post body by default
-    def callback(_: str, **kwargs: dict[str, Any]) -> None:
-        if kwargs["json"] != [stream.model_dump()]:
-            raise _InvalidRequestJSONError
-
-    mock_aioresponse.post(url, payload=payload, callback=callback)
+    mock_http.post(url, payload=payload, status=200)
     gif_url = await api.get_gif_url(screencap)
+
+    mock_http.assert_called_once_with(url, method="POST", json=[stream.model_dump()])
     assert gif_url == snapshot("https://example.com/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif")
 
 
 @pytest.mark.asyncio
 async def test_api_get_gif_url_custom_subtitles(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     screencap: Screencap,
 ) -> None:
     subtitles = [subtitle.model_copy(update={"content": f"Test {i}"}) for i, subtitle in enumerate(screencap.subtitles)]
@@ -366,20 +363,17 @@ async def test_api_get_gif_url_custom_subtitles(
         "url": "/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif",
     }
 
-    # aioresponses does not verify correct post body by default
-    def callback(_: str, **kwargs: dict[str, Any]) -> None:
-        if kwargs["json"] != [stream.model_dump()]:
-            raise _InvalidRequestJSONError
-
-    mock_aioresponse.post(url, payload=payload, callback=callback)
+    mock_http.post(url, payload=payload, status=200)
     gif_url = await api.get_gif_url(screencap, subtitles=subtitles)
+
+    mock_http.assert_called_once_with(url, method="POST", json=[stream.model_dump()])
     assert gif_url == snapshot("https://example.com/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif")
 
 
 @pytest.mark.asyncio
 async def test_api_get_gif_url_fallback_comic(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     screencap: Screencap,
 ) -> None:
     url = api.media.RENDER_GIF.build_encoded_url(api.BASE_URL)
@@ -388,13 +382,10 @@ async def test_api_get_gif_url_fallback_comic(
         "progress": 0.044500000000000005,
     }
 
-    # aioresponses does not verify correct post body by default
-    def callback(_: str, **kwargs: dict[str, Any]) -> None:
-        if kwargs["json"] != [stream.model_dump()]:
-            raise _InvalidRequestJSONError
-
-    mock_aioresponse.post(url, payload=payload, callback=callback)
+    mock_http.post(url, payload=payload, status=200)
     gif_url = await api.get_gif_url(screencap)
+
+    mock_http.assert_called_once_with(url, method="POST", json=[stream.model_dump()])
     assert gif_url == snapshot(
         "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJGZWVscyBsaWtlIEknbSB3ZWF"
         "yaW5nIG5vdGhpbmcgYXQgYWxsLS0iLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1Ijox"
@@ -408,7 +399,7 @@ async def test_api_get_gif_url_fallback_comic(
 @pytest.mark.asyncio
 async def test_api_get_gif_url_truncated_subtitles(
     api: CustomCompuGlobalAPI,
-    mock_aioresponse: aioresponses,
+    mock_http: aiointercept,
     screencap: Screencap,
 ) -> None:
     subtitles = [subtitle.model_copy(update={"content": f"Test {i}"}) for i, subtitle in enumerate(screencap.subtitles)]
@@ -422,11 +413,9 @@ async def test_api_get_gif_url_truncated_subtitles(
         "url": "/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif",
     }
 
-    # aioresponses does not verify correct post body by default
-    def callback(_: str, **kwargs: dict[str, Any]) -> None:
-        if kwargs["json"] != [stream.model_dump()]:
-            raise _InvalidRequestJSONError
+    mock_http.post(url, payload=payload, status=200)
 
-    mock_aioresponse.post(url, payload=payload, callback=callback)
     gif_url = await api.get_gif_url(screencap, subtitles=subtitles)
+
+    mock_http.assert_called_once_with(url, method="POST", json=[stream.model_dump()])
     assert gif_url == snapshot("https://example.com/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif")
