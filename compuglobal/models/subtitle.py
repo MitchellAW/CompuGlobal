@@ -1,9 +1,11 @@
 """Subtitles are used in Screencaps and Comic/Stream overlays."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from compuglobal.models.base import BaseCompuGlobalModel
 
 
-class Subtitle(BaseModel, frozen=True):
+class Subtitle(BaseCompuGlobalModel):
     """A Subtitle for a given period of time in a TV show.
 
     Attributes
@@ -42,4 +44,4 @@ class Subtitle(BaseModel, frozen=True):
             The duration in milliseonds.
 
         """
-        return self.end_timestamp - self.end_timestamp
+        return self.end_timestamp - self.start_timestamp

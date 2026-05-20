@@ -2,7 +2,9 @@
 
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from compuglobal.models.base import BaseCompuGlobalModel
 
 
 class FontFamily(StrEnum):
@@ -24,7 +26,7 @@ class FontAlignment(StrEnum):
     ALIGN_CENTER = "c"
 
 
-class FontColorRGB(BaseModel):
+class FontColorRGB(BaseCompuGlobalModel):
     """A color for a font.
 
     Attributes

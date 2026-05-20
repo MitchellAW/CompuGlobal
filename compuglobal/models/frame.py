@@ -1,9 +1,11 @@
 """A single frame of a TV episode at a given point in time."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from compuglobal.models.base import BaseCompuGlobalModel
 
 
-class Frame(BaseModel, frozen=True):
+class Frame(BaseCompuGlobalModel):
     """A single frame of an episode at a point in time of a TV Show.
 
     Attributes
@@ -32,7 +34,7 @@ class Frame(BaseModel, frozen=True):
         """
         seconds = int(self.timestamp / 1000)
         minutes = int(seconds / 60)
-        seconds -= int(minutes * 60)
+        seconds -= minutes * 60
         return f"{minutes}:{seconds:02d}"
 
     def __str__(self) -> str:
@@ -45,3 +47,19 @@ class Frame(BaseModel, frozen=True):
 
         """
         return f"{self.key} - {self.timestamp} ({self.get_real_timestamp()})"
+
+
+class FrameResult(Frame):
+    """Extend Frame with additional context from a search result.
+
+    Attributes
+    ----------
+    content: str
+        The subtitle content of the frame of this search result
+    title: str
+        The title of the episode for this frame
+
+    """
+
+    content: str = Field(alias="Content")
+    title: str = Field(alias="Title")

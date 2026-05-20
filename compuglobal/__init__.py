@@ -4,6 +4,7 @@ from compuglobal.aio import (
     AsyncCompuGlobalAPI,
     CapitalBeatUs,
     Frinkiac,
+    # pyrefly: ignore [deprecated]
     MasterOfAllScience,
     Morbotron,
 )
@@ -11,7 +12,7 @@ from compuglobal.errors import APIPageStatusError, NoSearchResultsFoundError
 from compuglobal.models.comic import ComicLayout, ComicOverlay, ComicPanel, ComicStrip
 from compuglobal.models.episode import Episode, EpisodeMetadata, EpisodeSummary
 from compuglobal.models.font import FontAlignment, FontColorRGB, FontFamily
-from compuglobal.models.frame import Frame
+from compuglobal.models.frame import Frame, FrameResult
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream, StreamOverlay
 from compuglobal.models.subtitle import Subtitle
@@ -36,6 +37,7 @@ __all__ = [
     "FontColorRGB",
     "FontFamily",
     "Frame",
+    "FrameResult",
     "Frinkiac",
     "MasterOfAllScience",
     "Morbotron",

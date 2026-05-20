@@ -14,7 +14,7 @@ from compuglobal.errors import NoSearchResultsFoundError
 from compuglobal.models.comic import ComicPanel, ComicStrip
 from compuglobal.models.episode import Episode, EpisodeSummary
 from compuglobal.models.font import FontFamily
-from compuglobal.models.frame import Frame
+from compuglobal.models.frame import Frame, FrameResult
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream
 from compuglobal.models.subtitle import Subtitle
@@ -34,18 +34,16 @@ class AsyncCompuGlobalAPI:
     media: MediaAPI = MediaAPI()
     metadata: MetadataAPI = MetadataAPI()
 
-    def __init__(self, session: aiohttp.ClientSession | None = None, timeout: float = 15) -> None:
+    def __init__(self, session: aiohttp.ClientSession) -> None:
         """Create an API using the given session and timeout.
 
         Parameters
         ----------
         session : aiohttp.ClientSession | None, optional
             The client session to use for all API calls
-        timeout : float, optional
-            The time to wait on an API request before raising a timeout exception.
 
         """
-        self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session, timeout=timeout)
+        self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session)
         self.config = CompuGlobalAPIConfig(title=self.TITLE, default_font=self.DEFAULT_FONT)
 
     async def get_screencap(
@@ -93,7 +91,7 @@ class AsyncCompuGlobalAPI:
         caption = await self.client.handle_request(request)
         return Screencap.model_validate(caption)
 
-    async def search(self, search_text: str) -> list[Frame]:
+    async def search(self, search_text: str) -> list[FrameResult]:
         """Perform a search of the given search text and returns a list of all the Frames.
 
         Parameters
@@ -118,7 +116,7 @@ class AsyncCompuGlobalAPI:
         search_results = await self.client.handle_request(request)
 
         if len(search_results) > 0:
-            return [Frame.model_validate(result) for result in search_results]
+            return [FrameResult.model_validate(result) for result in search_results]
 
         raise NoSearchResultsFoundError
 
@@ -278,6 +276,8 @@ class AsyncCompuGlobalAPI:
         if subtitles is None:
             subtitles = screencap.subtitles
 
+        screencap = screencap.model_copy(update={"subtitles": subtitles})
+
         panel = ComicPanel.from_screencap(screencap=screencap, font=self.config.default_font)
 
         params = {"b64": panel.get_encoded()}
@@ -343,17 +343,13 @@ class AsyncCompuGlobalAPI:
         request.body = [request.body]
         response = await self.client.handle_request(request)
 
-        if isinstance(response, str):
+        if isinstance(response, str):  # pragma: no branch
             for line in response.splitlines():
                 data = json.loads(line)
                 if "url" in data:
                     return f"{self.client.base_url}{data.get('url')}"
 
         return await self.get_comic_strip_url(screencap)
-
-    async def close(self) -> None:
-        """Close any client sessions used for performing API requests."""
-        await self.client.close()
 
 
 class CapitalBeatUs(AsyncCompuGlobalAPI):

@@ -2,7 +2,11 @@
 
 
 class NoSearchResultsFoundError(Exception):
-    """No search results found."""
+    """Raised when no search results are found."""
+
+    def __init__(self, message: str = "No search results found.") -> None:
+        """Raise an error related to no search results being found."""
+        super().__init__(message)
 
 
 class APIPageStatusError(Exception):

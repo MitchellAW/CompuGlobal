@@ -3,7 +3,7 @@
 from http import HTTPStatus
 from typing import Any
 
-from aiohttp import ClientSession, ClientTimeout
+from aiohttp import ClientSession
 
 from compuglobal.api.endpoint import PreparedRequest, RequestMethod
 from compuglobal.errors import APIPageStatusError
@@ -15,8 +15,7 @@ class CompuGlobalAPIClient:
     def __init__(
         self,
         base_url: str,
-        session: ClientSession | None = None,
-        timeout: float = 15,
+        session: ClientSession,
     ) -> None:
         """Define an API client for interacting with CGHMC APIs.
 
@@ -26,19 +25,10 @@ class CompuGlobalAPIClient:
             The base URL of the API (e.g. https://frinkiac.com)
         session : ClientSession | None, optional
             The client session to use for all API requests
-        timeout : float, optional
-            The number of seconds to wait before raising a timeout error for each API request
 
         """
         self.base_url = base_url
-
-        self._is_auto_session = session is None
-
-        if session is None:
-            self.session = ClientSession(timeout=ClientTimeout(total=timeout))
-
-        else:
-            self.session = session
+        self.session = session
 
     async def get(self, url: str, params: dict[str, Any] | None = None) -> dict[str, Any] | list[Any]:
         """Get the JSON response from the API using the given url, and params.
@@ -112,8 +102,3 @@ class CompuGlobalAPIClient:
             return await self.post_data(request.url, json=request.body)
 
         return await self.get(request.url, params=request.params)
-
-    async def close(self) -> None:
-        """Close the http client session."""
-        if self._is_auto_session:
-            await self.session.close()

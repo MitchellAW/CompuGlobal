@@ -2,14 +2,22 @@
 
 import asyncio
 
+import aiohttp
+
 import compuglobal
 
 
+# Ensure aiohttp sessions are closed if any errors occur
 async def main():
+    async with aiohttp.ClientSession() as session:
+        await example(session=session)
+
+
+async def example(session: aiohttp.ClientSession):
     # The API used as the example here is Frinkiac (The Simpsons)
     # Everything below can be used for any of the APIs (Morbotron, Master of All
     # Science etc.)
-    frinkiac = compuglobal.Frinkiac()
+    frinkiac = compuglobal.Frinkiac(session=session)
 
     # Getting a screencap from The Simpsons using search terms
     searched_screencap = await frinkiac.search_for_screencap("Stupid Sexy Flanders")
@@ -35,9 +43,6 @@ async def main():
     # Gets the gif of the screencap with captions embedded
     gif = await frinkiac.get_gif_url(searched_screencap)
     print(gif)
-
-    # Close API Client
-    await frinkiac.close()
 
 
 if __name__ == "__main__":

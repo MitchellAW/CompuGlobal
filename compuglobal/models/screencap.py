@@ -1,13 +1,14 @@
 """Models for  Screencaps and ScreencapMoments."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from compuglobal.models.base import BaseCompuGlobalModel
 from compuglobal.models.episode import EpisodeMetadata
 from compuglobal.models.frame import Frame
 from compuglobal.models.subtitle import Subtitle
 
 
-class ScreencapMoment(BaseModel, frozen=True):
+class ScreencapMoment(BaseCompuGlobalModel):
     """A moment from an episode with the episode title and a single subtitle.
 
     Attributes
@@ -29,7 +30,7 @@ class ScreencapMoment(BaseModel, frozen=True):
     title: str = Field(alias="Title")
 
 
-class Screencap(BaseModel, frozen=True):
+class Screencap(BaseCompuGlobalModel):
     """A Screencap of an episode at a point in time of a TV Show.
 
     Attributes
