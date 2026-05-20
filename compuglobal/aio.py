@@ -276,6 +276,8 @@ class AsyncCompuGlobalAPI:
         if subtitles is None:
             subtitles = screencap.subtitles
 
+        screencap = screencap.model_copy(update={"subtitles": subtitles})
+
         panel = ComicPanel.from_screencap(screencap=screencap, font=self.config.default_font)
 
         params = {"b64": panel.get_encoded()}
