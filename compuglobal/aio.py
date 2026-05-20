@@ -343,7 +343,7 @@ class AsyncCompuGlobalAPI:
         request.body = [request.body]
         response = await self.client.handle_request(request)
 
-        if isinstance(response, str):
+        if isinstance(response, str):  # pragma: no branch
             for line in response.splitlines():
                 data = json.loads(line)
                 if "url" in data:
