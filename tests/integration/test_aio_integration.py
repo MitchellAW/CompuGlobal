@@ -12,6 +12,7 @@ from compuglobal.models.episode import Episode, EpisodeSummary
 from compuglobal.models.frame import Frame, FrameResult
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.subtitle import Subtitle
+from tests.integration.conftest import log_customised_media_url, log_media_url
 
 API_CLASSES = [Frinkiac, Morbotron, CapitalBeatUs]
 _screencap_cache: dict[str, Screencap] = {}
@@ -152,6 +153,7 @@ async def test_api_get_image_url(api: AsyncCompuGlobalAPI, random_screencap: Scr
         assert response.status == 200
         content_type = response.headers.get("Content-Type", "")
         assert "image/jpeg" in content_type
+        log_media_url(api.config.title, "Default Image", image_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
@@ -164,6 +166,7 @@ async def test_api_get_comic_panel_url(api: AsyncCompuGlobalAPI, random_screenca
         assert response.status == 200
         content_type = response.headers.get("Content-Type", "")
         assert "image/jpeg" in content_type
+        log_media_url(api.config.title, "Default Comic Panel", comic_panel_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
@@ -179,6 +182,7 @@ async def test_api_get_comic_panel_url_custom_subtitles(
         assert response.status == 200
         content_type = response.headers.get("Content-Type", "")
         assert "image/jpeg" in content_type
+        log_customised_media_url(api.config.title, "Custom Comic Panel", comic_panel_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
@@ -191,6 +195,7 @@ async def test_api_get_comic_strip_url(api: AsyncCompuGlobalAPI, random_screenca
         assert response.status == 200
         content_type = response.headers.get("Content-Type", "")
         assert "image/jpeg" in content_type
+        log_media_url(api.config.title, "Default Comic Strip", comic_strip_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
@@ -206,6 +211,7 @@ async def test_api_get_comic_strip_url_custom_subtitles(
         assert response.status == 200
         content_type = response.headers.get("Content-Type", "")
         assert "image/jpeg" in content_type
+        log_customised_media_url(api.config.title, "Custom Comic Strip", comic_strip_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
@@ -217,6 +223,7 @@ async def test_api_get_gif_url(api: AsyncCompuGlobalAPI, random_screencap: Scree
         assert response.status == 200
         content_type = response.headers.get("Content-Type", "")
         assert "image/gif" in content_type
+        log_media_url(api.config.title, "Default Gif", gif_url, "image/gif")
 
 
 @pytest.mark.asyncio
@@ -231,3 +238,4 @@ async def test_api_get_gif_url_custom_subtitles(
         assert response.status == 200
         content_type = response.headers.get("Content-Type", "")
         assert "image/gif" in content_type
+        log_customised_media_url(api.config.title, "Custom Gif", gif_url, "image/gif")

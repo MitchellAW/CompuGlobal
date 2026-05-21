@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" value="Generated Media Report" />
+        <meta name="keywords" value="Frinkiac, Morbotron" />
+        <title>Generated Media Report</title>
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    </head>
+    <style>
+        article img {
+            max-height: 300px;
+            object-fit: contain;
+        }
+
+        article.placeholder {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+        }
+    </style>
+    <body>
+        <main class="container-fluid">
+            <h1>Generated Media Report</h1>
+            <p>
+                Created: <time>{{ timestamp }}</time>
+            </p>
+            {% for api_name in apis.keys() %}
+                <section>
+                    <h2>{{ api_name }}</h2>
+                    <h4>Default Captions</h4>
+                    <div class="grid">
+                        {% for entry in apis[api_name] %}
+                            <article>
+                                <header>
+                                    <p>{{ entry.title }}</p>
+                                </header>
+                                <a href="{{ entry.url }}" target="_blank">
+                                    {% if "gif" in entry.type or "jpeg" in entry.type %}
+                                        <img src="{{ entry.url }}"
+                                             height="auto"
+                                             width="auto"
+                                             alt="{{ entry.title }}" />
+                                    {% elif "video" in entry.type %}
+                                        <video src="{{ entry.url }}" controls>
+                                        </video>
+                                    {% else %}
+                                        {{ entry.url }}
+                                    {% endif %}
+                                </a>
+                            </article>
+                        {% endfor %}
+                    </div>
+                    {% if custom_apis[api_name] is defined %}
+                        <h4>Custom Captions</h4>
+                        <div class="grid">
+                            {% for entry in custom_apis[api_name] %}
+                                <article>
+                                    <header>
+                                        <p>{{ entry.title }}</p>
+                                    </header>
+                                    <a href="{{ entry.url }}" target="_blank">
+                                        {% if "gif" in entry.type or "jpeg" in entry.type %}
+                                            <img src="{{ entry.url }}"
+                                                 height="auto"
+                                                 width="auto"
+                                                 alt="{{ entry.title }}" />
+                                        {% else %}
+                                            {{ entry.url }}
+                                        {% endif %}
+                                    </a>
+                                </article>
+                            {% endfor %}
+                            {% if custom_apis[api_name] | length < 4 %}<article class="placeholder"></article>{% endif %}
+                        </div>
+                    {% endif %}
+                </section>
+            {% endfor %}
+        </main>
+    </body>
+</html>
