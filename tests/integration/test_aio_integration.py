@@ -56,6 +56,24 @@ async def random_customised_screencap(api: AsyncCompuGlobalAPI) -> Screencap:
     return screencap.model_copy(update={"subtitles": subtitles})
 
 
+async def check_content_type_and_url(
+    session: aiohttp.ClientSession,
+    url: str,
+    expected_content_type: str,
+    expected_in_url: list[str],
+) -> None:
+    for expectation in expected_in_url:
+        assert expectation in url
+
+    # Sleep before checking headers
+    await asyncio.sleep(1)
+
+    async with session.head(url, allow_redirects=True) as response:
+        assert response.status == 200
+        content_type = response.headers.get("Content-Type", "")
+        assert expected_content_type in content_type
+
+
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_api_get_random_screencap(api: AsyncCompuGlobalAPI) -> None:
@@ -148,25 +166,16 @@ async def test_api_get_frames(api: AsyncCompuGlobalAPI, random_screencap: Screen
 @pytest.mark.integration
 async def test_api_get_image_url(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
     image_url = await api.get_image_url(random_screencap)
-    assert image_url.endswith(".jpg")
-    async with api.client.session.head(image_url, allow_redirects=True) as response:
-        assert response.status == 200
-        content_type = response.headers.get("Content-Type", "")
-        assert "image/jpeg" in content_type
-        log_media_url(api.config.title, "Default Image", image_url, "image/jpeg")
+    await check_content_type_and_url(api.client.session, image_url, "image/jpeg", ["jpg"])
+    log_media_url(api.config.title, "Default Image", image_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_api_get_comic_panel_url(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
     comic_panel_url = await api.get_comic_panel_url(random_screencap)
-    assert "comic" in comic_panel_url
-    assert "layout" not in comic_panel_url
-    async with api.client.session.head(comic_panel_url, allow_redirects=True) as response:
-        assert response.status == 200
-        content_type = response.headers.get("Content-Type", "")
-        assert "image/jpeg" in content_type
-        log_media_url(api.config.title, "Default Comic Panel", comic_panel_url, "image/jpeg")
+    await check_content_type_and_url(api.client.session, comic_panel_url, "image/jpeg", ["comic"])
+    log_media_url(api.config.title, "Default Comic Panel", comic_panel_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
@@ -176,26 +185,16 @@ async def test_api_get_comic_panel_url_custom_subtitles(
     random_customised_screencap: Screencap,
 ) -> None:
     comic_panel_url = await api.get_comic_panel_url(random_customised_screencap)
-    assert "comic" in comic_panel_url
-    assert "layout" not in comic_panel_url
-    async with api.client.session.head(comic_panel_url, allow_redirects=True) as response:
-        assert response.status == 200
-        content_type = response.headers.get("Content-Type", "")
-        assert "image/jpeg" in content_type
-        log_customised_media_url(api.config.title, "Custom Comic Panel", comic_panel_url, "image/jpeg")
+    await check_content_type_and_url(api.client.session, comic_panel_url, "image/jpeg", ["comic"])
+    log_customised_media_url(api.config.title, "Custom Comic Panel", comic_panel_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_api_get_comic_strip_url(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
     comic_strip_url = await api.get_comic_strip_url(random_screencap)
-    assert "comic" in comic_strip_url
-    assert "layout" in comic_strip_url
-    async with api.client.session.head(comic_strip_url, allow_redirects=True) as response:
-        assert response.status == 200
-        content_type = response.headers.get("Content-Type", "")
-        assert "image/jpeg" in content_type
-        log_media_url(api.config.title, "Default Comic Strip", comic_strip_url, "image/jpeg")
+    await check_content_type_and_url(api.client.session, comic_strip_url, "image/jpeg", ["comic", "layout"])
+    log_media_url(api.config.title, "Default Comic Strip", comic_strip_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
@@ -205,25 +204,16 @@ async def test_api_get_comic_strip_url_custom_subtitles(
     random_customised_screencap: Screencap,
 ) -> None:
     comic_strip_url = await api.get_comic_strip_url(random_customised_screencap)
-    assert "comic" in comic_strip_url
-    assert "layout" in comic_strip_url
-    async with api.client.session.head(comic_strip_url, allow_redirects=True) as response:
-        assert response.status == 200
-        content_type = response.headers.get("Content-Type", "")
-        assert "image/jpeg" in content_type
-        log_customised_media_url(api.config.title, "Custom Comic Strip", comic_strip_url, "image/jpeg")
+    await check_content_type_and_url(api.client.session, comic_strip_url, "image/jpeg", ["comic", "layout"])
+    log_customised_media_url(api.config.title, "Custom Comic Strip", comic_strip_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_api_get_gif_url(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
     gif_url = await api.get_gif_url(random_screencap)
-    assert "gif" in gif_url
-    async with api.client.session.head(gif_url, allow_redirects=True) as response:
-        assert response.status == 200
-        content_type = response.headers.get("Content-Type", "")
-        assert "image/gif" in content_type
-        log_media_url(api.config.title, "Default Gif", gif_url, "image/gif")
+    await check_content_type_and_url(api.client.session, gif_url, "image/gif", ["gif"])
+    log_media_url(api.config.title, "Default Gif", gif_url, "image/gif")
 
 
 @pytest.mark.asyncio
@@ -233,9 +223,5 @@ async def test_api_get_gif_url_custom_subtitles(
     random_customised_screencap: Screencap,
 ) -> None:
     gif_url = await api.get_gif_url(random_customised_screencap)
-    assert "gif" in gif_url
-    async with api.client.session.head(gif_url, allow_redirects=True) as response:
-        assert response.status == 200
-        content_type = response.headers.get("Content-Type", "")
-        assert "image/gif" in content_type
-        log_customised_media_url(api.config.title, "Custom Gif", gif_url, "image/gif")
+    await check_content_type_and_url(api.client.session, gif_url, "image/gif", ["gif"])
+    log_customised_media_url(api.config.title, "Custom Gif", gif_url, "image/gif")
