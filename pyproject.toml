@@ -72,8 +72,9 @@ project-includes = [
 
 [tool.pytest]
 minversion = "9.0"
-addopts = ["-ra", "-q"]
+addopts = ["-ra", "-q", "-m", "not integration"]
 testpaths = ["tests"]
+markers = ["integration: Tests that hit real external APIs (slow)"]
 
 [tool.coverage.run]
 branch = true
