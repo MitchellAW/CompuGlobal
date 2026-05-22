@@ -17,3 +17,6 @@ jobs:
 
     - name: Ruff check
       run: uv run ruff check
+
+    - name: Pyrefly check
+      run: uv run pyrefly check --summarize-errors
