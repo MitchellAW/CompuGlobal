@@ -1,0 +1,15 @@
+name: Setup Environment
+description: Setup the python environment using uv with all dependency groups installed
+
+runs:
+  using: composite
+
+  steps:
+    - name: Install uv
+      uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+      with:
+        enable-cache: true
+
+    - name: Install dependencies
+      run: uv sync --all-groups
+      shell: bash

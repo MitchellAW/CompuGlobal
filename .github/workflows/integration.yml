@@ -1,0 +1,27 @@
+name: Integration Tests
+
+on:
+  pull_request:
+
+jobs:
+ integration:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+    - name: Setup environment
+      uses: ./.github/actions/setup
+
+    - name: Run integration tests
+      run: uv run pytest -m "integration"
+
+    - name: Upload integration test report
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      if: always()
+      with:
+        name: integration-test-report
+        path: "**/media_report.html"
+        archive: false
+        retention-days: 7
