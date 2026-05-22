@@ -10,6 +10,15 @@ from aiointercept import aiointercept
 from compuglobal.models.screencap import Screencap
 
 
+def pytest_addoption(parser: pytest.Parser) -> None:
+    parser.addoption(
+        "--open-report",
+        action="store_true",
+        default=False,
+        help="Automatically open the media report in the browser after the test run.",
+    )
+
+
 @pytest_asyncio.fixture
 async def mock_http() -> AsyncGenerator[aiointercept]:
     async with aiointercept(mock_external_urls=True) as m:
