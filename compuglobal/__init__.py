@@ -20,7 +20,7 @@ from compuglobal.models.subtitle import Subtitle
 __title__ = "compuglobal"
 __author__ = "MitchellAW"
 __license__ = "MIT"
-__version__ = "0.3.5"
+__version__ = "0.3.6"
 
 __all__ = [
     "APIPageStatusError",
