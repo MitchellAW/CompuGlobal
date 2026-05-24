@@ -6,10 +6,15 @@ CompuGlobal
 
 .. image:: https://img.shields.io/pypi/v/compuglobal.svg
    :target: https://pypi.python.org/pypi/compuglobal
+
 .. image:: https://img.shields.io/pypi/pyversions/compuglobal.svg
    :target: https://pypi.python.org/pypi/compuglobal
-.. image:: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
-   :target: http://makeapullrequest.com
+
+.. image:: https://img.shields.io/github/actions/workflow/status/MitchellAW/CompuGlobal/test.yml?label=tests
+   :target: https://github.com/MitchellAW/CompuGlobal/actions/workflows/test.yml
+
+.. image:: https://img.shields.io/github/license/mitchellaw/compuglobal
+   :target: https://github.com/MitchellAW/CompuGlobal/blob/main/LICENSE
 
 Python wrapper for all endpoints of the following undocumented APIs:
 
