@@ -37,6 +37,7 @@ class DiscoveryAPI:
     RANDOM = Endpoint(
         path="/api/random",
         method=RequestMethod.GET,
+        optional_query_params=frozenset({"smin", "smax"}),
     )
 
     NAVIGATOR = Endpoint(
@@ -48,6 +49,7 @@ class DiscoveryAPI:
         path="/api/search",
         method=RequestMethod.GET,
         query_params=frozenset({"q"}),
+        optional_query_params=frozenset({"smin", "smax"}),
     )
 
     FRAMES = Endpoint(
