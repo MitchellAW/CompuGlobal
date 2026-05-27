@@ -91,13 +91,22 @@ class AsyncCompuGlobalAPI:
         caption = await self.client.handle_request(request)
         return Screencap.model_validate(caption)
 
-    async def search(self, search_text: str) -> list[FrameResult]:
+    async def search(
+        self,
+        search_text: str,
+        season_minimum: int | None = None,
+        season_maximum: int | None = None,
+    ) -> list[FrameResult]:
         """Perform a search of the given search text and returns a list of all the Frames.
 
         Parameters
         ----------
         search_text : str
             The search text to query
+        season_minimum: int | None, optional
+            The minimum season allowed in the search results
+        season_maximum: int | None, optional
+            The maximum season allowed in the search results
 
         Returns
         -------
@@ -110,9 +119,11 @@ class AsyncCompuGlobalAPI:
             Raises an error if no search results are found
 
         """
-        params = {"q": search_text}
+        optional_params = {"smin": season_minimum, "smax": season_maximum}
+        query = {"q": search_text}
+        query |= {k: v for k, v in optional_params.items() if v is not None}
 
-        request = self.discovery.SEARCH.build_request(self.client.base_url, query=params)
+        request = self.discovery.SEARCH.build_request(self.client.base_url, query=query)
         search_results = await self.client.handle_request(request)
 
         if len(search_results) > 0:
@@ -120,13 +131,22 @@ class AsyncCompuGlobalAPI:
 
         raise NoSearchResultsFoundError
 
-    async def search_for_screencap(self, search_text: str) -> Screencap:
+    async def search_for_screencap(
+        self,
+        search_text: str,
+        season_minimum: int | None = None,
+        season_maximum: int | None = None,
+    ) -> Screencap:
         """Perform a search of the given search text and returns the top result.
 
         Parameters
         ----------
         search_text : str
             The search text to query
+        season_minimum: int | None, optional
+            The minimum season allowed in the search
+        season_maximum: int | None, optional
+            The maximum season allowed in the search
 
         Returns
         -------
@@ -134,11 +154,15 @@ class AsyncCompuGlobalAPI:
             The screencap of the top search result
 
         """
-        search_results = await self.search(search_text)
+        search_results = await self.search(search_text, season_minimum=season_minimum, season_maximum=season_maximum)
         result = search_results[0]
         return await self.get_screencap(result.key, result.timestamp)
 
-    async def get_random_screencap(self) -> Screencap:
+    async def get_random_screencap(
+        self,
+        season_minimum: int | None = None,
+        season_maximum: int | None = None,
+    ) -> Screencap:
         """Get a random TV Show screencap.
 
         Returns
@@ -147,7 +171,9 @@ class AsyncCompuGlobalAPI:
             A random screencap object.
 
         """
-        request = self.discovery.RANDOM.build_request(self.client.base_url)
+        optional_params = {"smin": season_minimum, "smax": season_maximum}
+        query = {k: v for k, v in optional_params.items() if v is not None}
+        request = self.discovery.RANDOM.build_request(self.client.base_url, query=query)
         random = await self.client.handle_request(request)
         return Screencap.model_validate(random)
 
