@@ -109,6 +109,18 @@ def test_endpoint_build_encoded_url_exists() -> None:
     assert url is not None
 
 
+def test_endpoint_build_encoded_url_with_unused_optional_params() -> None:
+    endpoint = Endpoint(path="/example", required_query_params=frozenset({"a"}), optional_query_params=frozenset({"b"}))
+    url = endpoint.build_encoded_url("https://example.com", query={"a": 1}, path_params={})
+    assert url == "https://example.com/example?a=1"
+
+
+def test_endpoint_build_encoded_url_with_used_optional_params() -> None:
+    endpoint = Endpoint(path="/example", required_query_params=frozenset({"a"}), optional_query_params=frozenset({"b"}))
+    url = endpoint.build_encoded_url("https://example.com", query={"a": 1, "b": 2}, path_params={})
+    assert url == "https://example.com/example?a=1&b=2"
+
+
 def test_endpoint_build_encoded_url_missing_or_unexpected_params() -> None:
     endpoint = Endpoint(path="/example", required_query_params=frozenset({"a"}))
     with pytest.raises(ValueError, match="Missing query params"):

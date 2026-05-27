@@ -62,6 +62,11 @@ def test_discovery_random_expected_params() -> None:
     assert params == frozenset()
 
 
+def test_discovery_random_optional_params() -> None:
+    params = DiscoveryAPI.RANDOM.optional_query_params
+    assert params == snapshot(frozenset({"smax", "smin"}))
+
+
 def test_discovery_navigator_expected_path() -> None:
     path = DiscoveryAPI.NAVIGATOR.path
     assert path == "/api/navigator"
@@ -80,6 +85,11 @@ def test_discovery_search_expected_path() -> None:
 def test_discovery_search_expected_params() -> None:
     params = DiscoveryAPI.SEARCH.required_query_params
     assert params == snapshot(frozenset({"q"}))
+
+
+def test_discovery_search_optional_params() -> None:
+    params = DiscoveryAPI.SEARCH.optional_query_params
+    assert params == snapshot(frozenset({"smax", "smin"}))
 
 
 def test_discovery_frames_expected_path() -> None:
