@@ -26,7 +26,7 @@ class DiscoveryAPI:
     CAPTION = Endpoint(
         path="/api/caption",
         method=RequestMethod.GET,
-        query_params=frozenset({"e", "t", "nearby"}),
+        required_query_params=frozenset({"e", "t", "nearby"}),
     )
 
     DISCOVER = Endpoint(
@@ -48,7 +48,7 @@ class DiscoveryAPI:
     SEARCH = Endpoint(
         path="/api/search",
         method=RequestMethod.GET,
-        query_params=frozenset({"q"}),
+        required_query_params=frozenset({"q"}),
         optional_query_params=frozenset({"smin", "smax"}),
     )
 

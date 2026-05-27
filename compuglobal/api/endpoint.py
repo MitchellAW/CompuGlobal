@@ -55,7 +55,7 @@ class Endpoint:
         The url path containing any path parameter names
     method: RequestMethod, optional
         The HTTP RequestMethod for the request (GET/POST/PUT)
-    query_params: dict[str, Any] | None, optional
+    required_query_params: dict[str, Any] | None, optional
         The required query parameters to use in the request
     optional_query_params: dict[str, Any] | None, optional
         Optional query params that can be used in the request
@@ -66,7 +66,7 @@ class Endpoint:
 
     path: str
     method: RequestMethod = RequestMethod.GET
-    query_params: frozenset[str] = frozenset()
+    required_query_params: frozenset[str] = frozenset()
     optional_query_params: frozenset[str] = frozenset()
     body_model: type[BaseModel] | None = None
 
@@ -181,8 +181,8 @@ class Endpoint:
             Raises error if contains missing or unexpected params from the definition of the endpoint
 
         """
-        missing = set(self.query_params - query.keys())
-        unexpected = query.keys() - (self.query_params | self.optional_query_params)
+        missing = set(self.required_query_params - query.keys())
+        unexpected = query.keys() - (self.required_query_params | self.optional_query_params)
 
         if missing:
             raise ValueError(

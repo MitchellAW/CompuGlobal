@@ -44,7 +44,7 @@ def test_media_image_expected_path() -> None:
 
 
 def test_media_image_expected_params() -> None:
-    params = MediaAPI.IMAGE.query_params
+    params = MediaAPI.IMAGE.required_query_params
     assert params == frozenset()
 
 
@@ -54,7 +54,7 @@ def test_media_comic_panel_expected_path() -> None:
 
 
 def test_media_comic_panel_expected_params() -> None:
-    params = MediaAPI.COMIC_PANEL.query_params
+    params = MediaAPI.COMIC_PANEL.required_query_params
     assert params == snapshot(frozenset({"b64"}))
 
 
@@ -64,7 +64,7 @@ def test_media_comic_strip_expected_path() -> None:
 
 
 def test_media_comic_strip_expected_params() -> None:
-    params = MediaAPI.COMIC_STRIP.query_params
+    params = MediaAPI.COMIC_STRIP.required_query_params
     assert params == snapshot(frozenset({"b64", "layout"}))
 
 
@@ -74,7 +74,7 @@ def test_media_render_gif_expected_path() -> None:
 
 
 def test_media_render_gif_expected_params() -> None:
-    params = MediaAPI.RENDER_GIF.query_params
+    params = MediaAPI.RENDER_GIF.required_query_params
     assert params == frozenset()
 
 
@@ -89,7 +89,7 @@ def test_media_render_mp4_expected_path() -> None:
 
 
 def test_media_render_mp4_expected_params() -> None:
-    params = MediaAPI.RENDER_MP4.query_params
+    params = MediaAPI.RENDER_MP4.required_query_params
     assert params == frozenset()
 
 
@@ -104,5 +104,5 @@ def test_media_detect_loop_expected_path() -> None:
 
 
 def test_media_detect_loop_expected_params() -> None:
-    params = MediaAPI.DETECT_LOOP.query_params
+    params = MediaAPI.DETECT_LOOP.required_query_params
     assert params == snapshot(frozenset({"end", "episode", "start"}))
