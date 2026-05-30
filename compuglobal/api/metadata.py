@@ -23,5 +23,5 @@ class MetadataAPI:
     TRANSCRIPT = Endpoint(
         path="/api/transcript",
         method=RequestMethod.GET,
-        query_params=frozenset({"e", "t"}),
+        required_query_params=frozenset({"e", "t"}),
     )

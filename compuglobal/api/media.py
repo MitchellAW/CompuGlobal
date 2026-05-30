@@ -33,13 +33,13 @@ class MediaAPI:
     COMIC_PANEL = Endpoint(
         path="/comic/img",
         method=RequestMethod.GET,
-        query_params=frozenset({"b64"}),
+        required_query_params=frozenset({"b64"}),
     )
 
     COMIC_STRIP = Endpoint(
         path="/comic/img",
         method=RequestMethod.GET,
-        query_params=frozenset({"b64", "layout"}),
+        required_query_params=frozenset({"b64", "layout"}),
     )
 
     RENDER_GIF = Endpoint(
@@ -56,7 +56,7 @@ class MediaAPI:
     DETECT_LOOP = Endpoint(
         path="/api/detect-loop",
         method=RequestMethod.GET,
-        query_params=frozenset(
+        required_query_params=frozenset(
             {"episode", "start", "end"},
         ),
     )

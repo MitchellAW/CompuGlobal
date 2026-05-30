@@ -25,7 +25,7 @@ def test_metadata_episode_has_expected_path() -> None:
 
 
 def test_metadata_episode_has_expected_params() -> None:
-    params = MetadataAPI.EPISODE.query_params
+    params = MetadataAPI.EPISODE.required_query_params
     assert params == frozenset()
 
 
@@ -35,5 +35,5 @@ def test_metadata_transcript_has_expected_path() -> None:
 
 
 def test_metadata_transcript_has_expected_params() -> None:
-    params = MetadataAPI.TRANSCRIPT.query_params
+    params = MetadataAPI.TRANSCRIPT.required_query_params
     assert params == snapshot(frozenset({"e", "t"}))

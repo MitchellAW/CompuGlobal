@@ -106,6 +106,15 @@ async def test_api_search(api: AsyncCompuGlobalAPI) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.integration
+async def test_api_search_filtered(api: AsyncCompuGlobalAPI) -> None:
+    results = await api.search("the", season_minimum=1, season_maximum=1)
+    assert len(results) > 0
+    for result in results:
+        assert result.key.startswith("S01")
+
+
+@pytest.mark.asyncio
+@pytest.mark.integration
 async def test_api_search_for_screencap(api: AsyncCompuGlobalAPI) -> None:
     result = await api.search_for_screencap("test")
     assert isinstance(result, Screencap)

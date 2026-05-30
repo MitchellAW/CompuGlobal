@@ -38,7 +38,7 @@ def test_discovery_caption_expected_path() -> None:
 
 
 def test_discovery_caption_expected_params() -> None:
-    params = DiscoveryAPI.CAPTION.query_params
+    params = DiscoveryAPI.CAPTION.required_query_params
     assert params == snapshot(frozenset({"e", "nearby", "t"}))
 
 
@@ -48,7 +48,7 @@ def test_discovery_discover_expected_path() -> None:
 
 
 def test_discovery_discover_expected_params() -> None:
-    params = DiscoveryAPI.DISCOVER.query_params
+    params = DiscoveryAPI.DISCOVER.required_query_params
     assert params == frozenset()
 
 
@@ -58,8 +58,13 @@ def test_discovery_random_expected_path() -> None:
 
 
 def test_discovery_random_expected_params() -> None:
-    params = DiscoveryAPI.RANDOM.query_params
+    params = DiscoveryAPI.RANDOM.required_query_params
     assert params == frozenset()
+
+
+def test_discovery_random_optional_params() -> None:
+    params = DiscoveryAPI.RANDOM.optional_query_params
+    assert params == snapshot(frozenset({"smax", "smin"}))
 
 
 def test_discovery_navigator_expected_path() -> None:
@@ -68,7 +73,7 @@ def test_discovery_navigator_expected_path() -> None:
 
 
 def test_discovery_navigator_expected_params() -> None:
-    params = DiscoveryAPI.NAVIGATOR.query_params
+    params = DiscoveryAPI.NAVIGATOR.required_query_params
     assert params == frozenset()
 
 
@@ -78,8 +83,13 @@ def test_discovery_search_expected_path() -> None:
 
 
 def test_discovery_search_expected_params() -> None:
-    params = DiscoveryAPI.SEARCH.query_params
+    params = DiscoveryAPI.SEARCH.required_query_params
     assert params == snapshot(frozenset({"q"}))
+
+
+def test_discovery_search_optional_params() -> None:
+    params = DiscoveryAPI.SEARCH.optional_query_params
+    assert params == snapshot(frozenset({"smax", "smin"}))
 
 
 def test_discovery_frames_expected_path() -> None:
@@ -89,5 +99,5 @@ def test_discovery_frames_expected_path() -> None:
 
 
 def test_discovery_frames_expected_params() -> None:
-    params = DiscoveryAPI.FRAMES.query_params
+    params = DiscoveryAPI.FRAMES.required_query_params
     assert params == frozenset()

@@ -52,11 +52,13 @@ class Endpoint:
     Attributes
     ----------
     path: str
-        The url path
+        The url path containing any path parameter names
     method: RequestMethod, optional
         The HTTP RequestMethod for the request (GET/POST/PUT)
-    query_params: dict[str, Any] | None, optional
-        The query parameters to use in the request
+    required_query_params: dict[str, Any] | None, optional
+        The required query parameters to use in the request
+    optional_query_params: dict[str, Any] | None, optional
+        Optional query params that can be used in the request
     body_model: type[BaseModel], optional
         The pydantic model for the json body
 
@@ -64,7 +66,8 @@ class Endpoint:
 
     path: str
     method: RequestMethod = RequestMethod.GET
-    query_params: frozenset[str] = frozenset()
+    required_query_params: frozenset[str] = frozenset()
+    optional_query_params: frozenset[str] = frozenset()
     body_model: type[BaseModel] | None = None
 
     def build_url(
@@ -178,8 +181,8 @@ class Endpoint:
             Raises error if contains missing or unexpected params from the definition of the endpoint
 
         """
-        missing = set(self.query_params - query.keys())
-        unexpected = query.keys() - self.query_params
+        missing = set(self.required_query_params - query.keys())
+        unexpected = query.keys() - (self.required_query_params | self.optional_query_params)
 
         if missing:
             raise ValueError(
