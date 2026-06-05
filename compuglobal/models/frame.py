@@ -3,6 +3,7 @@
 from pydantic import Field
 
 from compuglobal.models.base import BaseCompuGlobalModel
+from compuglobal.models.timestamp import Timestamp
 
 
 class Frame(BaseCompuGlobalModel):
@@ -32,10 +33,7 @@ class Frame(BaseCompuGlobalModel):
             A readable timestamp for the frame in format `mm:ss`.
 
         """
-        seconds = int(self.timestamp / 1000)
-        minutes = int(seconds / 60)
-        seconds -= minutes * 60
-        return f"{minutes}:{seconds:02d}"
+        return Timestamp.get_real_timestamp(timestamp=self.timestamp)
 
     def __str__(self) -> str:
         """Get the string representation of the Frame.

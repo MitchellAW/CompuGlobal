@@ -16,11 +16,12 @@ from compuglobal.models.frame import Frame, FrameResult
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream, StreamOverlay
 from compuglobal.models.subtitle import Subtitle
+from compuglobal.models.timestamp import Timestamp
 
 __title__ = "compuglobal"
 __author__ = "MitchellAW"
 __license__ = "MIT"
-__version__ = "0.3.7"
+__version__ = "0.3.8"
 
 __all__ = [
     "APIPageStatusError",
@@ -47,4 +48,5 @@ __all__ = [
     "Stream",
     "StreamOverlay",
     "Subtitle",
+    "Timestamp",
 ]

@@ -48,6 +48,11 @@ def test_screencap_moment_validate_invalid_timestamp(bad_timestamp: int) -> None
         ScreencapMoment.model_validate(payload)
 
 
+def test_screencap_moment_get_real_timestamp(screencap_moment: dict[str, Any]) -> None:
+    moment = ScreencapMoment.model_validate(screencap_moment)
+    assert moment.get_real_timestamp() == snapshot("18:38")
+
+
 def test_screencap_validate_dump(screencap: Screencap) -> None:
     dump = screencap.model_dump()
     expected = Screencap.model_validate(dump)
@@ -70,6 +75,10 @@ def test_screencap_get_caption(screencap: Screencap) -> None:
     assert screencap.get_caption() == snapshot(
         "Feels like I'm wearing nothing at all-- Nothing at all-- Nothing at all!\" Stupid, sexy Flanders!",
     )
+
+
+def test_screencap_get_subtitles_duration(screencap: Screencap) -> None:
+    assert screencap.get_duration() == snapshot(7799)
 
 
 def test_screencap_get_start(screencap: Screencap) -> None:

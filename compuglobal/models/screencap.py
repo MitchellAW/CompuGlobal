@@ -6,6 +6,7 @@ from compuglobal.models.base import BaseCompuGlobalModel
 from compuglobal.models.episode import EpisodeMetadata
 from compuglobal.models.frame import Frame
 from compuglobal.models.subtitle import Subtitle
+from compuglobal.models.timestamp import Timestamp
 
 
 class ScreencapMoment(BaseCompuGlobalModel):
@@ -28,6 +29,17 @@ class ScreencapMoment(BaseCompuGlobalModel):
     timestamp: int = Field(alias="Timestamp", ge=0)
     content: str = Field(alias="Content")
     title: str = Field(alias="Title")
+
+    def get_real_timestamp(self) -> str:
+        """Get a readable timestamp for the moments timestamp in format `mm:ss`.
+
+        Returns
+        -------
+        str
+            A readable timestamp in format `mm:ss`.
+
+        """
+        return Timestamp.get_real_timestamp(self.timestamp)
 
 
 class Screencap(BaseCompuGlobalModel):
@@ -58,7 +70,7 @@ class Screencap(BaseCompuGlobalModel):
     max_timestamp: int = Field(alias="MaxTimestamp", ge=0)
 
     def get_real_timestamp(self) -> str:
-        """Get a readable timestamp for the frame in format "mm:ss".
+        """Get a readable timestamp for the frame in format `mm:ss`.
 
         Returns
         -------
@@ -66,10 +78,21 @@ class Screencap(BaseCompuGlobalModel):
             A readable timestamp for the frame in format `mm:ss`.
 
         """
-        return self.frame.get_real_timestamp()
+        return Timestamp.get_real_timestamp(timestamp=self.frame.timestamp)
+
+    def get_duration(self) -> int:
+        """Get duration of screencap subtitles in milliseconds.
+
+        Returns
+        -------
+        int
+            Duration in milliseconds
+
+        """
+        return Timestamp.get_subtitles_duration(self.subtitles)
 
     def captions(self) -> list[str]:
-        """Get a list of captions for the screencap from all subttiles.
+        """Get a list of captions for the screencap from all subtitles.
 
         Returns
         -------
