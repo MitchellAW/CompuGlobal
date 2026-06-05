@@ -3,6 +3,7 @@
 from pydantic import Field
 
 from compuglobal.models.base import BaseCompuGlobalModel
+from compuglobal.models.timestamp import Timestamp
 
 
 class Subtitle(BaseCompuGlobalModel):
@@ -41,7 +42,7 @@ class Subtitle(BaseCompuGlobalModel):
         Returns
         -------
         int
-            The duration in milliseonds.
+            The duration in milliseconds.
 
         """
-        return self.end_timestamp - self.start_timestamp
+        return Timestamp.get_duration(start_timestamp=self.start_timestamp, end_timestamp=self.end_timestamp)

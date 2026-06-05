@@ -16,6 +16,7 @@ from compuglobal.models.frame import Frame, FrameResult
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream, StreamOverlay
 from compuglobal.models.subtitle import Subtitle
+from compuglobal.models.timestamp import Timestamp
 
 __title__ = "compuglobal"
 __author__ = "MitchellAW"
@@ -47,4 +48,5 @@ __all__ = [
     "Stream",
     "StreamOverlay",
     "Subtitle",
+    "Timestamp",
 ]
