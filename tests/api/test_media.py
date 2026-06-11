@@ -13,7 +13,7 @@ def test_media_get_endpoints_use_correct_method() -> None:
         assert endpoint.method == RequestMethod.GET
 
 
-def test_media_post_endponts_use_correct_method() -> None:
+def test_media_post_endpoints_use_correct_method() -> None:
     endpoints = [MediaAPI.RENDER_GIF, MediaAPI.RENDER_MP4]
     for endpoint in endpoints:
         assert endpoint.method == RequestMethod.POST
