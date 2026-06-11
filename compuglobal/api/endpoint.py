@@ -1,4 +1,4 @@
-"""Module of endpoint classes used for modeling an API endpoint."""
+"""Module of endpoint classes used for modelling an API endpoint."""
 
 from dataclasses import dataclass
 from enum import StrEnum
@@ -13,8 +13,13 @@ from pydantic import BaseModel
 class RequestMethod(StrEnum):
     """An enum of HTTP request methods."""
 
+    #: For GET requests
     GET = "GET"
+
+    #: For POST requests
     POST = "POST"
+
+    #: For PUT requests
     PUT = "PUT"
 
 

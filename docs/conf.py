@@ -20,7 +20,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinxcontrib_trio",
-    "enum_tools.autoenum",
     "sphinx_rtd_theme",
 ]
 

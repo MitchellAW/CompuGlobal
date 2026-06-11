@@ -58,7 +58,7 @@ Comics
     :members:
     :exclude-members: model_config
 
-.. autoenum:: ComicLayout
+.. autoclass:: ComicLayout
     :members:
 
 Stream
@@ -77,8 +77,8 @@ Fonts
     :members:
     :exclude-members: model_config
 
-.. autoenum:: FontAlignment
+.. autoclass:: FontAlignment
     :members:
 
-.. autoenum:: FontFamily
+.. autoclass:: FontFamily
     :members:

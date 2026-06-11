@@ -16,10 +16,19 @@ from .subtitle import Subtitle
 class ComicLayout(StrEnum):
     """Defines a layout to be used by :class:`ComicStrip`."""
 
+    #: A single comic panel only
     SINGLE = "single"
+
+    #: All comic panels laid out horizontally
     WIDE = "wide"
+
+    #: All comic panels laid out vertically
     TALL = "tall"
+
+    #: The first panel will be laid out above the next two panels
     ONE_OVER_TWO = "1over2"
+
+    #: The panels will be laid out in a 2x2 grid layout
     TWO_OVER_ONE = "2x2"
 
 
