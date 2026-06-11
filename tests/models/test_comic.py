@@ -6,9 +6,10 @@ import pytest
 from inline_snapshot import snapshot
 from pydantic import ValidationError
 
-from compuglobal import Screencap
 from compuglobal.models.comic import ComicLayout, ComicOverlay, ComicPanel, ComicStrip
 from compuglobal.models.font import FontAlignment, FontFamily
+from compuglobal.models.overlay import OverlayFormat
+from compuglobal.models.screencap import Screencap
 from compuglobal.models.subtitle import Subtitle
 
 
@@ -81,7 +82,10 @@ def test_comic_overlay_model_with_overrides() -> None:
 
 def test_comic_overlay_from_subtitles(subtitle_json: dict[str, Any]) -> None:
     subtitles = [Subtitle.model_validate(subtitle_json)]
-    overlay = ComicOverlay.from_subtitles(subtitles=subtitles, font_family=FontFamily.AKBAR)
+    overlay = ComicOverlay.from_subtitles(
+        subtitles=subtitles,
+        overlay_format=OverlayFormat(font_family=FontFamily.AKBAR),
+    )
     assert overlay.model_dump() == snapshot(
         {
             "t": "Stupid, sexy Flanders!",
@@ -106,7 +110,10 @@ def test_comic_panel_validate_dump_with_defaults() -> None:
 
 def test_comic_panel_validate_dump_with_overrides(subtitle_json: dict[str, Any]) -> None:
     subtitles = [Subtitle.model_validate(subtitle_json)]
-    overlay = ComicOverlay.from_subtitles(subtitles=subtitles, font_family=FontFamily.AKBAR)
+    overlay = ComicOverlay.from_subtitles(
+        subtitles=subtitles,
+        overlay_format=OverlayFormat(font_family=FontFamily.AKBAR),
+    )
     payload = {"e": "S01E01", "ts": 7777, "o": [overlay]}
     panel = ComicPanel.model_validate(payload)
     assert panel.model_dump() == snapshot(
@@ -165,7 +172,10 @@ def test_comic_panel_from_screencap(screencap: Screencap) -> None:
 
 
 def test_comic_panel_from_screencap_custom_font(screencap: Screencap) -> None:
-    comic_panel = ComicPanel.from_screencap(screencap=screencap, font=FontFamily.JOST)
+    comic_panel = ComicPanel.from_screencap(
+        screencap=screencap,
+        overlay_format=OverlayFormat(font_family=FontFamily.JOST),
+    )
     assert comic_panel.model_dump() == snapshot(
         {
             "e": "S11E10",
@@ -193,7 +203,10 @@ def test_comic_panel_from_screencap_custom_font(screencap: Screencap) -> None:
 
 def test_comic_panel_get_encoded(subtitle_json: dict[str, Any]) -> None:
     subtitles = [Subtitle.model_validate(subtitle_json)]
-    overlay = ComicOverlay.from_subtitles(subtitles=subtitles, font_family=FontFamily.AKBAR)
+    overlay = ComicOverlay.from_subtitles(
+        subtitles=subtitles,
+        overlay_format=OverlayFormat(font_family=FontFamily.AKBAR),
+    )
     payload = {"e": "S01E01", "ts": 7777, "o": [overlay]}
     panel = ComicPanel.model_validate(payload)
 
@@ -205,7 +218,10 @@ def test_comic_panel_get_encoded(subtitle_json: dict[str, Any]) -> None:
 
 def test_comic_strip(subtitle_json: dict[str, Any]) -> None:
     subtitles = [Subtitle.model_validate(subtitle_json)]
-    overlay = ComicOverlay.from_subtitles(subtitles=subtitles, font_family=FontFamily.AKBAR)
+    overlay = ComicOverlay.from_subtitles(
+        subtitles=subtitles,
+        overlay_format=OverlayFormat(font_family=FontFamily.AKBAR),
+    )
     payload = {"e": "S01E01", "ts": 7777, "o": [overlay]}
     panel = ComicPanel.model_validate(payload)
     panels = [panel.model_copy(update={"timestamp": panel.timestamp + 1000 * i}) for i in range(4)]
@@ -372,7 +388,10 @@ def test_comic_strip_build_comic_overlays(subtitle_json: dict[str, Any]) -> None
 def test_comic_strip_build_comic_overlays_with_font(subtitle_json: dict[str, Any]) -> None:
     subtitle = Subtitle.model_validate(subtitle_json)
     subtitles = [subtitle.model_copy(update={"content": f"{i} - {subtitle.content}"}) for i in range(1, 4)]
-    overlays = ComicStrip.build_comic_overlays(subtitles=subtitles, font_family=FontFamily.JOST)
+    overlays = ComicStrip.build_comic_overlays(
+        subtitles=subtitles,
+        overlay_format=OverlayFormat(font_family=FontFamily.JOST),
+    )
     assert overlays == snapshot(
         [
             ComicOverlay(text="1 - Stupid, sexy Flanders!", font_family=FontFamily.JOST),
@@ -404,7 +423,10 @@ def test_comic_strip_default_layouts(
     expected_layout: ComicLayout,
 ) -> None:
     subtitles = [Subtitle.model_validate(subtitle_json)]
-    overlay = ComicOverlay.from_subtitles(subtitles=subtitles, font_family=FontFamily.AKBAR)
+    overlay = ComicOverlay.from_subtitles(
+        subtitles=subtitles,
+        overlay_format=OverlayFormat(font_family=FontFamily.AKBAR),
+    )
     payload = {"e": "S01E01", "ts": 7777, "o": [overlay]}
     panel = ComicPanel.model_validate(payload)
     panels = [panel.model_copy(update={"timestamp": panel.timestamp + 1000 * i}) for i in range(panel_count)]
@@ -416,7 +438,10 @@ def test_comic_strip_custom_layout(
     subtitle_json: dict[str, Any],
 ) -> None:
     subtitles = [Subtitle.model_validate(subtitle_json)]
-    overlay = ComicOverlay.from_subtitles(subtitles=subtitles, font_family=FontFamily.AKBAR)
+    overlay = ComicOverlay.from_subtitles(
+        subtitles=subtitles,
+        overlay_format=OverlayFormat(font_family=FontFamily.AKBAR),
+    )
     payload = {"e": "S01E01", "ts": 7777, "o": [overlay]}
     panel = ComicPanel.model_validate(payload)
     panels = [panel.model_copy(update={"timestamp": panel.timestamp + 1000 * i}) for i in range(3)]

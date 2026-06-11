@@ -15,6 +15,7 @@ from compuglobal.api.config import CompuGlobalAPIConfig
 from compuglobal.errors import NoSearchResultsFoundError
 from compuglobal.models.font import FontFamily
 from compuglobal.models.frame import Frame
+from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream
 
@@ -24,7 +25,7 @@ class CustomCompuGlobalAPI(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://example.com"
     TITLE = "Testing"
-    DEFAULT_FONT = FontFamily.JOST
+    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.JOST)
 
 
 class _InvalidRequestJSONError(Exception):
@@ -65,7 +66,10 @@ def random_frame_results(quantity: int) -> list[dict[str, Any]]:
 async def test_api_defaults() -> None:
     async with aiohttp.ClientSession() as session:
         api = CustomCompuGlobalAPI(session=session)
-        assert api.config == CompuGlobalAPIConfig(title="Testing", default_font=FontFamily.JOST)
+        assert api.config == CompuGlobalAPIConfig(
+            title="Testing",
+            default_format=OverlayFormat(font_family=FontFamily.JOST),
+        )
         assert api.client.base_url == "https://example.com"
 
 
@@ -335,7 +339,7 @@ async def test_api_get_comic_strip_url_custom_subtitles_truncated_subtitles(
 @pytest.mark.asyncio
 async def test_api_get_gif_url(api: CustomCompuGlobalAPI, mock_http: aiointercept, screencap: Screencap) -> None:
     url = api.media.RENDER_GIF.build_encoded_url(api.BASE_URL)
-    stream = Stream.from_screencap(screencap=screencap, font_family=api.DEFAULT_FONT)
+    stream = Stream.from_screencap(screencap=screencap, overlay_format=api.DEFAULT_FORMAT)
     payload = {
         "url": "/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif",
     }
@@ -357,7 +361,7 @@ async def test_api_get_gif_url_custom_subtitles(
     url = api.media.RENDER_GIF.build_encoded_url(api.BASE_URL)
 
     stream_screencap = screencap.model_copy(update={"subtitles": subtitles})
-    stream = Stream.from_screencap(screencap=stream_screencap, font_family=api.DEFAULT_FONT)
+    stream = Stream.from_screencap(screencap=stream_screencap, overlay_format=api.DEFAULT_FORMAT)
 
     payload = {
         "url": "/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif",
@@ -377,7 +381,7 @@ async def test_api_get_gif_url_fallback_comic(
     screencap: Screencap,
 ) -> None:
     url = api.media.RENDER_GIF.build_encoded_url(api.BASE_URL)
-    stream = Stream.from_screencap(screencap=screencap, font_family=api.DEFAULT_FONT)
+    stream = Stream.from_screencap(screencap=screencap, overlay_format=api.DEFAULT_FORMAT)
     payload = {
         "progress": 0.044500000000000005,
     }
@@ -407,7 +411,7 @@ async def test_api_get_gif_url_truncated_subtitles(
     url = api.media.RENDER_GIF.build_encoded_url(api.BASE_URL)
 
     stream_screencap = screencap.model_copy(update={"subtitles": subtitles[:4]})
-    stream = Stream.from_screencap(screencap=stream_screencap, font_family=api.DEFAULT_FONT)
+    stream = Stream.from_screencap(screencap=stream_screencap, overlay_format=api.DEFAULT_FORMAT)
 
     payload = {
         "url": "/video/S02E01/CoCGOx7cJdlKOKjrZoE7S5_mXqw=.gif",
