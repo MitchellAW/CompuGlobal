@@ -44,6 +44,12 @@ Subtitle
     :members:
     :exclude-members: model_config
 
+Overlays
+~~~~~~~~~~~~~~~~~~~~
+.. autoclass:: OverlayFormat
+    :members:
+    :exclude-members: model_config
+
 Comics
 ~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: ComicPanel
