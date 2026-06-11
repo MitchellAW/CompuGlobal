@@ -51,6 +51,7 @@ Source = "https://github.com/MitchellAW/CompuGlobal"
 
 [tool.uv]
 package = true
+default-groups = ["dev", "docs", "test"]
 
 [tool.ruff]
 line-length = 120
