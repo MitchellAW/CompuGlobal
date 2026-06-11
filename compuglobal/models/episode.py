@@ -1,4 +1,4 @@
-"""Models used for representing an enite episode, or metadata/summaries of a TV episode."""
+"""Models used for representing an entire episode, or metadata/summaries of a TV episode."""
 
 from pydantic import Field
 

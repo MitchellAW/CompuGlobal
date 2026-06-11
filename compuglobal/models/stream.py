@@ -53,7 +53,7 @@ class Stream(BaseCompuGlobalModel):
     key: str
         The episode key (S01E01)
     start: int
-        The timestap of the start the stream
+        The timestamp of the start the stream
     end: int
         The timestamp of the end of the stream
     overlays: List[StreamOverlay]

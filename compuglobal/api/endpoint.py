@@ -1,4 +1,4 @@
-"""Module of endpoint classes used for modeling an API endpoint."""
+"""Module of endpoint classes used for modelling an API endpoint."""
 
 from dataclasses import dataclass
 from enum import StrEnum
