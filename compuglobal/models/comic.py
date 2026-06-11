@@ -7,6 +7,7 @@ from enum import IntEnum, StrEnum
 from pydantic import Field, model_validator
 
 from compuglobal.models.base import BaseCompuGlobalModel
+from compuglobal.models.overlay import OverlayFormat
 
 from .font import FontAlignment, FontFamily
 from .screencap import Screencap
@@ -62,7 +63,7 @@ class ComicOverlay(BaseCompuGlobalModel):
     text: str = Field(alias="t", description="Text to overlay")
     font_family: FontFamily = Field(alias="f", description="Font style to use", default=FontFamily.IMPACT)
     font_size: int = Field(alias="s", description="Size of the font", ge=0, le=120, default=0)
-    font_color: str = Field(alias="c", description="Font color to use", min_length=8, max_length=8, default="ffffffff")
+    font_color: str = Field(alias="c", description="Font color to use", min_length=8, max_length=10, default="ffffffff")
     text_position_x: int = Field(alias="x", description="The x position of the overlay", default=50)
     text_position_y: int = Field(alias="y", description="The y position of the overlay", default=97)
     text_alignment: FontAlignment = Field(
@@ -75,11 +76,39 @@ class ComicOverlay(BaseCompuGlobalModel):
     d: int = Field(alias="d", description="Duration (unused)", default=0)
 
     @classmethod
+    def build_with_format(cls, *, text: str, overlay_format: OverlayFormat) -> "ComicOverlay":
+        """Build a ComicOverlay using an OverlayFormat.
+
+        Parameters
+        ----------
+        text : str
+            The content/text of the subtitle in the overlay
+        overlay_format : OverlayFormat
+            The format to use for all formatting in the overlay
+
+        Returns
+        -------
+        ComicOverlay
+            The comic overlay with the given formatting
+
+        """
+        return cls(
+            text=text,
+            font_family=overlay_format.font_family,
+            font_color=overlay_format.font_color_hex,
+            font_size=overlay_format.font_size,
+            text_position_x=overlay_format.text_position_x,
+            text_position_y=overlay_format.text_position_y,
+            text_alignment=overlay_format.text_alignment,
+            all_caps=int(overlay_format.all_caps),
+        )
+
+    @classmethod
     def from_subtitles(
         cls,
         *,
         subtitles: list[Subtitle],
-        font_family: FontFamily = FontFamily.IMPACT,
+        overlay_format: OverlayFormat | None = None,
     ) -> "ComicOverlay":
         """Build a comic overlay using a list of Subtitles.
 
@@ -87,8 +116,8 @@ class ComicOverlay(BaseCompuGlobalModel):
         ----------
         subtitles : List[Subtitle]
             A list of subtitles
-        font_family : FontFamily, optional
-            The family of font to use for the new overlay.
+        overlay_format : OverlayFormat
+            The format to use in the overlay
 
         Returns
         -------
@@ -96,8 +125,11 @@ class ComicOverlay(BaseCompuGlobalModel):
             The overlay to display on a ComicPanel
 
         """
+        if overlay_format is None:
+            overlay_format = OverlayFormat()
+
         text = " ".join(subtitle.content for subtitle in subtitles)
-        return cls(t=text, f=font_family)
+        return cls.build_with_format(text=text, overlay_format=overlay_format)
 
 
 class ComicPanel(BaseCompuGlobalModel):
@@ -119,15 +151,21 @@ class ComicPanel(BaseCompuGlobalModel):
     overlays: list[ComicOverlay] = Field(alias="o", description="The text overlays for each panel", default=[])
 
     @classmethod
-    def from_screencap(cls, *, screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> "ComicPanel":
+    def from_screencap(
+        cls,
+        *,
+        screencap: Screencap,
+        overlay_format: OverlayFormat | None = None,
+    ) -> "ComicPanel":
         """Build a comic panel from a Screencap.
 
         Parameters
         ----------
         screencap : Screencap
             Screencap to use for the comic panel
-        font : FontFamily, optional
-            The font to use in the comic overlays
+        overlay_format : OverlayFormat | list[OverlayFormat], optional
+            The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
+            full details on how formats are resolved.
 
         Returns
         -------
@@ -135,7 +173,7 @@ class ComicPanel(BaseCompuGlobalModel):
             The comic panel of the screencap
 
         """
-        overlays = [ComicOverlay.from_subtitles(subtitles=screencap.subtitles, font_family=font)]
+        overlays = [ComicOverlay.from_subtitles(subtitles=screencap.subtitles, overlay_format=overlay_format)]
 
         return cls(e=screencap.frame.key, ts=screencap.frame.timestamp, o=overlays)
 
@@ -175,15 +213,21 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
     )
 
     @classmethod
-    def from_screencap(cls, *, screencap: Screencap, font_family: FontFamily = FontFamily.IMPACT) -> "ComicStrip":
+    def from_screencap(
+        cls,
+        *,
+        screencap: Screencap,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> "ComicStrip":
         """Build a comic strip from a Screencap object.
 
         Parameters
         ----------
         screencap : Screencap
             The screencap to use for the comic strip
-        font_family : FontFamily, optional
-            The font to use for all overlays in the comic strip
+        overlay_format : OverlayFormat | list[OverlayFormat], optional
+            The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
+            full details on how formats are resolved.
 
         Returns
         -------
@@ -191,13 +235,14 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
             The comic strip depicting the given screencap
 
         """
+        overlay_formats = OverlayFormat.normalise(overlay_format, len(screencap.subtitles))
         panels = [
             ComicPanel(
                 e=screencap.frame.key,
                 ts=subtitle.representative_timestamp,
-                o=cls.build_comic_overlays([subtitle], font_family=font_family),
+                o=cls.build_comic_overlays([subtitle], overlay_format=overlay_format),
             )
-            for subtitle in screencap.subtitles
+            for subtitle, overlay_format in zip(screencap.subtitles, overlay_formats, strict=True)
         ]
 
         return cls(panels=panels)
@@ -205,7 +250,7 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
     @staticmethod
     def build_comic_overlays(
         subtitles: list[Subtitle],
-        font_family: FontFamily = FontFamily.IMPACT,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
     ) -> list[ComicOverlay]:
         """Build a list comic overlays using the given subtitles and font.
 
@@ -213,8 +258,9 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
         ----------
         subtitles : List[Subtitle]
             The subtitles to use for the overlays
-        font_family : FontFamily, optional
-            The font to use in all the comic overlays
+        overlay_format : OverlayFormat | list[OverlayFormat], optional
+            The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
+            full details on how formats are resolved.
 
         Returns
         -------
@@ -222,7 +268,11 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
             A list of comic overlays
 
         """
-        return [ComicOverlay(text=subtitle.content, font_family=font_family) for subtitle in subtitles]
+        overlay_formats = OverlayFormat.normalise(overlay_format, len(subtitles))
+        return [
+            ComicOverlay.build_with_format(text=subtitle.content, overlay_format=overlay_format)
+            for subtitle, overlay_format in zip(subtitles, overlay_formats, strict=True)
+        ]
 
     def get_encoded(self) -> str:
         """Get the base 64 encoded representation of this comic strip.
