@@ -30,7 +30,6 @@ dev = [
     "ruff>=0.15.13",
 ]
 docs = [
-    "enum-tools[sphinx]>=0.13.0",
     "sphinx<9.0",
     "sphinx-rtd-theme>=3.1.0",
     "sphinxcontrib-trio>=1.2.0",
