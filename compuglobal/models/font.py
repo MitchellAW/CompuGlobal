@@ -10,19 +10,35 @@ from compuglobal.models.base import BaseCompuGlobalModel
 class FontFamily(StrEnum):
     """An enumeration of font families."""
 
+    #: The impact font family
     IMPACT = "impact"
+
+    #: The Comic Neue font family
     COMIC_NEUE = "comicneue"
+
+    #: The Jost font family
     JOST = "jost"
+
+    #: The Pacifico font family
     PACIFICO = "pacifico"
+
+    #: The Akbar font family (Frinkiac default)
     AKBAR = "akbar"
+
+    #: The Fr Bold font family (Morbotron default)
     FR_BOLD = "fr"
 
 
 class FontAlignment(StrEnum):
     """An enumeration of font alignments."""
 
+    #: Align the text to the left
     ALIGN_LEFT = "l"
+
+    #: Align the text to the right
     ALIGN_RIGHT = "r"
+
+    #: Align the text to the center
     ALIGN_CENTER = "c"
 
 

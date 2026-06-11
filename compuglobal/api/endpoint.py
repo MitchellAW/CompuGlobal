@@ -13,8 +13,13 @@ from pydantic import BaseModel
 class RequestMethod(StrEnum):
     """An enum of HTTP request methods."""
 
+    #: For GET requests
     GET = "GET"
+
+    #: For POST requests
     POST = "POST"
+
+    #: For PUT requests
     PUT = "PUT"
 
 
