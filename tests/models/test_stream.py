@@ -5,6 +5,7 @@ from inline_snapshot import snapshot
 from pydantic import ValidationError
 
 from compuglobal.models.font import FontAlignment, FontFamily
+from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap
 from compuglobal.models.stream import Stream, StreamOverlay
 
@@ -207,7 +208,7 @@ def test_stream_build_stream_overlays(screencap: Screencap) -> None:
 
 
 def test_stream_build_stream_overlays_font(screencap: Screencap) -> None:
-    overlays = Stream.build_stream_overlays(screencap, font=FontFamily.JOST)
+    overlays = Stream.build_stream_overlays(screencap, overlay_format=OverlayFormat(font_family=FontFamily.JOST))
     assert overlays == snapshot(
         [
             StreamOverlay(

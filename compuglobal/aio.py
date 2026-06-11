@@ -15,6 +15,7 @@ from compuglobal.models.comic import ComicPanel, ComicStrip
 from compuglobal.models.episode import Episode, EpisodeSummary
 from compuglobal.models.font import FontFamily
 from compuglobal.models.frame import Frame, FrameResult
+from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream
 from compuglobal.models.subtitle import Subtitle
@@ -27,7 +28,7 @@ class AsyncCompuGlobalAPI:
 
     BASE_URL: str
     TITLE: str
-    DEFAULT_FONT: FontFamily
+    DEFAULT_FORMAT: OverlayFormat
     _MAX_ALLOWED_SUBTITLES = 4
 
     discovery: DiscoveryAPI = DiscoveryAPI()
@@ -44,7 +45,7 @@ class AsyncCompuGlobalAPI:
 
         """
         self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session)
-        self.config = CompuGlobalAPIConfig(title=self.TITLE, default_font=self.DEFAULT_FONT)
+        self.config = CompuGlobalAPIConfig(title=self.TITLE, default_format=self.DEFAULT_FORMAT)
 
     async def get_screencap(
         self,
@@ -304,7 +305,7 @@ class AsyncCompuGlobalAPI:
 
         screencap = screencap.model_copy(update={"subtitles": subtitles})
 
-        panel = ComicPanel.from_screencap(screencap=screencap, font=self.config.default_font)
+        panel = ComicPanel.from_screencap(screencap=screencap, overlay_format=self.config.default_format)
 
         params = {"b64": panel.get_encoded()}
         return self.media.COMIC_PANEL.build_encoded_url(self.client.base_url, query=params)
@@ -334,7 +335,7 @@ class AsyncCompuGlobalAPI:
         # Change subtitles
         screencap = screencap.model_copy(update={"subtitles": subtitles})
 
-        comic_strip = ComicStrip.from_screencap(screencap=screencap, font_family=self.config.default_font)
+        comic_strip = ComicStrip.from_screencap(screencap=screencap, overlay_format=self.config.default_format)
         params = {"b64": comic_strip.get_encoded(), "layout": comic_strip.layout}
         return self.media.COMIC_STRIP.build_encoded_url(self.client.base_url, query=params)
 
@@ -363,7 +364,7 @@ class AsyncCompuGlobalAPI:
         # Change subtitles
         screencap = screencap.model_copy(update={"subtitles": subtitles})
 
-        stream = Stream.from_screencap(screencap=screencap, font_family=self.config.default_font)
+        stream = Stream.from_screencap(screencap=screencap, overlay_format=self.config.default_format)
 
         request = self.media.RENDER_GIF.build_request(self.client.base_url, body=stream)
         request.body = [request.body]
@@ -383,7 +384,7 @@ class CapitalBeatUs(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://capitalbeat.us"
     TITLE = "West Wing"
-    DEFAULT_FONT = FontFamily.IMPACT
+    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.IMPACT)
 
 
 class Frinkiac(AsyncCompuGlobalAPI):
@@ -391,7 +392,7 @@ class Frinkiac(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://frinkiac.com"
     TITLE = "Simpsons"
-    DEFAULT_FONT = FontFamily.AKBAR
+    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.AKBAR)
 
 
 @deprecated("The MasterOfAllScience API is deprecated, and currently redirects to Frinkiac")
@@ -400,7 +401,7 @@ class MasterOfAllScience(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://masterofallscience.com"
     TITLE = "Rick and Morty"
-    DEFAULT_FONT = FontFamily.IMPACT
+    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.IMPACT)
 
 
 class Morbotron(AsyncCompuGlobalAPI):
@@ -408,4 +409,4 @@ class Morbotron(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://morbotron.com"
     TITLE = "Futurama"
-    DEFAULT_FONT = FontFamily.FR_BOLD
+    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.FR_BOLD)

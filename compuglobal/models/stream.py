@@ -4,6 +4,7 @@ from pydantic import Field
 
 from compuglobal.models.base import BaseCompuGlobalModel
 from compuglobal.models.font import FontAlignment, FontFamily
+from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap
 
 
@@ -18,6 +19,8 @@ class StreamOverlay(BaseCompuGlobalModel):
         The font to use for the text in the overlay
     font_size: int
         The size of the font in the overlay
+    font_color: list[int]
+        The color of the font as an RGB list [0-255, 0-255, 0-255]
     text_position_x: int
         The position of the text on the X-axis
     text_position_y: int
@@ -43,6 +46,47 @@ class StreamOverlay(BaseCompuGlobalModel):
     all_caps: bool = Field(alias="all_caps", default=True)
     start: int = Field(alias="start", ge=0)
     end: int = Field(alias="end", ge=0)
+
+    @classmethod
+    def build_with_format(
+        cls,
+        *,
+        text: str,
+        start: int,
+        end: int,
+        overlay_format: OverlayFormat,
+    ) -> "StreamOverlay":
+        """Build a StreamOverlay using an OverlayFormat.
+
+        Parameters
+        ----------
+        text : str
+            The content/text of the subtitle in the overlay
+        start : int
+            The time where the overlay begins
+        end : int
+            The time where the overlay ends
+        overlay_format : OverlayFormat
+            The format to use for all formatting in the overlay
+
+        Returns
+        -------
+        StreamOverlay
+            The overlay with the given formatting
+
+        """
+        return cls(
+            text=text,
+            start=start,
+            end=end,
+            font_family=overlay_format.font_family,
+            font_color=overlay_format.font_color,
+            font_size=overlay_format.font_size,
+            text_position_x=overlay_format.text_position_x,
+            text_position_y=overlay_format.text_position_y,
+            text_alignment=overlay_format.text_alignment,
+            all_caps=overlay_format.all_caps,
+        )
 
 
 class Stream(BaseCompuGlobalModel):
@@ -70,15 +114,21 @@ class Stream(BaseCompuGlobalModel):
     check_only: bool = Field(alias="check_only")
 
     @classmethod
-    def from_screencap(cls, *, screencap: Screencap, font_family: FontFamily = FontFamily.IMPACT) -> "Stream":
+    def from_screencap(
+        cls,
+        *,
+        screencap: Screencap,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> "Stream":
         """Build a stream using a screencap object.
 
         Parameters
         ----------
         screencap : Screencap
             The screencap to use for the Stream
-        font_family : FontFamily
-            The font to use in any overlays
+        overlay_format : OverlayFormat | list[OverlayFormat], optional
+            The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
+            full details on how formats are resolved.
 
         Returns
         -------
@@ -86,7 +136,7 @@ class Stream(BaseCompuGlobalModel):
             The stream with overlays for the given screencap.
 
         """
-        overlays = cls.build_stream_overlays(screencap, font_family)
+        overlays = cls.build_stream_overlays(screencap, overlay_format)
 
         return cls(
             episode=screencap.episode.key,
@@ -97,15 +147,19 @@ class Stream(BaseCompuGlobalModel):
         )
 
     @staticmethod
-    def build_stream_overlays(screencap: Screencap, font: FontFamily = FontFamily.IMPACT) -> list[StreamOverlay]:
+    def build_stream_overlays(
+        screencap: Screencap,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> list[StreamOverlay]:
         """Build stream overlays with the given screencap, subtitles, timestamp, and font.
 
         Parameters
         ----------
         screencap: Screencap
-            The screencap to use for hte overlays
-        font : FontFamily, optional
-            The font to use for all overlays
+            The screencap to use for the overlays
+        overlay_format : OverlayFormat | list[OverlayFormat], optional
+            The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
+            full details on how formats are resolved.
 
         Returns
         -------
@@ -113,14 +167,16 @@ class Stream(BaseCompuGlobalModel):
             The built list of overlays for the stream
 
         """
+        overlay_format = OverlayFormat.normalise(overlay_format, len(screencap.subtitles))
+
         return [
-            StreamOverlay(
+            StreamOverlay.build_with_format(
                 text=subtitle.content,
-                font=font,
                 start=subtitle.start_timestamp - screencap.get_start(),
                 end=subtitle.end_timestamp - screencap.get_start(),
+                overlay_format=overlay_format,
             )
-            for subtitle in screencap.subtitles
+            for subtitle, overlay_format in zip(screencap.subtitles, overlay_format, strict=True)
         ]
 
     def get_caption(self) -> str:

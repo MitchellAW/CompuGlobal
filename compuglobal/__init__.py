@@ -13,6 +13,7 @@ from compuglobal.models.comic import ComicLayout, ComicOverlay, ComicPanel, Comi
 from compuglobal.models.episode import Episode, EpisodeMetadata, EpisodeSummary
 from compuglobal.models.font import FontAlignment, FontColorRGB, FontFamily
 from compuglobal.models.frame import Frame, FrameResult
+from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream, StreamOverlay
 from compuglobal.models.subtitle import Subtitle
@@ -43,6 +44,7 @@ __all__ = [
     "MasterOfAllScience",
     "Morbotron",
     "NoSearchResultsFoundError",
+    "OverlayFormat",
     "Screencap",
     "ScreencapMoment",
     "Stream",
