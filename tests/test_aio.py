@@ -295,12 +295,7 @@ async def test_api_get_comic_panel_url_custom_subtitles(
 async def test_api_get_comic_strip_url(api: CustomCompuGlobalAPI, screencap: Screencap) -> None:
     comic_strip_url = await api.get_comic_strip_url(screencap)
     assert comic_strip_url == snapshot(
-        "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJGZWVscyBsaWtlIEknbSB3ZWF"
-        "yaW5nIG5vdGhpbmcgYXQgYWxsLS0iLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1Ijox"
-        "LCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTA1MTcsIm8iOlt7InQiOiJOb3RoaW5nIGF0IGFsbC0tIE5vdGhpbmcgYXQgY"
-        "WxsIVwiIiwiZiI6Impvc3QiLCJzIjowLCJjIjoiZmZmZmZmZmYiLCJ4Ijo1MCwieSI6OTcsImEiOiJjIiwidSI6MSwiYiI6MCwiZCI6MH1dfS"
-        "x7ImUiOiJTMTFFMTAiLCJ0cyI6MzUzMjI4LCJvIjpbeyJ0IjoiU3R1cGlkLCBzZXh5IEZsYW5kZXJzISIsImYiOiJqb3N0IiwicyI6MCwiYyI"
-        "6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX1d&layout=1over2",
+        "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJGZWVscyBsaWtlIEknbSB3ZWFyaW5nIG5vdGhpbmcgYXQgYWxsLS0iLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTA1MTcsIm8iOlt7InQiOiJOb3RoaW5nIGF0IGFsbC0tIE5vdGhpbmcgYXQgYWxsIVwiIiwiZiI6Impvc3QiLCJzIjowLCJjIjoiZmZmZmZmZmYiLCJ4Ijo1MCwieSI6OTcsImEiOiJjIiwidSI6MSwiYiI6MCwiZCI6MH1dfSx7ImUiOiJTMTFFMTAiLCJ0cyI6MzUzMjI4LCJvIjpbeyJ0IjoiU3R1cGlkLCBzZXh5IEZsYW5kZXJzISIsImYiOiJqb3N0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX1d&layout=1over2",
     )
 
 
@@ -309,11 +304,7 @@ async def test_api_get_comic_strip_url_custom_subtitles(api: CustomCompuGlobalAP
     subtitles = [subtitle.model_copy(update={"content": f"Test {i}"}) for i, subtitle in enumerate(screencap.subtitles)]
     comic_strip_url = await api.get_comic_strip_url(screencap, subtitles=subtitles)
     assert comic_strip_url == snapshot(
-        "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJUZXN0IDAiLCJmIjoiam9zdCI"
-        "sInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRz"
-        "IjozNTA1MTcsIm8iOlt7InQiOiJUZXN0IDEiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiL"
-        "CJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTMyMjgsIm8iOlt7InQiOiJUZXN0IDIiLCJmIjoiam9zdCIsInMiOj"
-        "AsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19XQ%3D%3D&layout=1over2",
+        "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJUZXN0IDAiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTA1MTcsIm8iOlt7InQiOiJUZXN0IDEiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTMyMjgsIm8iOlt7InQiOiJUZXN0IDIiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19XQ%3D%3D&layout=1over2",
     )
 
 
@@ -326,13 +317,7 @@ async def test_api_get_comic_strip_url_custom_subtitles_truncated_subtitles(
     subtitles += subtitles
     comic_strip_url = await api.get_comic_strip_url(screencap, subtitles=subtitles)
     assert comic_strip_url == snapshot(
-        "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJUZXN0IDAiLCJmIjoiam9zdCI"
-        "sInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRz"
-        "IjozNTA1MTcsIm8iOlt7InQiOiJUZXN0IDEiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiL"
-        "CJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTMyMjgsIm8iOlt7InQiOiJUZXN0IDIiLCJmIjoiam9zdCIsInMiOj"
-        "AsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNDg"
-        "wMTQsIm8iOlt7InQiOiJUZXN0IDAiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1Ijox"
-        "LCJiIjowLCJkIjowfV19XQ%3D%3D&layout=2x2",
+        "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJUZXN0IDAiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTA1MTcsIm8iOlt7InQiOiJUZXN0IDEiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTMyMjgsIm8iOlt7InQiOiJUZXN0IDIiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJUZXN0IDAiLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19XQ%3D%3D&layout=2x2",
     )
 
 
@@ -391,12 +376,7 @@ async def test_api_get_gif_url_fallback_comic(
 
     mock_http.assert_called_once_with(url, method="POST", json=[stream.model_dump()])
     assert gif_url == snapshot(
-        "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJGZWVscyBsaWtlIEknbSB3ZWF"
-        "yaW5nIG5vdGhpbmcgYXQgYWxsLS0iLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1Ijox"
-        "LCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTA1MTcsIm8iOlt7InQiOiJOb3RoaW5nIGF0IGFsbC0tIE5vdGhpbmcgYXQgY"
-        "WxsIVwiIiwiZiI6Impvc3QiLCJzIjowLCJjIjoiZmZmZmZmZmYiLCJ4Ijo1MCwieSI6OTcsImEiOiJjIiwidSI6MSwiYiI6MCwiZCI6MH1dfS"
-        "x7ImUiOiJTMTFFMTAiLCJ0cyI6MzUzMjI4LCJvIjpbeyJ0IjoiU3R1cGlkLCBzZXh5IEZsYW5kZXJzISIsImYiOiJqb3N0IiwicyI6MCwiYyI"
-        "6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX1d&layout=1over2",
+        "https://example.com/comic/img?b64=W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJGZWVscyBsaWtlIEknbSB3ZWFyaW5nIG5vdGhpbmcgYXQgYWxsLS0iLCJmIjoiam9zdCIsInMiOjAsImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19LHsiZSI6IlMxMUUxMCIsInRzIjozNTA1MTcsIm8iOlt7InQiOiJOb3RoaW5nIGF0IGFsbC0tIE5vdGhpbmcgYXQgYWxsIVwiIiwiZiI6Impvc3QiLCJzIjowLCJjIjoiZmZmZmZmZmYiLCJ4Ijo1MCwieSI6OTcsImEiOiJjIiwidSI6MSwiYiI6MCwiZCI6MH1dfSx7ImUiOiJTMTFFMTAiLCJ0cyI6MzUzMjI4LCJvIjpbeyJ0IjoiU3R1cGlkLCBzZXh5IEZsYW5kZXJzISIsImYiOiJqb3N0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX1d&layout=1over2",
     )
 
 
