@@ -284,7 +284,12 @@ class AsyncCompuGlobalAPI:
         path_params = {"key": screencap.frame.key, "timestamp": screencap.frame.timestamp}
         return self.media.IMAGE.build_encoded_url(self.client.base_url, path_params=path_params)
 
-    async def get_comic_panel_url(self, screencap: Screencap, subtitles: list[Subtitle] | None = None) -> str:
+    async def get_comic_panel_url(
+        self,
+        screencap: Screencap,
+        subtitles: list[Subtitle] | None = None,
+        overlay_format: OverlayFormat | None = None,
+    ) -> str:
         """Get the URL for a single comic panel showing the given screencap with subtitles.
 
         Parameters
@@ -293,6 +298,8 @@ class AsyncCompuGlobalAPI:
             The screencap to use in the comic panel
         subtitles : List[Subtitle], optional
             A list of subtitles to overlay in the comic panel
+        overlay_format : OverlayFormat, optional
+            The formatting to use in the comic panel overlay (subtitle)
 
         Returns
         -------
@@ -300,17 +307,25 @@ class AsyncCompuGlobalAPI:
             The url of the comic panel
 
         """
+        if overlay_format is None:
+            overlay_format = self.config.default_format
+
         if subtitles is None:
             subtitles = screencap.subtitles
 
         screencap = screencap.model_copy(update={"subtitles": subtitles})
 
-        panel = ComicPanel.from_screencap(screencap=screencap, overlay_format=self.config.default_format)
+        panel = ComicPanel.from_screencap(screencap=screencap, overlay_format=overlay_format)
 
         params = {"b64": panel.get_encoded()}
         return self.media.COMIC_PANEL.build_encoded_url(self.client.base_url, query=params)
 
-    async def get_comic_strip_url(self, screencap: Screencap, subtitles: list[Subtitle] | None = None) -> str:
+    async def get_comic_strip_url(
+        self,
+        screencap: Screencap,
+        subtitles: list[Subtitle] | None = None,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> str:
         """Get the URL for a comic strip showing the given screencap with subtitles.
 
         Parameters
@@ -319,6 +334,9 @@ class AsyncCompuGlobalAPI:
             The screencap to use in the comic strip
         subtitles : List[Subtitle], optional
             The subtitles to overlay in the comic strip
+        overlay_format : OverlayFormat, list[OverlayFormat], optional
+            The formatting to use in the comic strip overlays (subtitleS). See :meth:`OverlayFormat.normalise` for
+            full details on how formats are resolved.
 
         Returns
         -------
@@ -326,6 +344,9 @@ class AsyncCompuGlobalAPI:
             The url of the comic strip
 
         """
+        if overlay_format is None:
+            overlay_format = self.config.default_format
+
         if subtitles is None:
             subtitles = screencap.subtitles
 
@@ -335,11 +356,16 @@ class AsyncCompuGlobalAPI:
         # Change subtitles
         screencap = screencap.model_copy(update={"subtitles": subtitles})
 
-        comic_strip = ComicStrip.from_screencap(screencap=screencap, overlay_format=self.config.default_format)
+        comic_strip = ComicStrip.from_screencap(screencap=screencap, overlay_format=overlay_format)
         params = {"b64": comic_strip.get_encoded(), "layout": comic_strip.layout}
         return self.media.COMIC_STRIP.build_encoded_url(self.client.base_url, query=params)
 
-    async def get_gif_url(self, screencap: Screencap, subtitles: list[Subtitle] | None = None) -> str:
+    async def get_gif_url(
+        self,
+        screencap: Screencap,
+        subtitles: list[Subtitle] | None = None,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> str:
         """Get the URL for a gif of the given screencap with default or given subtitles.
 
         Parameters
@@ -348,6 +374,9 @@ class AsyncCompuGlobalAPI:
             The screencap to use for the gif
         subtitles : List[Subtitle], optional
             The subtitles to overlay in the gif
+        overlay_format : OverlayFormat | list[OverlayFormat], optional
+            The formatting to use in the gif overlays (subtitles). See :meth:`OverlayFormat.normalise` for
+            full details on how formats are resolved.
 
         Returns
         -------
@@ -355,6 +384,9 @@ class AsyncCompuGlobalAPI:
             The URL of the gif, or a comic strip as a fallback if gif rendering fails.
 
         """
+        if overlay_format is None:
+            overlay_format = self.config.default_format
+
         if subtitles is None:
             subtitles = screencap.subtitles
 
