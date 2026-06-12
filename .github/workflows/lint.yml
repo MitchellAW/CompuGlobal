@@ -20,3 +20,6 @@ jobs:
 
     - name: Pyrefly check
       run: uv run pyrefly check --summarize-errors
+
+    - name: Pydoclint check
+      run: uv run pydoclint --style=numpy compuglobal
