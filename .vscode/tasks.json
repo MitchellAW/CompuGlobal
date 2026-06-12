@@ -51,7 +51,48 @@
         "reveal": "always",
       },
       "command": "uvx",
-      "args": ["pyrefly", "check", "--summarize-errors"]
+      "args": [
+        "pyrefly",
+        "check",
+        "--summarize-errors"
+      ]
+    },
+    {
+      "label": "pydoclint",
+      "command": "uv",
+      "args": [
+        "run",
+        "pydoclint",
+        "--style",
+        "numpy",
+        "compuglobal"
+      ],
+      "group": {
+        "isDefault": true,
+        "kind": "none"
+      },
+      "presentation": {
+        "reveal": "never"
+      },
+      "problemMatcher": {
+  "fileLocation": ["relative", "${workspaceFolder}"],
+  "owner": "pydoclint",
+  "severity": "warning",
+  "pattern": [
+    {
+      "regexp": "^(\\S.*\\.py)$",
+      "file": 1
+    },
+    {
+      "regexp": "^\\s+(\\d+):\\s+(DOC\\d+):\\s+(.*)$",
+      "line": 1,
+      "code": 2,
+      "message": 3,
+      "loop": true
+    }
+  ]
+},
+      "type": "shell"
     }
   ]
 }
