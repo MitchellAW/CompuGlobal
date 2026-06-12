@@ -35,6 +35,11 @@ class Timestamp:
     def get_real_timestamp(timestamp: int) -> str:
         """Get a readable timestamp for the frame in format `mm:ss`.
 
+        Parameters
+        ----------
+        timestamp: int
+            The timestamp to convert to readable string
+
         Returns
         -------
         str
@@ -47,6 +52,13 @@ class Timestamp:
     @staticmethod
     def get_duration(start_timestamp: int, end_timestamp: int) -> int:
         """Get the duration of the subtitle in milliseconds.
+
+        Parameters
+        ----------
+        start_timestamp: int
+            The start timestamp used in calculating the duration
+        end_timestamp : int
+            The start timestamp used in calculating the duration
 
         Returns
         -------

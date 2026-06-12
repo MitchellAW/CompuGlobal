@@ -13,25 +13,25 @@ class StreamOverlay(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    text: str
+    text : str
         The content/text of the subtitle in the overlay
-    font_family: FontFamily
+    font_family : FontFamily
         The font to use for the text in the overlay
-    font_size: int
+    font_size : int
         The size of the font in the overlay
-    font_color: list[int]
+    font_color : list[int]
         The color of the font as an RGB list [0-255, 0-255, 0-255]
-    text_position_x: int
+    text_position_x : int
         The position of the text on the X-axis
-    text_position_y: int
+    text_position_y : int
         The position of the text on the Y-axis
-    text_alignment: FontAlignment
+    text_alignment : FontAlignment
         How to align the text of the overlay
-    all_caps: bool
+    all_caps : bool
         Whether to have all text in uppercase
-    start: int
+    start : int
         The time where the overlay begins
-    end: int
+    end : int
         The time where the overlay ends
 
     """
@@ -94,15 +94,15 @@ class Stream(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    key: str
+    key : str
         The episode key (S01E01)
-    start: int
+    start : int
         The timestamp of the start the stream
-    end: int
+    end : int
         The timestamp of the end of the stream
-    overlays: List[StreamOverlay]
+    overlays : list[StreamOverlay]
         A list of stream overlays to use throughout the stream
-    check_only: bool
+    check_only : bool
         Whether to only check locally, or render the stream for others
 
     """
@@ -126,7 +126,7 @@ class Stream(BaseCompuGlobalModel):
         ----------
         screencap : Screencap
             The screencap to use for the Stream
-        overlay_format : OverlayFormat | list[OverlayFormat], optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
             The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
@@ -155,15 +155,15 @@ class Stream(BaseCompuGlobalModel):
 
         Parameters
         ----------
-        screencap: Screencap
+        screencap : Screencap
             The screencap to use for the overlays
-        overlay_format : OverlayFormat | list[OverlayFormat], optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
             The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
         Returns
         -------
-        List[StreamOverlay]
+        list[StreamOverlay]
             The built list of overlays for the stream
 
         """

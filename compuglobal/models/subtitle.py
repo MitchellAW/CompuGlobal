@@ -11,19 +11,19 @@ class Subtitle(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    id: int
+    id : int
         The unique identifier of the subtitle
-    representative_timestamp: int
+    representative_timestamp : int
         The primary timestamp of the subtitle
-    key: str
+    key : str
         The episode key (S01E01)
-    start_timestamp: int
+    start_timestamp : int
         The timestamp where the subtitle begins
-    end_timestamp: int
+    end_timestamp : int
         The timestamp where the subtitle ends
-    content: str
+    content : str
         The content/text of the subtitle
-    language: str
+    language : str
         The language of the subtitle
 
     """

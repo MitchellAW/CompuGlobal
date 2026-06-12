@@ -8,19 +8,19 @@ class MetadataAPI:
 
     Attributes
     ----------
-    EPISODE: Endpoint
+    EPISODE : Endpoint
         The /api/episode endpoint of the API
-    TRANSCRIPT: Endpoint
+    TRANSCRIPT : Endpoint
         The /api/transcript endpoint of the API
 
     """
 
-    EPISODE = Endpoint(
+    EPISODE: Endpoint = Endpoint(
         path="/api/episode/{key}/{start_timestamp}/{end_timestamp}",
         method=RequestMethod.GET,
     )
 
-    TRANSCRIPT = Endpoint(
+    TRANSCRIPT: Endpoint = Endpoint(
         path="/api/transcript",
         method=RequestMethod.GET,
         required_query_params=frozenset({"e", "t"}),

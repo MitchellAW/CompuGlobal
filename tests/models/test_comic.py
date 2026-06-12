@@ -404,12 +404,7 @@ def test_comic_strip_build_comic_overlays_with_font(subtitle_json: dict[str, Any
 def test_comic_strip_get_encoded(screencap: Screencap) -> None:
     comic_strip = ComicStrip.from_screencap(screencap=screencap)
     assert comic_strip.get_encoded() == snapshot(
-        "W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJGZWVscyBsaWtlIEknbSB3ZWFyaW5nIG5vdGhpbmcgYXQgYWxsLS0iLCJm"
-        "IjoiaW1wYWN0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX0seyJlIjoi"
-        "UzExRTEwIiwidHMiOjM1MDUxNywibyI6W3sidCI6Ik5vdGhpbmcgYXQgYWxsLS0gTm90aGluZyBhdCBhbGwhXCIiLCJmIjoiaW1wYWN0Iiwi"
-        "cyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX0seyJlIjoiUzExRTEwIiwidHMi"
-        "OjM1MzIyOCwibyI6W3sidCI6IlN0dXBpZCwgc2V4eSBGbGFuZGVycyEiLCJmIjoiaW1wYWN0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6"
-        "NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX1d",
+        "W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJGZWVscyBsaWtlIEknbSB3ZWFyaW5nIG5vdGhpbmcgYXQgYWxsLS0iLCJmIjoiaW1wYWN0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX0seyJlIjoiUzExRTEwIiwidHMiOjM1MDUxNywibyI6W3sidCI6Ik5vdGhpbmcgYXQgYWxsLS0gTm90aGluZyBhdCBhbGwhXCIiLCJmIjoiaW1wYWN0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX0seyJlIjoiUzExRTEwIiwidHMiOjM1MzIyOCwibyI6W3sidCI6IlN0dXBpZCwgc2V4eSBGbGFuZGVycyEiLCJmIjoiaW1wYWN0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX1d",
     )
 
 
