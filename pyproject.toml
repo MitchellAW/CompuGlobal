@@ -87,3 +87,6 @@ branch = true
 [tool.coverage.report]
 show_missing = true
 skip_covered = false
+
+[tool.inline-snapshot]
+format-command="ruff check --fix-only --stdin-filename {filename} | ruff format --stdin-filename {filename}"
