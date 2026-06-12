@@ -1,6 +1,7 @@
 """Used for interacting with and building CGHMC APIs."""
 
 import json
+from typing import overload
 from warnings import deprecated
 
 import aiohttp
@@ -333,13 +334,7 @@ class AsyncCompuGlobalAPI:
             The url of the comic panel
 
         """
-        if overlay_format is None:
-            overlay_format = self.config.default_format
-
-        if subtitles is None:
-            subtitles = screencap.subtitles
-
-        screencap = screencap.model_copy(update={"subtitles": subtitles})
+        screencap, subtitles, overlay_format = self._resolve_overlay_inputs(screencap, subtitles, overlay_format)
 
         panel = ComicPanel.from_screencap(screencap=screencap, overlay_format=overlay_format)
 
@@ -370,21 +365,45 @@ class AsyncCompuGlobalAPI:
             The url of the comic strip
 
         """
-        if overlay_format is None:
-            overlay_format = self.config.default_format
-
-        if subtitles is None:
-            subtitles = screencap.subtitles
-
-        if len(subtitles) > self._MAX_ALLOWED_SUBTITLES:
-            subtitles = subtitles[: self._MAX_ALLOWED_SUBTITLES]
-
-        # Change subtitles
-        screencap = screencap.model_copy(update={"subtitles": subtitles})
+        screencap, subtitles, overlay_format = self._resolve_overlay_inputs(screencap, subtitles, overlay_format)
 
         comic_strip = ComicStrip.from_screencap(screencap=screencap, overlay_format=overlay_format)
         params = {"b64": comic_strip.get_encoded(), "layout": comic_strip.layout}
         return self.media.COMIC_STRIP.build_encoded_url(self.client.base_url, query=params)
+
+    async def get_comic_maker_url(
+        self,
+        screencap: Screencap,
+        subtitles: list[Subtitle] | None = None,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> str:
+        """Get a url for making a comic with the given screencap, subtitles, and overlay format(s).
+
+        Parameters
+        ----------
+        screencap : Screencap
+            The screencap to make the comic with
+        subtitles : list[Subtitle] | None, optional
+            The subtitles to override in the comic maker, by default None
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+            The subtitle/overlay formatting to override in the comic maker, by default None
+
+        Returns
+        -------
+        str
+            The url for making the comic
+
+        """
+        screencap, subtitles, overlay_format = self._resolve_overlay_inputs(screencap, subtitles, overlay_format)
+        path_params = {"key": screencap.frame.key, "timestamp": screencap.frame.timestamp}
+
+        strip = ComicStrip.from_screencap(screencap=screencap, overlay_format=overlay_format)
+
+        return self.media.COMIC_MAKER.build_encoded_url(
+            base_url=self.BASE_URL,
+            path_params=path_params,
+            query={"b64": strip.get_encoded(), "layout": strip.layout},
+        )
 
     async def get_gif_url(
         self,
@@ -410,19 +429,9 @@ class AsyncCompuGlobalAPI:
             The URL of the gif, or a comic strip as a fallback if gif rendering fails.
 
         """
-        if overlay_format is None:
-            overlay_format = self.config.default_format
+        screencap, subtitles, overlay_format = self._resolve_overlay_inputs(screencap, subtitles, overlay_format)
 
-        if subtitles is None:
-            subtitles = screencap.subtitles
-
-        if len(subtitles) > self._MAX_ALLOWED_SUBTITLES:
-            subtitles = subtitles[: self._MAX_ALLOWED_SUBTITLES]
-
-        # Change subtitles
-        screencap = screencap.model_copy(update={"subtitles": subtitles})
-
-        stream = Stream.from_screencap(screencap=screencap, overlay_format=self.config.default_format)
+        stream = Stream.from_screencap(screencap=screencap, overlay_format=overlay_format)
 
         request = self.media.RENDER_GIF.build_request(self.client.base_url, body=stream)
         request.body = [request.body]
@@ -435,6 +444,82 @@ class AsyncCompuGlobalAPI:
                     return f"{self.client.base_url}{data.get('url')}"
 
         return await self.get_comic_strip_url(screencap)
+
+    async def get_gif_maker_url(
+        self,
+        screencap: Screencap,
+        subtitles: list[Subtitle] | None = None,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> str:
+        """Get a url for making a comic with the given screencap, subtitles, and overlay format(s).
+
+        Parameters
+        ----------
+        screencap : Screencap
+            The screencap to make the comic with
+        subtitles : list[Subtitle] | None, optional
+            The subtitles to override in the comic maker, by default None
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+            The subtitle/overlay formatting to override in the comic maker, by default None
+
+        Returns
+        -------
+        str
+            The url for making the comic
+
+        """
+        screencap, subtitles, overlay_format = self._resolve_overlay_inputs(screencap, subtitles, overlay_format)
+
+        path_params = {
+            "key": screencap.frame.key,
+            "start_timestamp": screencap.get_start(),
+            "end_timestamp": screencap.get_end(),
+        }
+
+        stream = Stream.from_screencap(screencap=screencap, overlay_format=overlay_format)
+
+        return self.media.GIF_MAKER.build_encoded_url(
+            base_url=self.BASE_URL,
+            path_params=path_params,
+            query={"b64": stream.get_encoded()},
+        )
+
+    @overload
+    def _resolve_overlay_inputs(
+        self,
+        screencap: Screencap,
+        subtitles: list[Subtitle] | None = None,
+        overlay_format: OverlayFormat | None = None,
+    ) -> tuple[Screencap, list[Subtitle], OverlayFormat]: ...
+
+    @overload
+    def _resolve_overlay_inputs(
+        self,
+        screencap: Screencap,
+        subtitles: list[Subtitle] | None = None,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> tuple[Screencap, list[Subtitle], OverlayFormat | list[OverlayFormat]]: ...
+
+    def _resolve_overlay_inputs(
+        self,
+        screencap: Screencap,
+        subtitles: list[Subtitle] | None = None,
+        overlay_format: OverlayFormat | list[OverlayFormat] | None = None,
+    ) -> tuple[Screencap, list[Subtitle], OverlayFormat | list[OverlayFormat]]:
+
+        # Use default format if not given
+        overlay_format = overlay_format or self.config.default_format
+
+        # Use screencap subtitles if not given
+        subtitles = subtitles or screencap.subtitles
+
+        # Prevent too many subtitles being used
+        subtitles = subtitles[: self._MAX_ALLOWED_SUBTITLES]
+
+        # Change subtitles
+        screencap = screencap.model_copy(update={"subtitles": subtitles})
+
+        return screencap, subtitles, overlay_format
 
 
 class CapitalBeatUs(AsyncCompuGlobalAPI):

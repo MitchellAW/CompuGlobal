@@ -1,5 +1,9 @@
 """Streams are posted to the CGHMC APIs for generating gifs/mp4s."""
 
+import json
+from base64 import b64encode
+from typing import Any
+
 from pydantic import Field
 
 from compuglobal.models.base import BaseCompuGlobalModel
@@ -87,6 +91,28 @@ class StreamOverlay(BaseCompuGlobalModel):
             text_alignment=overlay_format.text_alignment,
             all_caps=overlay_format.all_caps,
         )
+
+    def dump_minified(self) -> dict[str, Any]:
+        """Dump a minified version of the overlay for use in base64.
+
+        Returns
+        -------
+        dict[str, Any]
+            The minified dump for use in base64.
+
+        """
+        return {
+            "t": self.text,
+            "f": self.font_family,
+            "s": self.font_size,
+            "c": self.font_color,
+            "x": self.text_position_x,
+            "y": self.text_position_y,
+            "a": self.text_alignment,
+            "u": self.all_caps,
+            "b": self.start,
+            "d": self.end,
+        }
 
 
 class Stream(BaseCompuGlobalModel):
@@ -189,3 +215,18 @@ class Stream(BaseCompuGlobalModel):
 
         """
         return " ".join(f"{overlay.text}" for overlay in self.overlays)
+
+    def get_encoded(self) -> str:
+        """Get the base 64 encoded representation of this stream's overlays.
+
+        Returns
+        -------
+        str
+            A base 64 string
+
+        """
+        dump = {"o": [overlay.dump_minified() for overlay in self.overlays]}
+        json_str = json.dumps(dump, separators=(",", ":"))
+        encoded = str.encode(json_str, "utf-8")
+        b64 = b64encode(encoded, altchars=b"__")
+        return b64.decode("utf-8")
