@@ -8,51 +8,51 @@ class DiscoveryAPI:
 
     Attributes
     ----------
-    CAPTION: Endpoint
+    CAPTION : Endpoint
         The /api/caption endpoint for looking up Screencaps
-    DISCOVER: Endpoint
+    DISCOVER : Endpoint
         The /api/discover endpoint for discovering random screencaps
-    RANDOM: Endpoint
+    RANDOM : Endpoint
         The /api/random endpoint for getting a random screencap
-    NAVIGATOR: Endpoint
+    NAVIGATOR : Endpoint
         The /api/navigator endpoint for getting all available episode data
-    SEARCH: Endpoint
+    SEARCH : Endpoint
         The /api/search endpoint for searching screencaps
-    FRAMES: Endpoint
+    FRAMES : Endpoint
         The /api/frames endpoint for getting frames around a particular screencap
 
     """
 
-    CAPTION = Endpoint(
+    CAPTION: Endpoint = Endpoint(
         path="/api/caption",
         method=RequestMethod.GET,
         required_query_params=frozenset({"e", "t", "nearby"}),
     )
 
-    DISCOVER = Endpoint(
+    DISCOVER: Endpoint = Endpoint(
         path="/api/discover",
         method=RequestMethod.GET,
     )
 
-    RANDOM = Endpoint(
+    RANDOM: Endpoint = Endpoint(
         path="/api/random",
         method=RequestMethod.GET,
         optional_query_params=frozenset({"smin", "smax"}),
     )
 
-    NAVIGATOR = Endpoint(
+    NAVIGATOR: Endpoint = Endpoint(
         path="/api/navigator",
         method=RequestMethod.GET,
     )
 
-    SEARCH = Endpoint(
+    SEARCH: Endpoint = Endpoint(
         path="/api/search",
         method=RequestMethod.GET,
         required_query_params=frozenset({"q"}),
         optional_query_params=frozenset({"smin", "smax"}),
     )
 
-    FRAMES = Endpoint(
+    FRAMES: Endpoint = Endpoint(
         path="/api/frames/{key}/{timestamp}/{before}/{after}",
         method=RequestMethod.GET,
     )

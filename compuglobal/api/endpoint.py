@@ -56,15 +56,15 @@ class Endpoint:
 
     Attributes
     ----------
-    path: str
+    path : str
         The url path containing any path parameter names
-    method: RequestMethod, optional
+    method : RequestMethod, optional
         The HTTP RequestMethod for the request (GET/POST/PUT)
-    required_query_params: dict[str, Any] | None, optional
+    required_query_params : frozenset[str], optional
         The required query parameters to use in the request
-    optional_query_params: dict[str, Any] | None, optional
+    optional_query_params : frozenset[str], optional
         Optional query params that can be used in the request
-    body_model: type[BaseModel], optional
+    body_model : type[BaseModel] | None, optional
         The pydantic model for the json body
 
     """

@@ -45,18 +45,26 @@ class ComicOverlay(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    text: str
+    text : str
         Text to overlay in the comic
-    font_family: FontFamily
+    font_family : FontFamily
         Font family to use for the text
-    font_size: int
+    font_size : int
         Size of the font
-    text_position_x: int
+    font_color : str
+        Font color as a hex string
+    text_position_x : int
         Position of the text overlay on the X-axis
-    text_position_y: int
+    text_position_y : int
         Position of the text overlay on the Y-axis
-    text_alignment: FontAlignment
+    text_alignment : FontAlignment
         Alignment of the text overlay
+    all_caps : int
+        Whether to have overlay text in all uppercase
+    b : int
+        Unknown b attribute
+    d : int
+        Unknown d attribute
 
     """
 
@@ -114,9 +122,9 @@ class ComicOverlay(BaseCompuGlobalModel):
 
         Parameters
         ----------
-        subtitles : List[Subtitle]
+        subtitles : list[Subtitle]
             A list of subtitles
-        overlay_format : OverlayFormat
+        overlay_format : OverlayFormat | None, optional
             The format to use in the overlay
 
         Returns
@@ -137,11 +145,11 @@ class ComicPanel(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    key: str
+    key : str
         The episode key (S01E01)
-    timestamp: int
+    timestamp : int
         The timestamp of the panel
-    overlays: List[ComicOverlay]
+    overlays : list[ComicOverlay]
         The text overlays to use in the panel
 
     """
@@ -163,9 +171,8 @@ class ComicPanel(BaseCompuGlobalModel):
         ----------
         screencap : Screencap
             Screencap to use for the comic panel
-        overlay_format : OverlayFormat | list[OverlayFormat], optional
-            The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
-            full details on how formats are resolved.
+        overlay_format : OverlayFormat | None, optional
+            The format to use in the comic panel overlay.
 
         Returns
         -------
@@ -198,9 +205,9 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
 
     Attributes
     ----------
-    panels: List[ComicPanel]
+    panels : list[ComicPanel]
         The list of ComicPanels to use in the comic strip
-    layout: ComicLayout
+    layout : ComicLayout | None, optional
         The layout to use when displaying the panels
 
     """
@@ -225,7 +232,7 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
         ----------
         screencap : Screencap
             The screencap to use for the comic strip
-        overlay_format : OverlayFormat | list[OverlayFormat], optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
             The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
@@ -256,15 +263,15 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
 
         Parameters
         ----------
-        subtitles : List[Subtitle]
+        subtitles : list[Subtitle]
             The subtitles to use for the overlays
-        overlay_format : OverlayFormat | list[OverlayFormat], optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
             The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
         Returns
         -------
-        List[ComicOverlay]
+        list[ComicOverlay]
             A list of comic overlays
 
         """

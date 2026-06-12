@@ -12,23 +12,23 @@ class EpisodeMetadata(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    id: int
+    id : int
         The unique identifier of the episode
-    key: str
+    key : str
         The episode key (S01E01)
-    season: int
+    season : int
         The season number
-    episode_number: int
+    episode_number : int
         The episode number
-    title: str
+    title : str
         The title of the episode.
-    director: str
+    director : str
         The director of the episode.
-    writer: str
+    writer : str
         The writer(s) of the episode.
-    original_air_data: str
+    original_air_date : str
         The original air date of the episode (yyyy-mm-dd)
-    wiki_link: str
+    wiki_link : str
         The wikipedia link for the episode
 
     """
@@ -49,17 +49,17 @@ class EpisodeSummary(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    key: str
+    key : str
         The episode key (S01E01)
-    season: int
+    season : int
         The season number
-    episode_number: int
+    episode_number : int
         The episode number
-    title: str
+    title : str
         The title of the episode
-    original_air_date: str
+    original_air_date : str
         The original air date of the episode (yyyy-mm-dd)
-    frames: List[int]
+    frames : list[int]
         A list of 20 frame IDs distributed throughout the episode.
 
     """
@@ -77,9 +77,9 @@ class Episode(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    episode: EpisodeMetadata
+    episode : EpisodeMetadata
         The metadata of the episode
-    subtitles: List[Subtitle]
+    subtitles : list[Subtitle]
         A list of subtitles for the entire episode
 
     """

@@ -10,23 +10,18 @@ from compuglobal.errors import APIPageStatusError
 
 
 class CompuGlobalAPIClient:
-    """Client for handling API requests to CompuGlobal APIs."""
+    """Client for handling API requests to CompuGlobal APIs.
 
-    def __init__(
-        self,
-        base_url: str,
-        session: ClientSession,
-    ) -> None:
-        """Define an API client for interacting with CGHMC APIs.
+    Parameters
+    ----------
+    base_url : str
+        The base URL of the API (e.g. https://frinkiac.com)
+    session : ClientSession
+        The client session to use for all API requests
 
-        Parameters
-        ----------
-        base_url : str
-            The base URL of the API (e.g. https://frinkiac.com)
-        session : ClientSession | None, optional
-            The client session to use for all API requests
+    """
 
-        """
+    def __init__(self, base_url: str, session: ClientSession) -> None:
         self.base_url = base_url
         self.session = session
 

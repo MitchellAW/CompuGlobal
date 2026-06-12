@@ -11,19 +11,19 @@ class OverlayFormat:
 
     Attributes
     ----------
-    font_family: FontFamily
+    font_family : FontFamily
         The font to use for the text in the overlay
-    font_size: int
+    font_size : int
         The size of the font in the overlay
-    font_color: list[int]
-        The color of the font as an RGB list [0-255, 0-255, 0-255]
-    text_position_x: int
+    font_color : tuple[int, int, int, int]
+        The color of the font as an RGBA tuple (0-255, 0-255, 0-255, 0-255)
+    text_position_x : int
         The position of the text on the X-axis
-    text_position_y: int
+    text_position_y : int
         The position of the text on the Y-axis
-    text_alignment: FontAlignment
+    text_alignment : FontAlignment
         How to align the text of the overlay
-    all_caps: bool
+    all_caps : bool
         Whether to have all text in uppercase
 
     """
@@ -42,9 +42,7 @@ class OverlayFormat:
         Raises
         ------
         ValueError
-            If font_colour does not contain 4 values
-        ValueError
-            If font_colour values are not between 0-255)
+            If font_colour does not contain 4 values, or any values are not between 0 and 255.
 
         """
         required_rgba_values = 4
@@ -80,7 +78,7 @@ class OverlayFormat:
 
         Parameters
         ----------
-        overlay_format : OverlayFormat | list[OverlayFormat] | None
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
             The format(s) to use in the overlays:
 
             - If ``None``, default formatting is applied to all overlays

@@ -11,11 +11,11 @@ class Frame(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    id: int
+    id : int
         The unique identifier of the frame
-    key: str
+    key : str
         The episode key (S01E01)
-    timestamp: int
+    timestamp : int
         The timestamp of the frame
 
     """

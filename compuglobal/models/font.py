@@ -47,13 +47,13 @@ class FontColorRGB(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    red: int
+    red : int
         The amount of red in the color (0-255)
-    green: int
+    green : int
         The amount of green in the color (0-255)
-    blue: int
+    blue : int
         The amount of blue in the color (0-255)
-    alpha: int
+    alpha : int
         The amount of alpha transparency in the color (0-255)
 
     """

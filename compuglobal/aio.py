@@ -24,7 +24,29 @@ from compuglobal.models.subtitle import Subtitle
 
 
 class AsyncCompuGlobalAPI:
-    """Represents a base API of the CGHMC family."""
+    """Represents a base API of the CGHMC family.
+
+    Parameters
+    ----------
+    session : aiohttp.ClientSession, optional
+        The client session to use for all API calls
+
+    Attributes
+    ----------
+    BASE_URL : str
+        The base url of the API
+    TITLE : str
+        The title of the API
+    DEFAULT_FORMAT : OverlayFormat
+        The default formatting to use in all comic/gif overlays
+    discovery : DiscoveryAPI
+        The discovery API with all discovery endpoints
+    media : MediaAPI
+        The media API with all media endpoints
+    metadata : MetadataAPI
+        The metadataAPI with all metadata endpoints
+
+    """
 
     BASE_URL: str
     TITLE: str
@@ -36,14 +58,6 @@ class AsyncCompuGlobalAPI:
     metadata: MetadataAPI = MetadataAPI()
 
     def __init__(self, session: aiohttp.ClientSession) -> None:
-        """Create an API using the given session and timeout.
-
-        Parameters
-        ----------
-        session : aiohttp.ClientSession | None, optional
-            The client session to use for all API calls
-
-        """
         self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session)
         self.config = CompuGlobalAPIConfig(title=self.TITLE, default_format=self.DEFAULT_FORMAT)
 
@@ -57,11 +71,11 @@ class AsyncCompuGlobalAPI:
 
         Parameters
         ----------
-        episode : str, optional
+        episode : str | None, optional
             An episode key
-        timestamp : int, optional
+        timestamp : int | None, optional
             A timestamp of the screencap
-        frame : Frame, optional
+        frame : Frame | None, optional
             A Frame object
 
         Returns
@@ -104,14 +118,14 @@ class AsyncCompuGlobalAPI:
         ----------
         search_text : str
             The search text to query
-        season_minimum: int | None, optional
+        season_minimum : int | None, optional
             The minimum season allowed in the search results
-        season_maximum: int | None, optional
+        season_maximum : int | None, optional
             The maximum season allowed in the search results
 
         Returns
         -------
-        List[Frame]
+        list[FrameResult]
             A list of all frames found containing the search text.
 
         Raises
@@ -144,9 +158,9 @@ class AsyncCompuGlobalAPI:
         ----------
         search_text : str
             The search text to query
-        season_minimum: int | None, optional
+        season_minimum : int | None, optional
             The minimum season allowed in the search
-        season_maximum: int | None, optional
+        season_maximum : int | None, optional
             The maximum season allowed in the search
 
         Returns
@@ -166,9 +180,16 @@ class AsyncCompuGlobalAPI:
     ) -> Screencap:
         """Get a random TV Show screencap.
 
+        Parameters
+        ----------
+        season_minimum : int | None, optional
+            Minimum season number allowed in random result
+        season_maximum : int | None, optional
+            Maximum season number allowed in random result
+
         Returns
         -------
-        compuglobal.Screencap
+        Screencap
             A random screencap object.
 
         """
@@ -209,7 +230,7 @@ class AsyncCompuGlobalAPI:
 
         Returns
         -------
-        List[Subtitle]
+        list[Subtitle]
             The list of subtitles
 
         """
@@ -223,8 +244,8 @@ class AsyncCompuGlobalAPI:
 
         Returns
         -------
-        List[ScreencapMoment]
-            List of random screencap moments
+        list[ScreencapMoment]
+            List of random ``ScreencapMoment``s
 
         """
         request = self.discovery.DISCOVER.build_request(self.client.base_url)
@@ -236,7 +257,7 @@ class AsyncCompuGlobalAPI:
 
         Returns
         -------
-        List[EpisodeSummary]
+        list[EpisodeSummary]
             A list of episode summaries
 
         """
@@ -249,18 +270,18 @@ class AsyncCompuGlobalAPI:
 
         Parameters
         ----------
-        key: str
+        key : str
             The episode key of the screencap.
-        timestamp: int
+        timestamp : int
             The timestamp of the screencap.
-        before: int
+        before : int
             The number of milliseconds before the timestamp.
-        after: int
+        after : int
             The number of milliseconds after the timestamp.
 
         Returns
         -------
-        list
+        list[Frame]
             A list of valid frames before and after the timestamp of
             the episode.
 
@@ -274,6 +295,11 @@ class AsyncCompuGlobalAPI:
 
     async def get_image_url(self, screencap: Screencap) -> str:
         """Get the direct image url for the screencap without any caption.
+
+        Parameters
+        ----------
+        screencap : Screencap
+            The screencap to use for generating the image url
 
         Returns
         -------
@@ -296,9 +322,9 @@ class AsyncCompuGlobalAPI:
         ----------
         screencap : Screencap
             The screencap to use in the comic panel
-        subtitles : List[Subtitle], optional
+        subtitles : list[Subtitle] | None, optional
             A list of subtitles to overlay in the comic panel
-        overlay_format : OverlayFormat, optional
+        overlay_format : OverlayFormat | None, optional
             The formatting to use in the comic panel overlay (subtitle)
 
         Returns
@@ -332,9 +358,9 @@ class AsyncCompuGlobalAPI:
         ----------
         screencap : Screencap
             The screencap to use in the comic strip
-        subtitles : List[Subtitle], optional
+        subtitles : list[Subtitle] | None, optional
             The subtitles to overlay in the comic strip
-        overlay_format : OverlayFormat, list[OverlayFormat], optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
             The formatting to use in the comic strip overlays (subtitleS). See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
@@ -372,9 +398,9 @@ class AsyncCompuGlobalAPI:
         ----------
         screencap : Screencap
             The screencap to use for the gif
-        subtitles : List[Subtitle], optional
+        subtitles : list[Subtitle] | None, optional
             The subtitles to overlay in the gif
-        overlay_format : OverlayFormat | list[OverlayFormat], optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
             The formatting to use in the gif overlays (subtitles). See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 

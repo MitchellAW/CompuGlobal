@@ -14,13 +14,13 @@ class ScreencapMoment(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    episode: str
+    episode : str
         The episode key (S01E01)
-    timestamp: int
+    timestamp : int
         The timestamp of the snapshot
-    content: str
+    content : str
         The content of the subtitle
-    title: str
+    title : str
         The title of the episode in the snapshot
 
     """
@@ -47,17 +47,17 @@ class Screencap(BaseCompuGlobalModel):
 
     Attributes
     ----------
-    episode: EpisodeMetadata
+    episode : EpisodeMetadata
         The metadata of the episode in the screencap
-    frame: Frame
+    frame : Frame
         The primary frame of the screencap
-    subtitles: List[Subtitle]
+    subtitles : list[Subtitle]
         The subtitles of the screencap
-    nearby: List[Frame]
+    nearby : list[Frame]
         A list of nearby frames
-    min_timestamp: int
+    min_timestamp : int
         The minimum timestamp of the screencap
-    max_timestamp: int
+    max_timestamp : int
         The maximum timestamp of the screencap
 
     """
