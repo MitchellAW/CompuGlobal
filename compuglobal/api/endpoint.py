@@ -1,5 +1,6 @@
 """Module of endpoint classes used for modelling an API endpoint."""
 
+import logging
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import cached_property
@@ -8,6 +9,8 @@ from typing import Any
 from urllib.parse import urlencode
 
 from pydantic import BaseModel
+
+log = logging.getLogger(__name__)
 
 
 class RequestMethod(StrEnum):
@@ -133,8 +136,9 @@ class Endpoint:
         url = self.build_url(base_url, query, path_params)
 
         if len(query.keys()) > 0:
-            return f"{url}?{urlencode(query, doseq=True)}"
+            url = f"{url}?{urlencode(query, doseq=True)}"
 
+        log.debug("Built encoded url %s | base_url=%s | query=%s | path_params=%s", url, base_url, query, path_params)
         return url
 
     def build_request(
@@ -170,6 +174,15 @@ class Endpoint:
         # Get body data
         body_data = body.model_dump() if body is not None else None
 
+        log.debug(
+            "Built %s request | path=%s | query=%s | path_params=%s | body=%s",
+            self.method.value,
+            self.path,
+            query,
+            path_params,
+            body,
+        )
+
         return PreparedRequest(url=new_url, method=self.method, params=query, body=body_data)
 
     def validate_query(self, query: dict[str, Any]) -> None:
@@ -190,10 +203,12 @@ class Endpoint:
         unexpected = query.keys() - (self.required_query_params | self.optional_query_params)
 
         if missing:
+            log.debug("Validation failed for %s | missing required params %s", self.path, missing)
             raise ValueError(
                 _format_validation_error_message(message="Missing query params", values=missing),
             )
         if unexpected:
+            log.debug("Validation failed for %s | unexpected params %s", self.path, unexpected)
             raise ValueError(
                 _format_validation_error_message(message="Unexpected query params", values=unexpected),
             )
@@ -216,9 +231,11 @@ class Endpoint:
         unexpected = path_params.keys() - self.required_path_params
 
         if missing:
+            log.debug("Validation failed for %s | missing required path params %s", self.path, missing)
             raise ValueError(_format_validation_error_message(message="Missing path params", values=missing))
 
         if unexpected:
+            log.debug("Validation failed for %s | unexpected path params %s", self.path, unexpected)
             raise ValueError(
                 _format_validation_error_message(message="Unexpected path params", values=unexpected),
             )

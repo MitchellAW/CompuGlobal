@@ -1,5 +1,6 @@
 """Helper class for formatting of StreamOverlays and ComicOverlays."""
 
+import dataclasses
 from dataclasses import dataclass
 
 from compuglobal.models.font import FontAlignment, FontFamily
@@ -54,6 +55,12 @@ class OverlayFormat:
         if not all(min_color <= color <= max_color for color in self.font_color):
             msg = f"font_color values must be between 0 and 255, got {self.font_color}"
             raise ValueError(msg)
+
+    def _changed_fields(self) -> dict:
+        return {f.name: getattr(self, f.name) for f in dataclasses.fields(self) if getattr(self, f.name) != f.default}
+
+    def __str__(self) -> str:  # noqa: D105
+        return str(self._changed_fields())
 
     @property
     def font_color_hex(self) -> str:

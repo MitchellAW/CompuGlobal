@@ -1,5 +1,6 @@
 """Module for handling API requests to CGHMC APIs."""
 
+import logging
 from http import HTTPStatus
 from typing import Any
 
@@ -7,6 +8,8 @@ from aiohttp import ClientSession
 
 from compuglobal.api.endpoint import PreparedRequest, RequestMethod
 from compuglobal.errors import APIPageStatusError
+
+log = logging.getLogger(__name__)
 
 
 class CompuGlobalAPIClient:
@@ -48,8 +51,10 @@ class CompuGlobalAPIClient:
         """
         async with self.session.get(url, params=params) as response:
             if HTTPStatus.OK <= response.status < HTTPStatus.MULTIPLE_CHOICES:
+                log.debug("Response %s | GET %s", response.status, url)
                 return await response.json()
 
+            log.error("Non-2xx response %s | GET %s", response.status, url)
             raise APIPageStatusError(response.status, self.base_url)
 
     async def post_data(self, url: str, json: dict[str, Any] | list[Any] | None) -> str:
@@ -75,8 +80,10 @@ class CompuGlobalAPIClient:
         """
         async with self.session.post(url, json=json) as response:
             if HTTPStatus.OK <= response.status < HTTPStatus.MULTIPLE_CHOICES:
+                log.debug("Response %s | POST %s", response.status, url)
                 return await response.text()
 
+            log.error("Non-2xx response %s | POST %s")
             raise APIPageStatusError(response.status, self.base_url)
 
     async def handle_request(self, request: PreparedRequest) -> str | dict[str, Any] | list[Any]:
@@ -93,6 +100,7 @@ class CompuGlobalAPIClient:
             The json response from the API
 
         """
+        log.debug("%s %s | params=%s | body=%s", request.method.value, request.url, request.params, request.body)
         if request.method == RequestMethod.POST:
             return await self.post_data(request.url, json=request.body)
 
