@@ -1,6 +1,7 @@
 """Used for interacting with and building CGHMC APIs."""
 
 import json
+import logging
 from typing import overload
 from warnings import deprecated
 
@@ -20,6 +21,8 @@ from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream
 from compuglobal.models.subtitle import Subtitle
+
+log = logging.getLogger(__name__)
 
 """Contains the async API Wrappers used for accessing all the cghmc API endpoints."""
 
@@ -145,6 +148,13 @@ class AsyncCompuGlobalAPI:
         if len(search_results) > 0:
             return [FrameResult.model_validate(result) for result in search_results]
 
+        log.debug(
+            "No search results found | base_url=%s | search_text=%s | season_minimum=%s | season_maximum=%s",
+            self.BASE_URL,
+            search_text,
+            season_minimum,
+            season_maximum,
+        )
         raise NoSearchResultsFoundError
 
     async def search_for_screencap(
@@ -509,9 +519,13 @@ class AsyncCompuGlobalAPI:
 
         # Use default format if not given
         overlay_format = overlay_format or self.config.default_format
+        if overlay_format != self.config.default_format:
+            log.debug("Using custom overlay format | screencap=%s | overlay_format=%s", screencap, overlay_format)
 
         # Use screencap subtitles if not given
         subtitles = subtitles or screencap.subtitles
+        if subtitles != screencap.subtitles:
+            log.debug("Using custom subtitles | screencap=%s | subtitles=%s", screencap, subtitles)
 
         # Prevent too many subtitles being used
         subtitles = subtitles[: self._MAX_ALLOWED_SUBTITLES]
