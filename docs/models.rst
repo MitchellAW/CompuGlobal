@@ -50,6 +50,8 @@ Overlays
     :members:
     :exclude-members: model_config
 
+.. _comics:
+
 Comics
 ~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: ComicPanel
@@ -88,3 +90,10 @@ Fonts
 
 .. autoclass:: FontFamily
     :members:
+
+
+**Base Model:**
+
+.. autoclass:: compuglobal.models.base.BaseCompuGlobalModel
+    :members:
+    :no-index:
