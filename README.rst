@@ -10,7 +10,7 @@ CompuGlobal
 .. image:: https://img.shields.io/pypi/pyversions/compuglobal.svg
    :target: https://pypi.python.org/pypi/compuglobal
 
-.. image:: https://img.shields.io/readthedocs/compuglobal
+.. image:: https://app.readthedocs.org/projects/compuglobal/badge/?version=latest&style=flat
    :target: https://compuglobal.readthedocs.io/en/latest/
 
 .. image:: https://img.shields.io/github/actions/workflow/status/MitchellAW/CompuGlobal/test.yml?label=tests
@@ -69,29 +69,6 @@ Basic Usage
         asyncio.run(main())
 
 For documented examples, check `here.`_
-
-What's New
-------------
-**0.3.0 - Breaking changes**
-
-These changes are to accommodate the extensive update to the APIs with new features:
-
-- All synchronous implementations of the package have been removed
-- The async endpoints persist and are now accessible via **compuglobal** or **compuglobal.aio** as done previously
-- The `Master Of All Science`_ API appears to be unavailable at this point in time and redirects to Frinkiac, I have added a **deprecation warning** to this API and it will remain unless the API returns
-- The package now requires **Python 3.13+**
-- Image, comic, and gif generation are all now performed using the API rather than from a Screencap
-
-.. code-block:: py
-
-    # This is now async
-    simpsons = compuglobal.Frinkiac()
-
-    # Previous usage
-    await screencap.get_gif_url()
-
-    # New usage
-    await simpsons.get_gif_url(screencap)
 
 Preview
 ------------

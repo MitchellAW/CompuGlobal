@@ -120,11 +120,27 @@ Added
 
 Breaking Changes
 ~~~~~~~~~~~~~~~~
-- Remove all synchronous implementations
-- Made image/gif methods asynchronous:
+These changes are to accommodate the extensive update to the APIs with new features:
+
+- All synchronous implementations of the package have been removed
+- The async endpoints persist and are now accessible via :mod:`compuglobal` or :mod:`compuglobal.aio` as done previously
+- The Master Of All Science API appears to be unavailable at this point in time and redirects to Frinkiac, I have added a deprecation warning to this API and it will remain unless the API returns
+- The package now requires Python 3.13+
+- Image, comic, and gif generation are all now performed using the API rather than from a Screencap:
 
     - :meth:`AsyncCompuGlobalAPI.get_image_url`
     - :meth:`AsyncCompuGlobalAPI.get_gif_url`
+
+.. code-block:: py
+
+    # This is now async
+    simpsons = compuglobal.Frinkiac()
+
+    # Previous usage
+    await screencap.get_gif_url()
+
+    # New usage
+    await simpsons.get_gif_url(screencap)
 
 Added
 ~~~~~
@@ -133,7 +149,6 @@ Added
     - :meth:`AsyncCompuGlobalAPI.get_comic_panel_url`
     - :meth:`AsyncCompuGlobalAPI.get_comic_strip_url`
 - Models for comics:
-
     - :ref:`See Comic models here <comics>`
 - Default font for APIs to use in text Overlays
 
