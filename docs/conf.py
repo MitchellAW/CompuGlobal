@@ -18,6 +18,7 @@ release = __version__
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinxcontrib_trio",
     "sphinx_rtd_theme",
@@ -28,6 +29,11 @@ autodoc_typehints = "none"
 autodoc_preserve_defaults = False
 add_module_names = True
 autoclass_content = "class"
+
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
+}
 
 napoleon_use_google_docstring = False
 napoleon_use_param = False
