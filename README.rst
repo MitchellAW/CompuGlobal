@@ -10,6 +10,9 @@ CompuGlobal
 .. image:: https://img.shields.io/pypi/pyversions/compuglobal.svg
    :target: https://pypi.python.org/pypi/compuglobal
 
+.. image:: https://img.shields.io/readthedocs/compuglobal
+   :target: https://compuglobal.readthedocs.io/en/latest/
+
 .. image:: https://img.shields.io/github/actions/workflow/status/MitchellAW/CompuGlobal/test.yml?label=tests
    :target: https://github.com/MitchellAW/CompuGlobal/actions/workflows/test.yml
 
