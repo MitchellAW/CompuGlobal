@@ -8,6 +8,8 @@
    :maxdepth: 3
 
    aio
+   changelog
+   errors
    models
    all
 
