@@ -2,7 +2,7 @@
 
 from compuglobal import FontAlignment
 from compuglobal.api.config import CompuGlobalAPIConfig
-from compuglobal.models.font import FontFamily
+from compuglobal.models.font import FontColor, FontFamily
 from compuglobal.models.overlay import OverlayFormat
 
 
@@ -11,7 +11,7 @@ def test_compuglobal_config_defaults() -> None:
     default_format = OverlayFormat(
         font_family=FontFamily.IMPACT,
         font_size=0,
-        font_color=(255, 255, 255, 255),
+        font_color=FontColor.from_rgba(255, 255, 255, 255),
         text_position_x=50,
         text_position_y=97,
         text_alignment=FontAlignment.ALIGN_CENTER,
@@ -25,7 +25,7 @@ def test_compuglobal_config_overrides() -> None:
     custom_format = OverlayFormat(
         font_family=FontFamily.JOST,
         font_size=12,
-        font_color=(10, 20, 30, 40),
+        font_color=FontColor.from_rgba(10, 20, 30, 40),
         text_position_x=120,
         text_position_y=80,
         text_alignment=FontAlignment.ALIGN_LEFT,

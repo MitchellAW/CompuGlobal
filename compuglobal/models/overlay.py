@@ -1,9 +1,9 @@
 """Helper class for formatting of StreamOverlays and ComicOverlays."""
 
 import dataclasses
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from compuglobal.models.font import FontAlignment, FontFamily
+from compuglobal.models.font import FontAlignment, FontColor, FontFamily
 
 
 @dataclass(frozen=True)
@@ -31,30 +31,11 @@ class OverlayFormat:
 
     font_family: FontFamily = FontFamily.IMPACT
     font_size: int = 0
-    font_color: tuple[int, int, int, int] = (255, 255, 255, 255)
+    font_color: FontColor = field(default_factory=FontColor)
     text_position_x: int = 50
     text_position_y: int = 97
     text_alignment: FontAlignment = FontAlignment.ALIGN_CENTER
     all_caps: bool = True
-
-    def __post_init__(self) -> None:
-        """Validate font_color is correct.
-
-        Raises
-        ------
-        ValueError
-            If font_colour does not contain 4 values, or any values are not between 0 and 255.
-
-        """
-        required_rgba_values = 4
-        if len(self.font_color) != required_rgba_values:
-            msg = f"font_color must have exactly 4 values (RGBA), got {len(self.font_color)}"
-            raise ValueError(msg)
-
-        min_color, max_color = 0, 255
-        if not all(min_color <= color <= max_color for color in self.font_color):
-            msg = f"font_color values must be between 0 and 255, got {self.font_color}"
-            raise ValueError(msg)
 
     def _changed_fields(self) -> dict:
         return {f.name: getattr(self, f.name) for f in dataclasses.fields(self) if getattr(self, f.name) != f.default}
@@ -72,8 +53,19 @@ class OverlayFormat:
             The color hex code
 
         """
-        r, g, b, a = self.font_color
-        return f"{r:02x}{g:02x}{b:02x}{a:02x}"
+        return self.font_color.hex
+
+    @property
+    def font_color_rgba(self) -> list[int]:
+        """The font color as a a list of rgba values.
+
+        Returns
+        -------
+        str
+            The color in rgba
+
+        """
+        return self.font_color.rgba
 
     @classmethod
     def normalise(

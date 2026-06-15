@@ -11,7 +11,7 @@ from compuglobal.aio import (
 from compuglobal.errors import APIPageStatusError, NoSearchResultsFoundError
 from compuglobal.models.comic import ComicLayout, ComicOverlay, ComicPanel, ComicStrip
 from compuglobal.models.episode import Episode, EpisodeMetadata, EpisodeSummary
-from compuglobal.models.font import FontAlignment, FontColorRGB, FontFamily
+from compuglobal.models.font import FontAlignment, FontColor, FontFamily
 from compuglobal.models.frame import Frame, FrameResult
 from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap, ScreencapMoment
@@ -36,7 +36,7 @@ __all__ = [
     "EpisodeMetadata",
     "EpisodeSummary",
     "FontAlignment",
-    "FontColorRGB",
+    "FontColor",
     "FontFamily",
     "Frame",
     "FrameResult",
