@@ -22,7 +22,7 @@ from compuglobal.models.timestamp import Timestamp
 __title__ = "compuglobal"
 __author__ = "MitchellAW"
 __license__ = "MIT"
-__version__ = "0.3.8"
+__version__ = "0.4.0"
 
 __all__ = [
     "APIPageStatusError",
