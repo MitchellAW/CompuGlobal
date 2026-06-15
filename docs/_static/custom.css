@@ -1,0 +1,4 @@
+
+dt.sig {
+    background-color: color-mix(in srgb, var(--sy-c-surface) 85%, var(--sy-c-divider));
+}

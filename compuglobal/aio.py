@@ -256,7 +256,7 @@ class AsyncCompuGlobalAPI:
         Returns
         -------
         list[ScreencapMoment]
-            List of random ``ScreencapMoment``s
+            List of random screencap moments
 
         """
         request = self.discovery.DISCOVER.build_request(self.client.base_url)

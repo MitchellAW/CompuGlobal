@@ -21,7 +21,8 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinxcontrib_trio",
-    "sphinx_rtd_theme",
+    "sphinxcontrib.pydantic",
+    "sphinx_copybutton",
 ]
 
 autodoc_member_order = "bysource"
@@ -43,10 +44,18 @@ napoleon_attr_annotations = False
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
+sphinxcontrib_pydantic_field_show_alias = False
+sphinxcontrib_pydantic_model_show_field_summary = False
+sphinxcontrib_pydantic_model_show_validator_summary = False
+sphinxcontrib_pydantic_field_show_constraints = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "sphinx_rtd_theme"
-html_theme_options = {"navigation_depth": 3}
+html_theme = "shibuya"
+html_theme_options = {
+    "accent_color": "indigo",
+    "github_url": "https://github.com/MitchellAW/CompuGlobal",
+}
 html_static_path = ["_static"]
+html_css_files = ["custom.css"]
