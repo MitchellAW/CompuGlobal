@@ -45,7 +45,7 @@ def test_subtitle_invalid_timestamp(subtitle_json: dict[str, Any], start_timesta
         (352143, 354854, 2711),
     ],
 )
-def test_subtitle_get_duration(
+def test_subtitle_duration(
     subtitle_json: dict[str, Any],
     start_timestamp: int,
     end_timestamp: int,
@@ -53,4 +53,4 @@ def test_subtitle_get_duration(
 ) -> None:
     subtitle = Subtitle.model_validate(subtitle_json)
     copy = subtitle.model_copy(update={"start_timestamp": start_timestamp, "end_timestamp": end_timestamp})
-    assert copy.get_duration() == expected
+    assert copy.duration == expected

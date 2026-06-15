@@ -91,7 +91,7 @@ async def test_api_get_screencap_episode_timestamp(api: AsyncCompuGlobalAPI, ran
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_api_get_screencap_frame(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
-    screencap = await api.get_screencap(frame=random_screencap.frame)
+    screencap = await api.get_screencap(episode=random_screencap.key, timestamp=random_screencap.timestamp)
     assert random_screencap == screencap
 
 

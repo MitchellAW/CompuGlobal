@@ -201,7 +201,7 @@ def test_comic_panel_from_screencap_custom_font(screencap: Screencap) -> None:
     )
 
 
-def test_comic_panel_get_encoded(subtitle_json: dict[str, Any]) -> None:
+def test_comic_panel_encoded(subtitle_json: dict[str, Any]) -> None:
     subtitles = [Subtitle.model_validate(subtitle_json)]
     overlay = ComicOverlay.from_subtitles(
         subtitles=subtitles,
@@ -210,7 +210,7 @@ def test_comic_panel_get_encoded(subtitle_json: dict[str, Any]) -> None:
     payload = {"e": "S01E01", "ts": 7777, "o": [overlay]}
     panel = ComicPanel.model_validate(payload)
 
-    assert panel.get_encoded() == snapshot(
+    assert panel.encoded == snapshot(
         "W3siZSI6IlMwMUUwMSIsInRzIjo3Nzc3LCJvIjpbeyJ0IjoiU3R1cGlkLCBzZXh5IEZsYW5kZXJzISIsImYiOiJha2JhciIsInMiOjAs"
         "ImMiOiJmZmZmZmZmZiIsIngiOjUwLCJ5Ijo5NywiYSI6ImMiLCJ1IjoxLCJiIjowLCJkIjowfV19XQ==",
     )
@@ -401,9 +401,9 @@ def test_comic_strip_build_comic_overlays_with_font(subtitle_json: dict[str, Any
     )
 
 
-def test_comic_strip_get_encoded(screencap: Screencap) -> None:
+def test_comic_strip_encoded(screencap: Screencap) -> None:
     comic_strip = ComicStrip.from_screencap(screencap=screencap)
-    assert comic_strip.get_encoded() == snapshot(
+    assert comic_strip.encoded == snapshot(
         "W3siZSI6IlMxMUUxMCIsInRzIjozNDgwMTQsIm8iOlt7InQiOiJGZWVscyBsaWtlIEknbSB3ZWFyaW5nIG5vdGhpbmcgYXQgYWxsLS0iLCJmIjoiaW1wYWN0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX0seyJlIjoiUzExRTEwIiwidHMiOjM1MDUxNywibyI6W3sidCI6Ik5vdGhpbmcgYXQgYWxsLS0gTm90aGluZyBhdCBhbGwhXCIiLCJmIjoiaW1wYWN0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX0seyJlIjoiUzExRTEwIiwidHMiOjM1MzIyOCwibyI6W3sidCI6IlN0dXBpZCwgc2V4eSBGbGFuZGVycyEiLCJmIjoiaW1wYWN0IiwicyI6MCwiYyI6ImZmZmZmZmZmIiwieCI6NTAsInkiOjk3LCJhIjoiYyIsInUiOjEsImIiOjAsImQiOjB9XX1d",
     )
 

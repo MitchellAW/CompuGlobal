@@ -14,7 +14,6 @@ from compuglobal.aio import AsyncCompuGlobalAPI
 from compuglobal.api.config import CompuGlobalAPIConfig
 from compuglobal.errors import NoSearchResultsFoundError
 from compuglobal.models.font import FontFamily
-from compuglobal.models.frame import Frame
 from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.stream import Stream
@@ -74,20 +73,6 @@ async def test_api_defaults() -> None:
 
 
 @pytest.mark.asyncio
-async def test_api_get_screencap_frame(
-    api: CustomCompuGlobalAPI,
-    mock_http: aiointercept,
-    screencap: Screencap,
-) -> None:
-    frame = Frame(id=9, key="S11E10", timestamp=350725)
-    params = {"e": "S11E10", "t": 350725, "nearby": 1}
-    url = api.discovery.CAPTION.build_encoded_url(api.BASE_URL, query=params)
-    mock_http.get(url, payload=screencap.model_dump())
-    result = await api.get_screencap(frame=frame)
-    assert result.model_dump() == screencap.model_dump()
-
-
-@pytest.mark.asyncio
 async def test_api_get_screencap_episode_timestamp(
     api: CustomCompuGlobalAPI,
     mock_http: aiointercept,
@@ -103,12 +88,14 @@ async def test_api_get_screencap_episode_timestamp(
 @pytest.mark.asyncio
 async def test_api_get_screencap_no_timestamp(api: CustomCompuGlobalAPI) -> None:
     with pytest.raises(TypeError):
+        # pyrefly: ignore [missing-argument, unexpected-keyword]
         await api.get_screencap(episode="S01E01")
 
 
 @pytest.mark.asyncio
 async def test_api_get_screencap_no_episode(api: CustomCompuGlobalAPI) -> None:
     with pytest.raises(TypeError):
+        # pyrefly: ignore [missing-argument, unexpected-keyword]
         await api.get_screencap(timestamp=1000)
 
 

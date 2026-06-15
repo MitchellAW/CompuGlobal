@@ -30,16 +30,29 @@ class ScreencapMoment(BaseCompuGlobalModel):
     content: str = Field(alias="Content")
     title: str = Field(alias="Title")
 
-    def get_real_timestamp(self) -> str:
-        """Get a readable timestamp for the moments timestamp in format `mm:ss`.
+    @property
+    def key(self) -> str:
+        """The episode key of the screencap (S01E01). Just an alias for episode.
 
         Returns
         -------
         str
-            A readable timestamp in format `mm:ss`.
+            The episode key (S01E01)
 
         """
-        return Timestamp.get_real_timestamp(self.timestamp)
+        return self.episode
+
+    @property
+    def timecode(self) -> str:
+        """A readable timecode for the frame's timestamp in format ``mm:ss``.
+
+        Returns
+        -------
+        str
+            A readable timecode in format ``mm:ss``
+
+        """
+        return Timestamp.get_timecode(self.timestamp)
 
 
 class Screencap(BaseCompuGlobalModel):
@@ -56,9 +69,9 @@ class Screencap(BaseCompuGlobalModel):
     nearby : list[Frame]
         A list of nearby frames
     min_timestamp : int
-        The minimum timestamp of the screencap
+        The minimum timestamp of the episode of the screencap
     max_timestamp : int
-        The maximum timestamp of the screencap
+        The maximum timestamp of the episode of the screencap
 
     """
 
@@ -69,19 +82,45 @@ class Screencap(BaseCompuGlobalModel):
     min_timestamp: int = Field(alias="MinTimestamp", ge=0)
     max_timestamp: int = Field(alias="MaxTimestamp", ge=0)
 
-    def get_real_timestamp(self) -> str:
-        """Get a readable timestamp for the frame in format `mm:ss`.
+    @property
+    def key(self) -> str:
+        """The episode key of the screencap (S01E01).
 
         Returns
         -------
         str
-            A readable timestamp for the frame in format `mm:ss`.
+            The episode key (S01E01)
 
         """
-        return Timestamp.get_real_timestamp(timestamp=self.frame.timestamp)
+        return self.frame.key
 
-    def get_duration(self) -> int:
-        """Get duration of screencap subtitles in milliseconds.
+    @property
+    def timestamp(self) -> int:
+        """The timestamp of the screencap frame.
+
+        Returns
+        -------
+        int
+            The timestamp
+
+        """
+        return self.frame.timestamp
+
+    @property
+    def timecode(self) -> str:
+        """A readable timecode for the frame's timestamp in format ``mm:ss``.
+
+        Returns
+        -------
+        str
+            A readable timecode in format ``mm:ss``.
+
+        """
+        return Timestamp.get_timecode(timestamp=self.frame.timestamp)
+
+    @property
+    def duration(self) -> int:
+        """Duration of screencap subtitles in milliseconds.
 
         Returns
         -------
@@ -91,8 +130,9 @@ class Screencap(BaseCompuGlobalModel):
         """
         return Timestamp.get_subtitles_duration(self.subtitles)
 
+    @property
     def captions(self) -> list[str]:
-        """Get a list of captions for the screencap from all subtitles.
+        """A list of captions for the screencap from all subtitles.
 
         Returns
         -------
@@ -102,8 +142,9 @@ class Screencap(BaseCompuGlobalModel):
         """
         return [f"{subtitle.content}" for subtitle in self.subtitles]
 
-    def get_caption(self) -> str:
-        """Get the entire caption for the screencap from all subtitles as a string.
+    @property
+    def caption(self) -> str:
+        """The entire caption for the screencap from all subtitles as a string.
 
         Returns
         -------
@@ -111,10 +152,11 @@ class Screencap(BaseCompuGlobalModel):
             The entire caption of the screencap
 
         """
-        return " ".join(self.captions())
+        return " ".join(self.captions)
 
-    def get_start(self) -> int:
-        """Get the earliest start timestamp from the subtitles.
+    @property
+    def start(self) -> int:
+        """The earliest start timestamp from the subtitles.
 
         Returns
         -------
@@ -124,8 +166,9 @@ class Screencap(BaseCompuGlobalModel):
         """
         return min(subtitle.start_timestamp for subtitle in self.subtitles)
 
-    def get_end(self) -> int:
-        """Get the latest end timestamp from the subtitles.
+    @property
+    def end(self) -> int:
+        """The latest end timestamp from the subtitles.
 
         Returns
         -------

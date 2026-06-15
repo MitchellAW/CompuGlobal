@@ -84,7 +84,7 @@ class StreamOverlay(BaseCompuGlobalModel):
             start=start,
             end=end,
             font_family=overlay_format.font_family,
-            font_color=overlay_format.font_color,
+            font_color=overlay_format.font_color.rgba,
             font_size=overlay_format.font_size,
             text_position_x=overlay_format.text_position_x,
             text_position_y=overlay_format.text_position_y,
@@ -166,8 +166,8 @@ class Stream(BaseCompuGlobalModel):
 
         return cls(
             episode=screencap.episode.key,
-            start=screencap.get_start(),
-            end=screencap.get_end(),
+            start=screencap.start,
+            end=screencap.end,
             overlays=overlays,
             check_only=False,
         )
@@ -198,14 +198,15 @@ class Stream(BaseCompuGlobalModel):
         return [
             StreamOverlay.build_with_format(
                 text=subtitle.content,
-                start=subtitle.start_timestamp - screencap.get_start(),
-                end=subtitle.end_timestamp - screencap.get_start(),
+                start=subtitle.start_timestamp - screencap.start,
+                end=subtitle.end_timestamp - screencap.start,
                 overlay_format=overlay_format,
             )
             for subtitle, overlay_format in zip(screencap.subtitles, overlay_format, strict=True)
         ]
 
-    def get_caption(self) -> str:
+    @property
+    def caption(self) -> str:
         """Get the entire caption of the Stream (all overlays) as a string.
 
         Returns
@@ -216,7 +217,8 @@ class Stream(BaseCompuGlobalModel):
         """
         return " ".join(f"{overlay.text}" for overlay in self.overlays)
 
-    def get_encoded(self) -> str:
+    @property
+    def encoded(self) -> str:
         """Get the base 64 encoded representation of this stream's overlays.
 
         Returns

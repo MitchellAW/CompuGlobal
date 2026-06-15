@@ -45,9 +45,9 @@ def test_frame_validate_validate_invalid_timestamp(bad_timestamp: int) -> None:
 
 
 @pytest.mark.parametrize(("timestamp", "expected"), TIMESTAMP_CASES)
-def test_frame_get_real_timestamp(timestamp: int, expected: str) -> None:
+def test_frame_timecode(timestamp: int, expected: str) -> None:
     frame = Frame(id=1, key="S22E22", timestamp=timestamp)
-    assert frame.get_real_timestamp() == expected
+    assert frame.timecode == expected
 
 
 @pytest.mark.parametrize(("timestamp", "expected"), TIMESTAMP_CASES)

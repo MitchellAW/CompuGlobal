@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from compuglobal.models.font import FontColorRGB
+from compuglobal.models.font import FontColor
 
 VALID_RGB_VALUES = [
     (0, 0, 0, 0),
@@ -26,22 +26,42 @@ INVALID_RGB_VALUES = [
     (0, 0, 0, 256),
 ]
 
+HEX_TO_RGBA_VALUES = [
+    ("#ff0000", [255, 0, 0, 255]),
+    ("#00ff00", [0, 255, 0, 255]),
+    ("#0000ff", [0, 0, 255, 255]),
+    ("#ff00ff", [255, 0, 255, 255]),
+    ("#ffffff", [255, 255, 255, 255]),
+    ("#000000", [0, 0, 0, 255]),
+    ("#00000000", [0, 0, 0, 0]),
+    ("#ffffff80", [255, 255, 255, 128]),
+    ("#1a2b3c", [26, 43, 60, 255]),
+    ("#deadbe", [222, 173, 190, 255]),
+    ("#ff6600cc", [255, 102, 0, 204]),
+]
+
 
 @pytest.mark.parametrize(("red", "green", "blue", "alpha"), VALID_RGB_VALUES)
 def test_font_color_rgb(red: int, green: int, blue: int, alpha: int) -> None:
     payload = {"r": red, "g": green, "b": blue, "a": alpha}
-    rgba = FontColorRGB.model_validate(payload)
-    assert rgba.model_dump() == payload
+    color = FontColor.model_validate(payload)
+    assert color.model_dump() == payload
 
 
 @pytest.mark.parametrize(("red", "green", "blue", "alpha"), INVALID_RGB_VALUES)
 def test_font_color_invalid_invalid_range(red: int, green: int, blue: int, alpha: int) -> None:
     invalid_payload = {"r": red, "g": green, "b": blue, "a": alpha}
     with pytest.raises(ValidationError):
-        FontColorRGB.model_validate(invalid_payload)
+        FontColor.model_validate(invalid_payload)
 
 
 @pytest.mark.parametrize(("red", "green", "blue", "alpha"), VALID_RGB_VALUES)
-def test_font_color_get_rgba(red: int, green: int, blue: int, alpha: int) -> None:
-    rgba = FontColorRGB(red=red, green=green, blue=blue, alpha=alpha)
-    assert rgba.get_rgba() == [red, green, blue, alpha]
+def test_font_color_rgba(red: int, green: int, blue: int, alpha: int) -> None:
+    color = FontColor(red=red, green=green, blue=blue, alpha=alpha)
+    assert color.rgba == [red, green, blue, alpha]
+
+
+@pytest.mark.parametrize(("hex_code", "expected"), HEX_TO_RGBA_VALUES)
+def test_font_color_from_hex(hex_code: str, expected: list[int]) -> None:
+    color = FontColor.from_hex(hex_code)
+    assert color.rgba == expected

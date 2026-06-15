@@ -4,32 +4,20 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from compuglobal.models.font import FontFamily
+from compuglobal.models.font import FontColor, FontFamily
 from compuglobal.models.overlay import OverlayFormat
-
-
-def test_overlay_format_invalid_rgba_length_too_few() -> None:
-    with pytest.raises(ValueError, match="must have exactly 4 values"):
-        # pyrefly: ignore [bad-argument-type]
-        OverlayFormat(font_color=())
-
-
-def test_overlay_format_invalid_rgba_length_too_many() -> None:
-    with pytest.raises(ValueError, match="must have exactly 4 values"):
-        # pyrefly: ignore [bad-argument-type]
-        OverlayFormat(font_color=(255, 255, 255, 255, 255))
 
 
 @given(st.integers(max_value=-1))
 def test_overlay_format_invalid_colors_low(bad_color: int) -> None:
-    with pytest.raises(ValueError, match="values must be between 0 and 255"):
-        OverlayFormat(font_color=(1, 1, 1, bad_color))
+    with pytest.raises(ValueError, match="Input should be greater than or equal to 0"):
+        OverlayFormat(font_color=FontColor(r=1, g=1, b=1, a=bad_color))
 
 
 @given(st.integers(min_value=256))
 def test_overlay_format_invalid_colors_high(bad_color: int) -> None:
-    with pytest.raises(ValueError, match="values must be between 0 and 255"):
-        OverlayFormat(font_color=(1, 1, 1, bad_color))
+    with pytest.raises(ValueError, match="Input should be less than or equal to 255 "):
+        OverlayFormat(font_color=FontColor.from_rgba(1, 1, 1, bad_color))
 
 
 def test_overlay_format_normalise_default() -> None:

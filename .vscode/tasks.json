@@ -104,6 +104,8 @@
         "sphinx-autobuild",
         "docs/",
         "docs/_build/html",
+        "--watch",
+        "compuglobal/",
         "--open-browser"
       ],
       "type": "shell",

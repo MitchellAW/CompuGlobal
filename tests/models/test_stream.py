@@ -223,7 +223,7 @@ def test_stream_build_stream_overlays_font(screencap: Screencap) -> None:
     )
 
 
-def test_stream_get_caption() -> None:
+def test_stream_caption() -> None:
     overlays = [StreamOverlay(text=f"Example text {i}!", start=i - 1, end=i) for i in range(1, 3)]
     stream = Stream(key="S01E01", start=0, end=2, overlays=overlays, check_only=False)
-    assert stream.get_caption() == snapshot("Example text 1! Example text 2!")
+    assert stream.caption == snapshot("Example text 1! Example text 2!")
