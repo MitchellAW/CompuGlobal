@@ -184,7 +184,8 @@ class ComicPanel(BaseCompuGlobalModel):
 
         return cls(e=screencap.frame.key, ts=screencap.frame.timestamp, o=overlays)
 
-    def get_encoded(self) -> str:
+    @property
+    def encoded(self) -> str:
         """Get the base 64 encoded representation of this panel.
 
         Returns
@@ -281,7 +282,8 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
             for subtitle, overlay_format in zip(subtitles, overlay_formats, strict=True)
         ]
 
-    def get_encoded(self) -> str:
+    @property
+    def encoded(self) -> str:
         """Get the base 64 encoded representation of this comic strip.
 
         Returns

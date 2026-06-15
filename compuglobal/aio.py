@@ -67,11 +67,11 @@ class AsyncCompuGlobalAPI:
 
     async def get_screencap(
         self,
+        *,
         episode: str | None = None,
         timestamp: int | None = None,
-        frame: Frame | None = None,
     ) -> Screencap:
-        """Get the screencap for the given episode & timestamp, or a screencap of the Frame object.
+        """Get the screencap for the given episode & timestamp.
 
         Parameters
         ----------
@@ -79,32 +79,14 @@ class AsyncCompuGlobalAPI:
             An episode key
         timestamp : int | None, optional
             A timestamp of the screencap
-        frame : Frame | None, optional
-            A Frame object
 
         Returns
         -------
         Screencap
             The screencap for the given episode key and timestamp.
 
-        Raises
-        ------
-        TypeError
-            Must give only episode + timestamp, or a Frame object.
-
         """
-        if isinstance(episode, str) and isinstance(timestamp, int):
-            params = {"e": episode, "t": timestamp, "nearby": 1}
-
-        elif isinstance(frame, Frame):
-            params = {"e": frame.key, "t": frame.timestamp, "nearby": 1}
-
-        else:
-            invalid_args_error = (
-                f"Expected str and int or compuglobal.Frame, but received {type(episode)},"
-                f" {type(timestamp)} and {type(frame)} instead"
-            )
-            raise TypeError(invalid_args_error)
+        params = {"e": episode, "t": timestamp, "nearby": 1}
 
         request = self.discovery.CAPTION.build_request(self.client.base_url, query=params)
         caption = await self.client.handle_request(request)
@@ -182,7 +164,7 @@ class AsyncCompuGlobalAPI:
         """
         search_results = await self.search(search_text, season_minimum=season_minimum, season_maximum=season_maximum)
         result = search_results[0]
-        return await self.get_screencap(result.key, result.timestamp)
+        return await self.get_screencap(episode=result.key, timestamp=result.timestamp)
 
     async def get_random_screencap(
         self,
@@ -348,7 +330,7 @@ class AsyncCompuGlobalAPI:
 
         panel = ComicPanel.from_screencap(screencap=screencap, overlay_format=overlay_format)
 
-        params = {"b64": panel.get_encoded()}
+        params = {"b64": panel.encoded}
         return self.media.COMIC_PANEL.build_encoded_url(self.client.base_url, query=params)
 
     async def get_comic_strip_url(
@@ -378,7 +360,7 @@ class AsyncCompuGlobalAPI:
         screencap, subtitles, overlay_format = self._resolve_overlay_inputs(screencap, subtitles, overlay_format)
 
         comic_strip = ComicStrip.from_screencap(screencap=screencap, overlay_format=overlay_format)
-        params = {"b64": comic_strip.get_encoded(), "layout": comic_strip.layout}
+        params = {"b64": comic_strip.encoded, "layout": comic_strip.layout}
         return self.media.COMIC_STRIP.build_encoded_url(self.client.base_url, query=params)
 
     async def get_comic_maker_url(
@@ -412,7 +394,7 @@ class AsyncCompuGlobalAPI:
         return self.media.COMIC_MAKER.build_encoded_url(
             base_url=self.BASE_URL,
             path_params=path_params,
-            query={"b64": strip.get_encoded(), "layout": strip.layout},
+            query={"b64": strip.encoded, "layout": strip.layout},
         )
 
     async def get_gif_url(
@@ -482,8 +464,8 @@ class AsyncCompuGlobalAPI:
 
         path_params = {
             "key": screencap.frame.key,
-            "start_timestamp": screencap.get_start(),
-            "end_timestamp": screencap.get_end(),
+            "start_timestamp": screencap.start,
+            "end_timestamp": screencap.end,
         }
 
         stream = Stream.from_screencap(screencap=screencap, overlay_format=overlay_format)
@@ -491,7 +473,7 @@ class AsyncCompuGlobalAPI:
         return self.media.GIF_MAKER.build_encoded_url(
             base_url=self.BASE_URL,
             path_params=path_params,
-            query={"b64": stream.get_encoded()},
+            query={"b64": stream.encoded},
         )
 
     @overload

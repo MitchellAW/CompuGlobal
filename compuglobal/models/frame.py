@@ -24,16 +24,17 @@ class Frame(BaseCompuGlobalModel):
     key: str = Field(alias="Episode")
     timestamp: int = Field(alias="Timestamp", ge=0)
 
-    def get_real_timestamp(self) -> str:
-        """Get a readable timestamp for the frame in format "mm:ss".
+    @property
+    def timecode(self) -> str:
+        """A readable timecode for the frame's timestamp in format ``mm:ss``.
 
         Returns
         -------
         str
-            A readable timestamp for the frame in format `mm:ss`.
+            A readable timecode in format ``mm:ss``
 
         """
-        return Timestamp.get_real_timestamp(timestamp=self.timestamp)
+        return Timestamp.get_timecode(timestamp=self.timestamp)
 
     def __str__(self) -> str:
         """Get the string representation of the Frame.
@@ -44,7 +45,7 @@ class Frame(BaseCompuGlobalModel):
             The frame as a string e.g. S01E01 - 00000001 (00:01)
 
         """
-        return f"{self.key} - {self.timestamp} ({self.get_real_timestamp()})"
+        return f"{self.key} - {self.timestamp} ({self.timecode})"
 
 
 class FrameResult(Frame):

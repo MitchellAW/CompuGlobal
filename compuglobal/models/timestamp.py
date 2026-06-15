@@ -32,7 +32,7 @@ class Timestamp:
         return minutes, seconds
 
     @staticmethod
-    def get_real_timestamp(timestamp: int) -> str:
+    def get_timecode(timestamp: int) -> str:
         """Get a readable timestamp for the frame in format `mm:ss`.
 
         Parameters

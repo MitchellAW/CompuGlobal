@@ -60,8 +60,8 @@ async def example(session: aiohttp.ClientSession):
     print(timestamp)
 
     # Returns - 5:43
-    real_timestamp = screencap.get_real_timestamp()
-    print(real_timestamp)
+    timecode = screencap.timecode
+    print(timecode)
 
     subtitles = screencap.subtitles
     print(subtitles)

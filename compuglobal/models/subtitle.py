@@ -36,7 +36,8 @@ class Subtitle(BaseCompuGlobalModel):
     content: str = Field(alias="Content")
     language: str = Field(alias="Language")
 
-    def get_duration(self) -> int:
+    @property
+    def duration(self) -> int:
         """Get the duration of the subtitle in milliseconds.
 
         Returns
