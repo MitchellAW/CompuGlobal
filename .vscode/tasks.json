@@ -2,7 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      // Source: https://github.com/astral-sh/ruff-vscode/issues/145#issuecomment-4187903472
       "label": "ruff check",
       "type": "shell",
       "isBackground": true,
@@ -41,14 +40,14 @@
             }
           ]
         }
-      ],
+      ]
     },
     {
       "label": "pyrefly check",
       "type": "shell",
       "isBackground": true,
       "presentation": {
-        "reveal": "always",
+        "reveal": "always"
       },
       "command": "uvx",
       "args": [
@@ -75,24 +74,46 @@
         "reveal": "never"
       },
       "problemMatcher": {
-  "fileLocation": ["relative", "${workspaceFolder}"],
-  "owner": "pydoclint",
-  "severity": "warning",
-  "pattern": [
-    {
-      "regexp": "^(\\S.*\\.py)$",
-      "file": 1
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "owner": "pydoclint",
+        "severity": "warning",
+        "pattern": [
+          {
+            "regexp": "^(\\S.*\\.py)$",
+            "file": 1
+          },
+          {
+            "regexp": "^\\s+(\\d+):\\s+(DOC\\d+):\\s+(.*)$",
+            "line": 1,
+            "code": 2,
+            "message": 3,
+            "loop": true
+          }
+        ]
+      },
+      "type": "shell"
     },
     {
-      "regexp": "^\\s+(\\d+):\\s+(DOC\\d+):\\s+(.*)$",
-      "line": 1,
-      "code": 2,
-      "message": 3,
-      "loop": true
-    }
-  ]
-},
-      "type": "shell"
+      "label": "sphinx-autobuild",
+      "command": "uv",
+      "args": [
+        "run",
+        "sphinx-autobuild",
+        "docs/",
+        "docs/_build/html",
+        "--open-browser"
+      ],
+      "type": "shell",
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
     }
   ]
 }
