@@ -16,7 +16,7 @@ class OverlayFormat:
         The font to use for the text in the overlay
     font_size : int
         The size of the font in the overlay
-    font_color : tuple[int, int, int, int]
+    font_color : FontColor
         The color of the font as an RGBA tuple (0-255, 0-255, 0-255, 0-255)
     text_position_x : int
         The position of the text on the X-axis
@@ -61,7 +61,7 @@ class OverlayFormat:
 
         Returns
         -------
-        str
+        list[int]
             The color in rgba
 
         """
