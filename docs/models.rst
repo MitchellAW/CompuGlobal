@@ -67,7 +67,7 @@ Streams
 
 Fonts
 ~~~~~~~~~~~~~~~~~~~~
-.. autoclass:: FontColorRGB
+.. autoclass:: FontColor
     :members:
 
 .. autoclass:: FontAlignment
@@ -76,6 +76,10 @@ Fonts
 .. autoclass:: FontFamily
     :members:
 
+Timestamp
+~~~~~~~~~~~~~~~~~~~~
+.. autoclass:: Timestamp
+    :members:
 
 **Base Model:**
 
