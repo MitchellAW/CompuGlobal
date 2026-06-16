@@ -37,6 +37,20 @@ class OverlayFormat:
     text_alignment: FontAlignment = FontAlignment.ALIGN_CENTER
     all_caps: bool = True
 
+    def __post_init__(self) -> None:
+        """Validate font size.
+
+        Raises
+        ------
+        ValueError
+            Font size must be between 0-120
+
+        """
+        max_font_size = 120
+        if self.font_size < 0 or self.font_size > max_font_size:
+            msg = f"Font size must be between 0 and {max_font_size}, but got {self.font_size}"
+            raise ValueError(msg)
+
     def _changed_fields(self) -> dict:
         return {f.name: getattr(self, f.name) for f in dataclasses.fields(self) if getattr(self, f.name) != f.default}
 
