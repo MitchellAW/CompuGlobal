@@ -1,5 +1,6 @@
 """Used for interacting with and building CGHMC APIs."""
 
+import dataclasses
 import json
 import logging
 from typing import overload
@@ -32,8 +33,10 @@ class AsyncCompuGlobalAPI:
 
     Parameters
     ----------
-    session : aiohttp.ClientSession, optional
+    session : aiohttp.ClientSession
         The client session to use for all API calls
+    default_format : OverlayFormat | None, optional
+        The default overlay format to use for all overlays/subtitles
 
     Attributes
     ----------
@@ -41,8 +44,8 @@ class AsyncCompuGlobalAPI:
         The base url of the API
     TITLE : str
         The title of the API
-    DEFAULT_FORMAT : OverlayFormat
-        The default formatting to use in all comic/gif overlays
+    EXTRA_FONTS : frozenset[FontFamily]
+        A frozenset of any extra fonts permitted by the API
     discovery : DiscoveryAPI
         The discovery API with all discovery endpoints
     media : MediaAPI
@@ -54,16 +57,27 @@ class AsyncCompuGlobalAPI:
 
     BASE_URL: str
     TITLE: str
-    DEFAULT_FORMAT: OverlayFormat
+    EXTRA_FONTS: frozenset[FontFamily] = frozenset()
     _MAX_ALLOWED_SUBTITLES = 4
 
     discovery: DiscoveryAPI = DiscoveryAPI()
     media: MediaAPI = MediaAPI()
     metadata: MetadataAPI = MetadataAPI()
 
-    def __init__(self, session: aiohttp.ClientSession) -> None:
+    def __init__(self, session: aiohttp.ClientSession, default_format: OverlayFormat | None = None) -> None:
+        extra_fonts = list(self.EXTRA_FONTS)
+        if default_format is None:
+            chosen_font = extra_fonts[0] if len(extra_fonts) > 0 else FontFamily.IMPACT
+            default_format = OverlayFormat(font_family=chosen_font)
+
+        allowed_fonts = FontFamily.universal_fonts() + extra_fonts
+
+        self.config = CompuGlobalAPIConfig(
+            title=self.TITLE,
+            allowed_fonts=allowed_fonts,
+            default_format=default_format,
+        )
         self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session)
-        self.config = CompuGlobalAPIConfig(title=self.TITLE, default_format=self.DEFAULT_FORMAT)
 
     async def get_screencap(
         self,
@@ -476,6 +490,21 @@ class AsyncCompuGlobalAPI:
             query={"b64": stream.encoded},
         )
 
+    def _resolve_font(self, overlay_format: OverlayFormat) -> OverlayFormat:
+        if overlay_format.font_family in self.config.allowed_fonts:
+            return overlay_format
+
+        log.warning(
+            "Font family %s is not allowed for %s, using IMPACT font instead | overlay_format=%s",
+            overlay_format.font_family,
+            self.config.title,
+            overlay_format,
+        )
+        return dataclasses.replace(overlay_format, font_family=FontFamily.IMPACT)
+
+    def _resolve_fonts(self, overlay_formats: list[OverlayFormat]) -> list[OverlayFormat]:
+        return [self._resolve_font(overlay_format) for overlay_format in overlay_formats]
+
     @overload
     def _resolve_overlay_inputs(
         self,
@@ -504,6 +533,12 @@ class AsyncCompuGlobalAPI:
         if overlay_format != self.config.default_format:
             log.debug("Using custom overlay format | screencap=%s | overlay_format=%s", screencap, overlay_format)
 
+        # Resolve any disallowed fonts in the format(s)
+        if isinstance(overlay_format, list):
+            overlay_format = self._resolve_fonts(overlay_format)
+        else:
+            overlay_format = self._resolve_font(overlay_format)
+
         # Use screencap subtitles if not given
         subtitles = subtitles or screencap.subtitles
         if subtitles != screencap.subtitles:
@@ -523,7 +558,6 @@ class CapitalBeatUs(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://capitalbeat.us"
     TITLE = "West Wing"
-    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.IMPACT)
 
 
 class Frinkiac(AsyncCompuGlobalAPI):
@@ -531,7 +565,7 @@ class Frinkiac(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://frinkiac.com"
     TITLE = "Simpsons"
-    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.AKBAR)
+    EXTRA_FONTS = frozenset({FontFamily.AKBAR})
 
 
 @deprecated("The MasterOfAllScience API is deprecated, and currently redirects to Frinkiac")
@@ -540,7 +574,6 @@ class MasterOfAllScience(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://masterofallscience.com"
     TITLE = "Rick and Morty"
-    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.IMPACT)
 
 
 class Morbotron(AsyncCompuGlobalAPI):
@@ -548,4 +581,4 @@ class Morbotron(AsyncCompuGlobalAPI):
 
     BASE_URL = "https://morbotron.com"
     TITLE = "Futurama"
-    DEFAULT_FORMAT = OverlayFormat(font_family=FontFamily.FR_BOLD)
+    EXTRA_FONTS = frozenset({FontFamily.FR_BOLD})
