@@ -28,6 +28,23 @@ class FontFamily(StrEnum):
     #: The Fr Bold font family (Morbotron default)
     FR_BOLD = "fr"
 
+    @staticmethod
+    def universal_fonts() -> list["FontFamily"]:
+        """Get a list of universal fonts that work across all APIs.
+
+        Returns
+        -------
+        list[FontFamily]
+            List of universal fonts
+
+        """
+        return [
+            FontFamily.IMPACT,
+            FontFamily.COMIC_NEUE,
+            FontFamily.JOST,
+            FontFamily.PACIFICO,
+        ]
+
 
 class FontAlignment(StrEnum):
     """An enumeration of font alignments."""

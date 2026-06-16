@@ -2,6 +2,16 @@
 
 Changelog
 =========
+0.4.1
+-----
+
+Added
+~~~~~
+- Optional default format to :class:`AsyncCompuGlobalAPI` constructor, for easier configuration of default preferences
+- Timecode property for Subtitle model :attr:`Subtitle.timecode`
+- Validation for allowed fonts in each API, if an invalid font is used, its replaced by :attr:`FontFamily.IMPACT`
+- Validation for font_size in :class:`OverlayFormat` ensuring its 0-120
+
 0.4.0
 -----
 

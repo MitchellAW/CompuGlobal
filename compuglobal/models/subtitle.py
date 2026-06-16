@@ -47,3 +47,15 @@ class Subtitle(BaseCompuGlobalModel):
 
         """
         return Timestamp.get_duration(start_timestamp=self.start_timestamp, end_timestamp=self.end_timestamp)
+
+    @property
+    def timecode(self) -> str:
+        """A readable timecode for the subtitle's representative timestamp in format ``mm:ss``.
+
+        Returns
+        -------
+        str
+            A readable timecode in format ``mm:ss``
+
+        """
+        return Timestamp.get_timecode(self.representative_timestamp)
