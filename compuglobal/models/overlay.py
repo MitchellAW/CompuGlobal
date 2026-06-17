@@ -1,13 +1,12 @@
 """Helper class for formatting of StreamOverlays and ComicOverlays."""
 
-import dataclasses
-from dataclasses import dataclass, field
+from pydantic import Field
 
+from compuglobal.models.base import BaseCompuGlobalModel
 from compuglobal.models.font import FontAlignment, FontColor, FontFamily
 
 
-@dataclass(frozen=True)
-class OverlayFormat:
+class OverlayFormat(BaseCompuGlobalModel):
     """The formatting style to use in an overlay.
 
     Attributes
@@ -29,33 +28,16 @@ class OverlayFormat:
 
     """
 
-    font_family: FontFamily = FontFamily.IMPACT
-    font_size: int = 0
-    font_color: FontColor = field(default_factory=FontColor)
-    text_position_x: int = 50
-    text_position_y: int = 97
-    text_alignment: FontAlignment = FontAlignment.ALIGN_CENTER
-    all_caps: bool = True
-
-    def __post_init__(self) -> None:
-        """Validate font size.
-
-        Raises
-        ------
-        ValueError
-            Font size must be between 0-120
-
-        """
-        max_font_size = 120
-        if self.font_size < 0 or self.font_size > max_font_size:
-            msg = f"Font size must be between 0 and {max_font_size}, but got {self.font_size}"
-            raise ValueError(msg)
-
-    def _changed_fields(self) -> dict:
-        return {f.name: getattr(self, f.name) for f in dataclasses.fields(self) if getattr(self, f.name) != f.default}
+    font_family: FontFamily = Field(default=FontFamily.IMPACT)
+    font_size: int = Field(ge=0, le=120, default=0)
+    font_color: FontColor = Field(default=FontColor())
+    text_position_x: int = Field(default=50)
+    text_position_y: int = Field(default=97)
+    text_alignment: FontAlignment = Field(default=FontAlignment.ALIGN_CENTER)
+    all_caps: bool = Field(default=True)
 
     def __str__(self) -> str:  # noqa: D105
-        return str(self._changed_fields())
+        return str(self.model_dump(exclude_defaults=True))
 
     @property
     def font_color_hex(self) -> str:
