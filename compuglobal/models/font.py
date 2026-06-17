@@ -41,8 +41,8 @@ class FontFamily(StrEnum):
         return [
             FontFamily.IMPACT,
             FontFamily.COMIC_NEUE,
-            FontFamily.JOST,
             FontFamily.PACIFICO,
+            FontFamily.JOST,
         ]
 
 
