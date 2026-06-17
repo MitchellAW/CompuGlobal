@@ -2,6 +2,13 @@
 
 Changelog
 =========
+0.4.2
+-----
+
+Miscellaneous
+~~~~~~~~~~~~~
+- :class:`OverlayFormat` changed from dataclass to pydantic model for easier serialization and validation
+
 0.4.1
 -----
 
