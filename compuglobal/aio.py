@@ -70,7 +70,7 @@ class AsyncCompuGlobalAPI:
             chosen_font = extra_fonts[0] if len(extra_fonts) > 0 else FontFamily.IMPACT
             default_format = OverlayFormat(font_family=chosen_font)
 
-        allowed_fonts = FontFamily.universal_fonts() + extra_fonts
+        allowed_fonts = extra_fonts + FontFamily.universal_fonts()
 
         self.config = CompuGlobalAPIConfig(
             title=self.TITLE,
