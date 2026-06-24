@@ -63,9 +63,8 @@ class OverlayFormat(BaseCompuGlobalModel):
         """
         return self.font_color.rgba
 
-    @classmethod
+    @staticmethod
     def normalise(
-        cls,
         overlay_format: "OverlayFormat | list[OverlayFormat] | None",
         size: int,
     ) -> "list[OverlayFormat]":
@@ -91,12 +90,12 @@ class OverlayFormat(BaseCompuGlobalModel):
 
         """
         if overlay_format is None:
-            return size * [cls()]
+            return size * [OverlayFormat()]
 
-        if isinstance(overlay_format, cls):
+        if isinstance(overlay_format, OverlayFormat):
             return size * [overlay_format]
 
         if len(overlay_format) < size:
-            return overlay_format + [cls()] * (size - len(overlay_format))
+            return overlay_format + [OverlayFormat()] * (size - len(overlay_format))
 
         return overlay_format[:size]

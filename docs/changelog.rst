@@ -9,6 +9,7 @@ Upcoming Changes
 Miscellaneous
 ~~~~~~~~~~~~~
 - Reorder fonts in :meth:`FontFamily.universal_fonts` and :attr:`CompuGlobalAPIConfig.allowed_fonts` to match the order used by the API.
+- Change :meth:`OverlayFormat.normalise` from class method to static method.
 
 0.4.2
 -----
