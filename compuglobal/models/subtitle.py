@@ -38,7 +38,7 @@ class Subtitle(BaseCompuGlobalModel):
 
     @property
     def duration(self) -> int:
-        """Get the duration of the subtitle in milliseconds.
+        """The duration of the subtitle in milliseconds.
 
         Returns
         -------
