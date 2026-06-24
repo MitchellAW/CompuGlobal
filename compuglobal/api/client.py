@@ -54,7 +54,7 @@ class CompuGlobalAPIClient:
                 log.debug("Response %s | GET %s", response.status, url)
                 return await response.json()
 
-            log.error("Non-2xx response %s | GET %s", response.status, url)
+            log.error("Non-2xx response %s | POST %s | Headers %s", response.status, url, response.headers)
             raise APIPageStatusError(response.status, self.base_url)
 
     async def post_data(self, url: str, json: dict[str, Any] | list[Any] | None) -> str:
@@ -83,7 +83,7 @@ class CompuGlobalAPIClient:
                 log.debug("Response %s | POST %s", response.status, url)
                 return await response.text()
 
-            log.error("Non-2xx response %s | POST %s")
+            log.error("Non-2xx response %s | POST %s | Headers %s", response.status, url, response.headers)
             raise APIPageStatusError(response.status, self.base_url)
 
     async def handle_request(self, request: PreparedRequest) -> str | dict[str, Any] | list[Any]:
