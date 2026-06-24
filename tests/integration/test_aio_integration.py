@@ -1,6 +1,5 @@
 """Test all API endpoints using aio module with live external APIs (no mocking)."""
 
-import asyncio
 from collections.abc import AsyncGenerator
 
 import aiohttp
@@ -23,12 +22,6 @@ API_SEARCHES: dict[str, str] = {
 }
 API_CLASSES: list[type[AsyncCompuGlobalAPI]] = [Frinkiac, Morbotron, CapitalBeatUs]
 _screencap_cache: dict[str, Screencap] = {}
-
-
-# Sleep between all tests to avoid flooding API
-@pytest_asyncio.fixture(autouse=True)
-async def wait_between_calls() -> None:
-    await asyncio.sleep(1)
 
 
 @pytest_asyncio.fixture(params=API_CLASSES, ids=lambda cls: cls.__name__)
@@ -73,9 +66,6 @@ async def check_content_type_and_url(
 ) -> None:
     for expectation in expected_in_url:
         assert expectation in url
-
-    # Sleep before checking headers
-    await asyncio.sleep(1)
 
     async with session.head(url, allow_redirects=True) as response:
         assert response.status == 200
