@@ -58,12 +58,11 @@ class CompuGlobalAPIClient:
                 log.debug("Response %s | GET %s", response.status, url)
                 return await response.json()
 
-            log.error("Non-2xx response %s | POST %s | Headers %s", response.status, url, response.headers)
-
             if response.status == HTTPStatus.TOO_MANY_REQUESTS:
                 retry_after = int(response.headers.get("Retry-After", 60))
                 raise APIPageStatusError(response.status, self.base_url, retry_after=retry_after)
 
+            log.error("Non-2xx response %s | POST %s | Headers %s", response.status, url, response.headers)
             raise APIPageStatusError(response.status, self.base_url)
 
     async def post_data(self, url: str, json: dict[str, Any] | list[Any] | None) -> str:
