@@ -9,7 +9,9 @@ import pytest_asyncio
 
 from compuglobal.aio import AsyncCompuGlobalAPI, CapitalBeatUs, Frinkiac, Morbotron
 from compuglobal.models.episode import Episode, EpisodeSummary
+from compuglobal.models.font import FontColor, FontFamily
 from compuglobal.models.frame import Frame, FrameResult
+from compuglobal.models.overlay import OverlayFormat
 from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.subtitle import Subtitle
 from tests.integration.conftest import log_customised_media_url, log_media_url
@@ -244,3 +246,34 @@ async def test_api_get_gif_url_custom_subtitles(
     gif_url = await api.get_gif_url(searched_customised_screencap)
     await check_content_type_and_url(api.client.session, gif_url, "image/gif", ["gif"])
     log_customised_media_url(api.config.title, "Custom Gif", gif_url, "image/gif")
+
+
+@pytest.mark.asyncio
+@pytest.mark.integration
+async def test_api_get_gif_url_custom_format(
+    api: AsyncCompuGlobalAPI,
+    searched_customised_screencap: Screencap,
+) -> None:
+    overlay_formats = [
+        OverlayFormat(
+            font_family=FontFamily.JOST,
+            font_size=16,
+            font_color=FontColor.from_hex("ff00ff"),
+            all_caps=False,
+        ),
+        OverlayFormat(
+            font_family=FontFamily.IMPACT,
+            font_size=36,
+            font_color=FontColor.from_hex("ffff00"),
+            all_caps=True,
+        ),
+        OverlayFormat(
+            font_family=FontFamily.COMIC_NEUE,
+            font_size=64,
+            font_color=FontColor.from_hex("00ff00"),
+            all_caps=False,
+        ),
+    ]
+    gif_url = await api.get_gif_url(searched_customised_screencap, overlay_format=overlay_formats)
+    await check_content_type_and_url(api.client.session, gif_url, "image/gif", ["gif"])
+    log_customised_media_url(api.config.title, "Custom Formatted Gif", gif_url, "image/gif")
