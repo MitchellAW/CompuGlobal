@@ -14,7 +14,12 @@ from compuglobal.models.screencap import Screencap, ScreencapMoment
 from compuglobal.models.subtitle import Subtitle
 from tests.integration.conftest import log_customised_media_url, log_media_url
 
-API_CLASSES = [Frinkiac, Morbotron, CapitalBeatUs]
+API_SEARCHES: dict[str, str] = {
+    "Frinkiac": "nothing at all",
+    "Morbotron": "shut up and take my money",
+    "CapitalBeatUs": "decisions are made",
+}
+API_CLASSES: list[type[AsyncCompuGlobalAPI]] = [Frinkiac, Morbotron, CapitalBeatUs]
 _screencap_cache: dict[str, Screencap] = {}
 
 
@@ -32,21 +37,23 @@ async def api(request: pytest.FixtureRequest) -> AsyncGenerator[AsyncCompuGlobal
 
 
 @pytest_asyncio.fixture
-async def random_screencap(api: AsyncCompuGlobalAPI) -> Screencap:
+async def searched_screencap(api: AsyncCompuGlobalAPI) -> Screencap:
     class_name = type(api).__name__
     if class_name not in _screencap_cache:
-        random_screencap = await api.get_random_screencap()
-        _screencap_cache[class_name] = random_screencap
+        search_text = API_SEARCHES.get(class_name, "random")
+        searched_screencap = await api.search_for_screencap(search_text)
+        _screencap_cache[class_name] = searched_screencap
 
     return _screencap_cache[class_name]
 
 
 @pytest_asyncio.fixture
-async def random_customised_screencap(api: AsyncCompuGlobalAPI) -> Screencap:
+async def searched_customised_screencap(api: AsyncCompuGlobalAPI) -> Screencap:
     class_name = type(api).__name__
     if class_name not in _screencap_cache:
-        random_screencap = await api.get_random_screencap()
-        _screencap_cache[class_name] = random_screencap
+        search_text = API_SEARCHES.get(class_name, "random")
+        searched_screencap = await api.search_for_screencap(search_text)
+        _screencap_cache[class_name] = searched_screencap
 
     screencap = _screencap_cache[class_name]
     subtitles = [
@@ -83,16 +90,19 @@ async def test_api_get_random_screencap(api: AsyncCompuGlobalAPI) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_api_get_screencap_episode_timestamp(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
-    screencap = await api.get_screencap(episode=random_screencap.frame.key, timestamp=random_screencap.frame.timestamp)
-    assert random_screencap == screencap
+async def test_api_get_screencap_episode_timestamp(api: AsyncCompuGlobalAPI, searched_screencap: Screencap) -> None:
+    screencap = await api.get_screencap(
+        episode=searched_screencap.frame.key,
+        timestamp=searched_screencap.frame.timestamp,
+    )
+    assert searched_screencap == screencap
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_api_get_screencap_frame(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
-    screencap = await api.get_screencap(episode=random_screencap.key, timestamp=random_screencap.timestamp)
-    assert random_screencap == screencap
+async def test_api_get_screencap_frame(api: AsyncCompuGlobalAPI, searched_screencap: Screencap) -> None:
+    screencap = await api.get_screencap(episode=searched_screencap.key, timestamp=searched_screencap.timestamp)
+    assert searched_screencap == screencap
 
 
 @pytest.mark.asyncio
@@ -129,10 +139,10 @@ async def test_api_browse_episode(api: AsyncCompuGlobalAPI) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_api_get_transcript(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
+async def test_api_get_transcript(api: AsyncCompuGlobalAPI, searched_screencap: Screencap) -> None:
     transcript = await api.get_transcript(
-        episode=random_screencap.frame.key,
-        timestamp=random_screencap.frame.timestamp,
+        episode=searched_screencap.frame.key,
+        timestamp=searched_screencap.frame.timestamp,
     )
     assert len(transcript) > 0
     for caption in transcript:
@@ -159,10 +169,10 @@ async def test_api_navigator(api: AsyncCompuGlobalAPI) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_api_get_frames(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
+async def test_api_get_frames(api: AsyncCompuGlobalAPI, searched_screencap: Screencap) -> None:
     frames = await api.get_frames(
-        key=random_screencap.frame.key,
-        timestamp=random_screencap.frame.timestamp,
+        key=searched_screencap.frame.key,
+        timestamp=searched_screencap.frame.timestamp,
         before=0,
         after=99999999,
     )
@@ -173,16 +183,16 @@ async def test_api_get_frames(api: AsyncCompuGlobalAPI, random_screencap: Screen
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_api_get_image_url(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
-    image_url = await api.get_image_url(random_screencap)
+async def test_api_get_image_url(api: AsyncCompuGlobalAPI, searched_screencap: Screencap) -> None:
+    image_url = await api.get_image_url(searched_screencap)
     await check_content_type_and_url(api.client.session, image_url, "image/jpeg", ["jpg"])
     log_media_url(api.config.title, "Default Image", image_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_api_get_comic_panel_url(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
-    comic_panel_url = await api.get_comic_panel_url(random_screencap)
+async def test_api_get_comic_panel_url(api: AsyncCompuGlobalAPI, searched_screencap: Screencap) -> None:
+    comic_panel_url = await api.get_comic_panel_url(searched_screencap)
     await check_content_type_and_url(api.client.session, comic_panel_url, "image/jpeg", ["comic"])
     log_media_url(api.config.title, "Default Comic Panel", comic_panel_url, "image/jpeg")
 
@@ -191,17 +201,17 @@ async def test_api_get_comic_panel_url(api: AsyncCompuGlobalAPI, random_screenca
 @pytest.mark.integration
 async def test_api_get_comic_panel_url_custom_subtitles(
     api: AsyncCompuGlobalAPI,
-    random_customised_screencap: Screencap,
+    searched_customised_screencap: Screencap,
 ) -> None:
-    comic_panel_url = await api.get_comic_panel_url(random_customised_screencap)
+    comic_panel_url = await api.get_comic_panel_url(searched_customised_screencap)
     await check_content_type_and_url(api.client.session, comic_panel_url, "image/jpeg", ["comic"])
     log_customised_media_url(api.config.title, "Custom Comic Panel", comic_panel_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_api_get_comic_strip_url(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
-    comic_strip_url = await api.get_comic_strip_url(random_screencap)
+async def test_api_get_comic_strip_url(api: AsyncCompuGlobalAPI, searched_screencap: Screencap) -> None:
+    comic_strip_url = await api.get_comic_strip_url(searched_screencap)
     await check_content_type_and_url(api.client.session, comic_strip_url, "image/jpeg", ["comic", "layout"])
     log_media_url(api.config.title, "Default Comic Strip", comic_strip_url, "image/jpeg")
 
@@ -210,17 +220,17 @@ async def test_api_get_comic_strip_url(api: AsyncCompuGlobalAPI, random_screenca
 @pytest.mark.integration
 async def test_api_get_comic_strip_url_custom_subtitles(
     api: AsyncCompuGlobalAPI,
-    random_customised_screencap: Screencap,
+    searched_customised_screencap: Screencap,
 ) -> None:
-    comic_strip_url = await api.get_comic_strip_url(random_customised_screencap)
+    comic_strip_url = await api.get_comic_strip_url(searched_customised_screencap)
     await check_content_type_and_url(api.client.session, comic_strip_url, "image/jpeg", ["comic", "layout"])
     log_customised_media_url(api.config.title, "Custom Comic Strip", comic_strip_url, "image/jpeg")
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_api_get_gif_url(api: AsyncCompuGlobalAPI, random_screencap: Screencap) -> None:
-    gif_url = await api.get_gif_url(random_screencap)
+async def test_api_get_gif_url(api: AsyncCompuGlobalAPI, searched_screencap: Screencap) -> None:
+    gif_url = await api.get_gif_url(searched_screencap)
     await check_content_type_and_url(api.client.session, gif_url, "image/gif", ["gif"])
     log_media_url(api.config.title, "Default Gif", gif_url, "image/gif")
 
@@ -229,8 +239,8 @@ async def test_api_get_gif_url(api: AsyncCompuGlobalAPI, random_screencap: Scree
 @pytest.mark.integration
 async def test_api_get_gif_url_custom_subtitles(
     api: AsyncCompuGlobalAPI,
-    random_customised_screencap: Screencap,
+    searched_customised_screencap: Screencap,
 ) -> None:
-    gif_url = await api.get_gif_url(random_customised_screencap)
+    gif_url = await api.get_gif_url(searched_customised_screencap)
     await check_content_type_and_url(api.client.session, gif_url, "image/gif", ["gif"])
     log_customised_media_url(api.config.title, "Custom Gif", gif_url, "image/gif")
