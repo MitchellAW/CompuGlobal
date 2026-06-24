@@ -207,7 +207,7 @@ class Stream(BaseCompuGlobalModel):
 
     @property
     def caption(self) -> str:
-        """Get the entire caption of the Stream (all overlays) as a string.
+        """The entire caption of the Stream (all overlays) as a string.
 
         Returns
         -------
@@ -219,7 +219,7 @@ class Stream(BaseCompuGlobalModel):
 
     @property
     def encoded(self) -> str:
-        """Get the base 64 encoded representation of this stream's overlays.
+        """The base 64 encoded representation of this stream's overlays.
 
         Returns
         -------

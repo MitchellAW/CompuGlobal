@@ -186,7 +186,7 @@ class ComicPanel(BaseCompuGlobalModel):
 
     @property
     def encoded(self) -> str:
-        """Get the base 64 encoded representation of this panel.
+        """The base 64 encoded representation of this panel.
 
         Returns
         -------
@@ -284,7 +284,7 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
 
     @property
     def encoded(self) -> str:
-        """Get the base 64 encoded representation of this comic strip.
+        """The base 64 encoded representation of this comic strip.
 
         Returns
         -------
