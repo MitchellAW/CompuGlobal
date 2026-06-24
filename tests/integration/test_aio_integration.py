@@ -28,7 +28,7 @@ _screencap_cache: dict[str, Screencap] = {}
 async def api(request: pytest.FixtureRequest) -> AsyncGenerator[AsyncCompuGlobalAPI]:
     api_class = request.param
     async with aiohttp.ClientSession() as session:
-        yield api_class(session=session)
+        yield api_class(session=session, max_retries=1)
 
 
 @pytest_asyncio.fixture

@@ -37,6 +37,8 @@ class AsyncCompuGlobalAPI:
         The client session to use for all API calls
     default_format : OverlayFormat | None, optional
         The default overlay format to use for all overlays/subtitles
+    max_retries : int, optional
+        The maximum number of retries for all API requests
 
     Attributes
     ----------
@@ -64,7 +66,12 @@ class AsyncCompuGlobalAPI:
     media: MediaAPI = MediaAPI()
     metadata: MetadataAPI = MetadataAPI()
 
-    def __init__(self, session: aiohttp.ClientSession, default_format: OverlayFormat | None = None) -> None:
+    def __init__(
+        self,
+        session: aiohttp.ClientSession,
+        default_format: OverlayFormat | None = None,
+        max_retries: int = 0,
+    ) -> None:
         extra_fonts = list(self.EXTRA_FONTS)
         if default_format is None:
             chosen_font = extra_fonts[0] if len(extra_fonts) > 0 else FontFamily.IMPACT
@@ -77,7 +84,7 @@ class AsyncCompuGlobalAPI:
             allowed_fonts=allowed_fonts,
             default_format=default_format,
         )
-        self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session)
+        self.client = CompuGlobalAPIClient(base_url=self.BASE_URL, session=session, max_retries=max_retries)
 
     async def get_screencap(
         self,

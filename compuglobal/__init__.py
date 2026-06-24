@@ -8,7 +8,7 @@ from compuglobal.aio import (
     MasterOfAllScience,
     Morbotron,
 )
-from compuglobal.errors import APIPageStatusError, NoSearchResultsFoundError
+from compuglobal.errors import APIPageStatusError, MaximumRetriesExceededError, NoSearchResultsFoundError
 from compuglobal.models.comic import ComicLayout, ComicOverlay, ComicPanel, ComicStrip
 from compuglobal.models.episode import Episode, EpisodeMetadata, EpisodeSummary
 from compuglobal.models.font import FontAlignment, FontColor, FontFamily
@@ -42,6 +42,7 @@ __all__ = [
     "FrameResult",
     "Frinkiac",
     "MasterOfAllScience",
+    "MaximumRetriesExceededError",
     "Morbotron",
     "NoSearchResultsFoundError",
     "OverlayFormat",
