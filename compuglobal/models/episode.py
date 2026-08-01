@@ -30,6 +30,10 @@ class EpisodeMetadata(BaseCompuGlobalModel):
         The original air date of the episode (yyyy-mm-dd)
     wiki_link : str
         The wikipedia link for the episode
+    video_width : int
+        The width of the video in pixels
+    video_height : int
+        The height of the video in pixels
 
     """
 

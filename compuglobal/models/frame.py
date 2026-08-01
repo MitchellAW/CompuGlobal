@@ -17,6 +17,10 @@ class Frame(BaseCompuGlobalModel):
         The episode key (S01E01)
     timestamp : int
         The timestamp of the frame
+    video_width : int
+        The width of the video in pixels
+    video_height : int
+        The height of the video in pixels
 
     """
 

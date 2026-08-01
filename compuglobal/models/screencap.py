@@ -22,6 +22,10 @@ class ScreencapMoment(BaseCompuGlobalModel):
         The content of the subtitle
     title : str
         The title of the episode in the snapshot
+    video_width : int
+        The width of the video in pixels
+    video_height : int
+        The height of the video in pixels
 
     """
 
