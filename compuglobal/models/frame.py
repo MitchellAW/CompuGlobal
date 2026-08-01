@@ -23,6 +23,8 @@ class Frame(BaseCompuGlobalModel):
     id: int = Field(alias="Id")
     key: str = Field(alias="Episode")
     timestamp: int = Field(alias="Timestamp", ge=0)
+    video_width: int = Field(alias="VideoWidth", ge=0, default=480)
+    video_height: int = Field(alias="VideoHeight", ge=0, default=360)
 
     @property
     def timecode(self) -> str:

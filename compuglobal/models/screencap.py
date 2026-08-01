@@ -29,6 +29,8 @@ class ScreencapMoment(BaseCompuGlobalModel):
     timestamp: int = Field(alias="Timestamp", ge=0)
     content: str = Field(alias="Content")
     title: str = Field(alias="Title")
+    video_width: int = Field(alias="VideoWidth", ge=0, default=480)
+    video_height: int = Field(alias="VideoHeight", ge=0, default=360)
 
     @property
     def key(self) -> str:

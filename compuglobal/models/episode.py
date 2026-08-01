@@ -42,6 +42,8 @@ class EpisodeMetadata(BaseCompuGlobalModel):
     writer: str = Field(alias="Writer")
     original_air_date: str = Field(alias="OriginalAirDate")
     wiki_link: str = Field(alias="WikiLink")
+    video_width: int = Field(alias="VideoWidth", ge=0, default=480)
+    video_height: int = Field(alias="VideoHeight", ge=0, default=360)
 
 
 class EpisodeSummary(BaseCompuGlobalModel):
