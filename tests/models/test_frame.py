@@ -20,7 +20,9 @@ TIMESTAMP_CASES = [
 
 def test_frame_model_dump() -> None:
     frame = Frame(id=9, key="S22E22", timestamp=7777)
-    assert frame.model_dump() == snapshot({"Id": 9, "Episode": "S22E22", "Timestamp": 7777})
+    assert frame.model_dump() == snapshot(
+        {"Id": 9, "Episode": "S22E22", "Timestamp": 7777, "VideoWidth": 480, "VideoHeight": 360},
+    )
 
 
 def test_frame_validate_dump() -> None:

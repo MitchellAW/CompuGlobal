@@ -24,6 +24,8 @@ def test_screencap_moment() -> None:
             "Timestamp": 872288,
             "Content": "what do you say we go out for a round of frosty chocolate milkshakes?",
             "Title": "Bart the Genius",
+            "VideoWidth": 480,
+            "VideoHeight": 360,
         },
     )
 

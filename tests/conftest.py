@@ -30,6 +30,8 @@ def frame(frame_id: int, episode: str, timestamp: int) -> dict[str, Any]:
         "Id": frame_id,
         "Episode": episode,
         "Timestamp": timestamp,
+        "VideoWidth": 480,
+        "VideoHeight": 360,
     }
 
 
@@ -56,6 +58,8 @@ def episode(season: int, episode: int) -> dict[str, Any]:
         "Writer": "Carolyn Omine",
         "OriginalAirDate": "2000-01-09",
         "WikiLink": "https://en.wikipedia.org/wiki/Little_Big_Mom",
+        "VideoWidth": 480,
+        "VideoHeight": 360,
     }
 
 
@@ -105,6 +109,8 @@ def episode_json() -> dict[str, Any]:
             "Writer": "Carolyn Omine",
             "OriginalAirDate": "2000-01-09",
             "WikiLink": "https://en.wikipedia.org/wiki/Little_Big_Mom",
+            "VideoWidth": 480,
+            "VideoHeight": 360,
         },
         "Subtitles": [
             {

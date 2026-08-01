@@ -3,8 +3,13 @@
 Changelog
 =========
 
-Upcoming Changes
-----------------
+
+0.5.0
+-----
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
+- Add the new video height and width attributes to :class:`Episode`, :class:`Frame`, and :class:`ScreencapMoment`
 
 Miscellaneous
 ~~~~~~~~~~~~~

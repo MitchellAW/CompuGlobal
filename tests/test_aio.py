@@ -55,6 +55,8 @@ def random_frame_results(quantity: int) -> list[dict[str, Any]]:
             "Timestamp": random.randint(1000, 1200000),
             "Content": "Blah blah blah",
             "Title": "Random",
+            "VideoWidth": 480,
+            "VideoHeight": 360,
         }
         for _ in range(quantity)
     ]

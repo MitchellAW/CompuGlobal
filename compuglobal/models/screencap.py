@@ -22,6 +22,10 @@ class ScreencapMoment(BaseCompuGlobalModel):
         The content of the subtitle
     title : str
         The title of the episode in the snapshot
+    video_width : int
+        The width of the video in pixels
+    video_height : int
+        The height of the video in pixels
 
     """
 
@@ -29,6 +33,8 @@ class ScreencapMoment(BaseCompuGlobalModel):
     timestamp: int = Field(alias="Timestamp", ge=0)
     content: str = Field(alias="Content")
     title: str = Field(alias="Title")
+    video_width: int = Field(alias="VideoWidth", ge=0, default=480)
+    video_height: int = Field(alias="VideoHeight", ge=0, default=360)
 
     @property
     def key(self) -> str:

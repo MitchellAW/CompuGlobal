@@ -33,7 +33,7 @@ def generate_html_report(path: Path) -> None:
     path.write_text(html, encoding="utf-8")
 
 
-def pytest_terminal_summary(terminalreporter: pytest.TerminalReporter, exitstatus: int, config: pytest.Config) -> None:  # noqa: ARG001
+def pytest_terminal_summary(terminalreporter: pytest.TerminalReporter, exitstatus: int, config: pytest.Config) -> None:  # ruff: ignore[unused-function-argument]
     if not _default_media_urls or not _customised_media_urls:
         return
 

@@ -36,7 +36,7 @@ class OverlayFormat(BaseCompuGlobalModel):
     text_alignment: FontAlignment = Field(default=FontAlignment.ALIGN_CENTER)
     all_caps: bool = Field(default=True)
 
-    def __str__(self) -> str:  # noqa: D105
+    def __str__(self) -> str:  # ruff: ignore[undocumented-magic-method]
         return str(self.model_dump(exclude_defaults=True))
 
     @property
@@ -72,7 +72,7 @@ class OverlayFormat(BaseCompuGlobalModel):
 
         Parameters
         ----------
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The format(s) to use in the overlays:
 
             - If ``None``, default formatting is applied to all overlays

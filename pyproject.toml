@@ -62,12 +62,12 @@ line-length = 120
 [tool.ruff.lint]
 preview = true
 select = ["ALL"]
-ignore = ["CPY001", "D107", "D203", "D213"]
+ignore = ["missing-copyright-notice", "undocumented-public-init", "incorrect-blank-line-before-class", "multi-line-summary-second-line"]
 
 [tool.ruff.lint.per-file-ignores]
-"examples/*" = ["INP001", "T201", "ANN201", "D103"]
-"docs/*" = ["A001", "INP001", "D100"]
-"tests/*" = ["S101", "D103", "PLR2004", "S311"]
+"examples/*" = ["implicit-namespace-package", "print", "missing-return-type-undocumented-public-function", "undocumented-public-function"]
+"docs/*" = ["builtin-variable-shadowing", "implicit-namespace-package", "undocumented-public-module"]
+"tests/*" = ["assert", "undocumented-public-function", "magic-value-comparison", "suspicious-non-cryptographic-random-usage"]
 
 [tool.pyrefly]
 project-includes = [
