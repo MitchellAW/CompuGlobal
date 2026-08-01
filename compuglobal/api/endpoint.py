@@ -34,11 +34,11 @@ class PreparedRequest:
     ----------
     url: str
         The url of the request
-    method: RequestMethod, optional
+    method: RequestMethod
         The HTTP RequestMethod for the request (GET/POST/PUT)
-    params: dict[str, Any] | None, optional
+    params: dict[str, Any] | None
         The query parameters to use in the request
-    body: dict[str, Any] | list[Any] | None, optional
+    body: dict[str, Any] | list[Any] | None
         The JSON request body to post
 
     """
@@ -61,13 +61,13 @@ class Endpoint:
     ----------
     path : str
         The url path containing any path parameter names
-    method : RequestMethod, optional
+    method : RequestMethod
         The HTTP RequestMethod for the request (GET/POST/PUT)
-    required_query_params : frozenset[str], optional
+    required_query_params : frozenset[str]
         The required query parameters to use in the request
-    optional_query_params : frozenset[str], optional
+    optional_query_params : frozenset[str]
         Optional query params that can be used in the request
-    body_model : type[BaseModel] | None, optional
+    body_model : type[BaseModel] | None
         The pydantic model for the json body
 
     """
@@ -120,9 +120,9 @@ class Endpoint:
         ----------
         base_url : str
             The base url of the API
-        query : dict[str, Any] | None, optional
+        query : dict[str, Any] | None
             The query params to use in the url
-        path_params : dict[str, Any] | None, optional
+        path_params : dict[str, Any] | None
             The path params to use in the url
 
         Returns
@@ -154,11 +154,11 @@ class Endpoint:
         ----------
         base_url : str
             The base url of the API
-        query : dict[str, Any] | None, optional
+        query : dict[str, Any] | None
             The query params to use in the params of the request
-        path_params : dict[str, Any] | None, optional
+        path_params : dict[str, Any] | None
             The path params to use in the path of the request
-        body : BaseModel | None, optional
+        body : BaseModel | None
             The json body model to use in the request
 
         Returns

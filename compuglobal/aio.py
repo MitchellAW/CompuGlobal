@@ -35,9 +35,9 @@ class AsyncCompuGlobalAPI:
     ----------
     session : aiohttp.ClientSession
         The client session to use for all API calls
-    default_format : OverlayFormat | None, optional
+    default_format : OverlayFormat | None
         The default overlay format to use for all overlays/subtitles
-    max_retries : int, optional
+    max_retries : int
         The maximum number of retries for all API requests
 
     Attributes
@@ -96,9 +96,9 @@ class AsyncCompuGlobalAPI:
 
         Parameters
         ----------
-        episode : str | None, optional
+        episode : str | None
             An episode key
-        timestamp : int | None, optional
+        timestamp : int | None
             A timestamp of the screencap
 
         Returns
@@ -125,9 +125,9 @@ class AsyncCompuGlobalAPI:
         ----------
         search_text : str
             The search text to query
-        season_minimum : int | None, optional
+        season_minimum : int | None
             The minimum season allowed in the search results
-        season_maximum : int | None, optional
+        season_maximum : int | None
             The maximum season allowed in the search results
 
         Returns
@@ -172,9 +172,9 @@ class AsyncCompuGlobalAPI:
         ----------
         search_text : str
             The search text to query
-        season_minimum : int | None, optional
+        season_minimum : int | None
             The minimum season allowed in the search
-        season_maximum : int | None, optional
+        season_maximum : int | None
             The maximum season allowed in the search
 
         Returns
@@ -196,9 +196,9 @@ class AsyncCompuGlobalAPI:
 
         Parameters
         ----------
-        season_minimum : int | None, optional
+        season_minimum : int | None
             Minimum season number allowed in random result
-        season_maximum : int | None, optional
+        season_maximum : int | None
             Maximum season number allowed in random result
 
         Returns
@@ -336,9 +336,9 @@ class AsyncCompuGlobalAPI:
         ----------
         screencap : Screencap
             The screencap to use in the comic panel
-        subtitles : list[Subtitle] | None, optional
+        subtitles : list[Subtitle] | None
             A list of subtitles to overlay in the comic panel
-        overlay_format : OverlayFormat | None, optional
+        overlay_format : OverlayFormat | None
             The formatting to use in the comic panel overlay (subtitle)
 
         Returns
@@ -366,9 +366,9 @@ class AsyncCompuGlobalAPI:
         ----------
         screencap : Screencap
             The screencap to use in the comic strip
-        subtitles : list[Subtitle] | None, optional
+        subtitles : list[Subtitle] | None
             The subtitles to overlay in the comic strip
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The formatting to use in the comic strip overlays (subtitleS). See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
@@ -396,9 +396,9 @@ class AsyncCompuGlobalAPI:
         ----------
         screencap : Screencap
             The screencap to make the comic with
-        subtitles : list[Subtitle] | None, optional
+        subtitles : list[Subtitle] | None
             The subtitles to override in the comic maker, by default None
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The subtitle/overlay formatting to override in the comic maker, by default None
 
         Returns
@@ -430,9 +430,9 @@ class AsyncCompuGlobalAPI:
         ----------
         screencap : Screencap
             The screencap to use for the gif
-        subtitles : list[Subtitle] | None, optional
+        subtitles : list[Subtitle] | None
             The subtitles to overlay in the gif
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The formatting to use in the gif overlays (subtitles). See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
@@ -470,9 +470,9 @@ class AsyncCompuGlobalAPI:
         ----------
         screencap : Screencap
             The screencap to make the comic with
-        subtitles : list[Subtitle] | None, optional
+        subtitles : list[Subtitle] | None
             The subtitles to override in the comic maker, by default None
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The subtitle/overlay formatting to override in the comic maker, by default None
 
         Returns

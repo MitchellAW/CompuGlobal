@@ -22,7 +22,7 @@ class CompuGlobalAPIClient:
         The base URL of the API (e.g. https://frinkiac.com)
     session : ClientSession
         The client session to use for all API requests
-    max_retries : int, optional
+    max_retries : int
         The maximum number of retries for each request before raising an :class:`APIPageStatusError`
 
     """
@@ -39,7 +39,7 @@ class CompuGlobalAPIClient:
         ----------
         url : str
             The url to use in the request
-        params : dict[str, Any] | None, optional
+        params : dict[str, Any] | None
             The query params to use in the request
 
         Returns

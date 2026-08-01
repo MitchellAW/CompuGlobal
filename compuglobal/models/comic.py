@@ -124,7 +124,7 @@ class ComicOverlay(BaseCompuGlobalModel):
         ----------
         subtitles : list[Subtitle]
             A list of subtitles
-        overlay_format : OverlayFormat | None, optional
+        overlay_format : OverlayFormat | None
             The format to use in the overlay
 
         Returns
@@ -171,7 +171,7 @@ class ComicPanel(BaseCompuGlobalModel):
         ----------
         screencap : Screencap
             Screencap to use for the comic panel
-        overlay_format : OverlayFormat | None, optional
+        overlay_format : OverlayFormat | None
             The format to use in the comic panel overlay.
 
         Returns
@@ -208,7 +208,7 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
     ----------
     panels : list[ComicPanel]
         The list of ComicPanels to use in the comic strip
-    layout : ComicLayout | None, optional
+    layout : ComicLayout | None
         The layout to use when displaying the panels
 
     """
@@ -233,7 +233,7 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
         ----------
         screencap : Screencap
             The screencap to use for the comic strip
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
@@ -266,7 +266,7 @@ class ComicStrip(BaseCompuGlobalModel, frozen=False):
         ----------
         subtitles : list[Subtitle]
             The subtitles to use for the overlays
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 

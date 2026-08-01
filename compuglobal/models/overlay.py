@@ -72,7 +72,7 @@ class OverlayFormat(BaseCompuGlobalModel):
 
         Parameters
         ----------
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The format(s) to use in the overlays:
 
             - If ``None``, default formatting is applied to all overlays

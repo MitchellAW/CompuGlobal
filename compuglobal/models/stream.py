@@ -152,7 +152,7 @@ class Stream(BaseCompuGlobalModel):
         ----------
         screencap : Screencap
             The screencap to use for the Stream
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
@@ -183,7 +183,7 @@ class Stream(BaseCompuGlobalModel):
         ----------
         screencap : Screencap
             The screencap to use for the overlays
-        overlay_format : OverlayFormat | list[OverlayFormat] | None, optional
+        overlay_format : OverlayFormat | list[OverlayFormat] | None
             The format(s) to use in the overlays. See :meth:`OverlayFormat.normalise` for
             full details on how formats are resolved.
 
